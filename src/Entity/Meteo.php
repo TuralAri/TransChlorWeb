@@ -104,7 +104,7 @@ class Meteo
     /**
      * @ORM\Column(type="integer")
      */
-    private $extTemperatureDivider;
+    private $extTemperaturePosition2;
 
     /**
      * @ORM\Column(type="integer")
@@ -114,7 +114,12 @@ class Meteo
     /**
      * @ORM\Column(type="float")
      */
-    private $extTemperatureLimit;
+    private $extTemperatureAttenuation2;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $extTemperatureDifference;
 
     /**
      * @ORM\Column(type="integer")
@@ -124,7 +129,7 @@ class Meteo
     /**
      * @ORM\Column(type="integer")
      */
-    private $extHumidityDivider;
+    private $extHumidityPosition2;
 
     /**
      * @ORM\Column(type="integer")
@@ -134,7 +139,12 @@ class Meteo
     /**
      * @ORM\Column(type="float")
      */
-    private $extHumidityLimit;
+    private $extHumidityAttenuation2;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $extHumidityDifference;
 
     /**
      * @ORM\Column(type="integer")
@@ -144,7 +154,7 @@ class Meteo
     /**
      * @ORM\Column(type="integer")
      */
-    private $intTemperatureDivider;
+    private $intTemperaturePosition2;
 
     /**
      * @ORM\Column(type="integer")
@@ -154,7 +164,12 @@ class Meteo
     /**
      * @ORM\Column(type="float")
      */
-    private $intTemperatureLimit;
+    private $intTemperatureAttenuation2;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $intTemperatureDifference;
 
     /**
      * @ORM\Column(type="integer")
@@ -164,7 +179,7 @@ class Meteo
     /**
      * @ORM\Column(type="integer")
      */
-    private $intHumidityDivider;
+    private $intHumidityPosition2;
 
     /**
      * @ORM\Column(type="integer")
@@ -174,7 +189,12 @@ class Meteo
     /**
      * @ORM\Column(type="float")
      */
-    private $intHumidityLimit;
+    private $intHumidityAttenuation2;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $intHumidityDifference;
 
     public function getId(): ?int
     {
@@ -368,14 +388,14 @@ class Meteo
         return $this;
     }
 
-    public function getExtTemperatureDivider(): ?int
+    public function getExtTemperaturePosition2(): ?int
     {
-        return $this->extTemperatureDivider;
+        return $this->extTemperaturePosition2;
     }
 
-    public function setExtTemperatureDivider(int $extTemperatureDivider): self
+    public function setExtTemperaturePosition2(int $extTemperaturePosition2): self
     {
-        $this->extTemperatureDivider = $extTemperatureDivider;
+        $this->extTemperaturePosition2 = $extTemperaturePosition2;
         return $this;
     }
 
@@ -390,14 +410,25 @@ class Meteo
         return $this;
     }
 
-    public function getExtTemperatureLimit(): ?float
+    public function getExtTemperatureAttenuation2(): ?float
     {
-        return $this->extTemperatureLimit;
+        return $this->extTemperatureAttenuation2;
     }
 
-    public function setExtTemperatureLimit(float $extTemperatureLimit): self
+    public function setExtTemperatureAttenuation2(float $extTemperatureAttenuation2): self
     {
-        $this->extTemperatureLimit = $extTemperatureLimit;
+        $this->extTemperatureAttenuation2 = $extTemperatureAttenuation2;
+        return $this;
+    }
+
+    public function getExtTemperatureDifference(): ?float
+    {
+        return $this->extTemperatureDifference;
+    }
+
+    public function setExtTemperatureDifference(float $extTemperatureDifference): self
+    {
+        $this->extTemperatureDifference = $extTemperatureDifference;
         return $this;
     }
 
@@ -412,14 +443,14 @@ class Meteo
         return $this;
     }
 
-    public function getExtHumidityDivider(): ?int
+    public function getExtHumidityPosition2(): ?int
     {
-        return $this->extHumidityDivider;
+        return $this->extHumidityPosition2;
     }
 
-    public function setExtHumidityDivider(int $extHumidityDivider): self
+    public function setExtHumidityPosition2(int $extHumidityPosition2): self
     {
-        $this->extHumidityDivider = $extHumidityDivider;
+        $this->extHumidityPosition2 = $extHumidityPosition2;
         return $this;
     }
 
@@ -434,14 +465,25 @@ class Meteo
         return $this;
     }
 
-    public function getExtHumidityLimit(): ?float
+    public function getExtHumidityAttenuation2(): ?float
     {
-        return $this->extHumidityLimit;
+        return $this->extHumidityAttenuation2;
     }
 
-    public function setExtHumidityLimit(float $extHumidityLimit): self
+    public function setExtHumidityAttenuation2(float $extHumidityAttenuation2): self
     {
-        $this->extHumidityLimit = $extHumidityLimit;
+        $this->extHumidityAttenuation2 = $extHumidityAttenuation2;
+        return $this;
+    }
+
+    public function getExtHumidityDifference(): ?float
+    {
+        return $this->extHumidityDifference;
+    }
+
+    public function setExtHumidityDifference(float $extHumidityDifference): self
+    {
+        $this->extHumidityDifference = $extHumidityDifference;
         return $this;
     }
 
@@ -456,14 +498,14 @@ class Meteo
         return $this;
     }
 
-    public function getIntTemperatureDivider(): ?int
+    public function getIntTemperaturePosition2(): ?int
     {
-        return $this->intTemperatureDivider;
+        return $this->intTemperaturePosition2;
     }
 
-    public function setIntTemperatureDivider(int $intTemperatureDivider): self
+    public function setIntTemperaturePosition2(int $intTemperaturePosition2): self
     {
-        $this->intTemperatureDivider = $intTemperatureDivider;
+        $this->intTemperaturePosition2 = $intTemperaturePosition2;
         return $this;
     }
 
@@ -478,14 +520,25 @@ class Meteo
         return $this;
     }
 
-    public function getIntTemperatureLimit(): ?float
+    public function getIntTemperatureAttenuation2(): ?float
     {
-        return $this->intTemperatureLimit;
+        return $this->intTemperatureAttenuation2;
     }
 
-    public function setIntTemperatureLimit(float $intTemperatureLimit): self
+    public function setIntTemperatureAttenuation2(float $intTemperatureAttenuation2): self
     {
-        $this->intTemperatureLimit = $intTemperatureLimit;
+        $this->intTemperatureAttenuation2 = $intTemperatureAttenuation2;
+        return $this;
+    }
+
+    public function getIntTemperatureDifference(): ?float
+    {
+        return $this->intTemperatureDifference;
+    }
+
+    public function setIntTemperatureDifference(float $intTemperatureDifference): self
+    {
+        $this->intTemperatureDifference = $intTemperatureDifference;
         return $this;
     }
 
@@ -500,14 +553,14 @@ class Meteo
         return $this;
     }
 
-    public function getIntHumidityDivider(): ?int
+    public function getIntHumidityPosition2(): ?int
     {
-        return $this->intHumidityDivider;
+        return $this->intHumidityPosition2;
     }
 
-    public function setIntHumidityDivider(int $intHumidityDivider): self
+    public function setIntHumidityPosition2(int $intHumidityPosition2): self
     {
-        $this->intHumidityDivider = $intHumidityDivider;
+        $this->intHumidityPosition2 = $intHumidityPosition2;
         return $this;
     }
 
@@ -522,14 +575,26 @@ class Meteo
         return $this;
     }
 
-    public function getIntHumidityLimit(): ?float
+    public function getIntHumidityAttenuation2(): ?float
     {
-        return $this->intHumidityLimit;
+        return $this->intHumidityAttenuation2;
     }
 
-    public function setIntHumidityLimit(float $intHumidityLimit): self
+    public function setIntHumidityAttenuation2(float $intHumidityAttenuation2): self
     {
-        $this->intHumidityLimit = $intHumidityLimit;
+        $this->intHumidityAttenuation2 = $intHumidityAttenuation2;
+        return $this;
+    }
+
+    public function getIntHumidityDifference(): ?float
+    {
+        return $this->intHumidityDifference;
+    }
+
+    public function setIntHumidityDifference(float $intHumidityDifference): self
+    {
+        $this->intHumidityDifference = $intHumidityDifference;
         return $this;
     }
 }
+
