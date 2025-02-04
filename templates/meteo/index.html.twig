@@ -5,6 +5,7 @@
 
 {% block body %}
 	<div class=" mx-[20%] px-4 py-8 ">
+		<btn class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" id="initButton">Initialiser</btn>
 
 		{{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
 
@@ -87,5 +88,38 @@
 		{{ form_end(form) }}
 	</div>
 
+	<script>
+		document.getElementById('initButton').addEventListener('click', function() {
+			fetch('/meteo-form/init', {
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+					.then(response => {
+						if (!response.ok) {
+							throw new Error('Erreur lors de la récupération des données');
+						}
+						return response.json();
+					})
+					.then(data => {
+						if (data.error) {
+							alert(data.error);
+							return;
+						}
+
+						Object.keys(data).forEach(key => {
+							let input = document.getElementById('meteo_' + key);
+							if (input) {
+								input.value = data[key];
+							}
+						});
+					})
+					.catch(error => {
+						console.error('Erreur:', error);
+						alert('Erreur lors de l\'initialisation');
+					});
+		});
+
+	</script>
 
 {% endblock %}

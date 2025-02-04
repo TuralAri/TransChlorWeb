@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Meteo;
 use App\Form\MeteoType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,11 +30,11 @@ class MeteoController extends AbstractController
     }
 
 
-
+/*
     #Route('/meteo-form/init', name: 'meteo_form_init')
-    public function init(): void
+    public function init(): JsonResponse
     {
-        $response = $this->client->request('GET', 'http://localhost:5000/', [
+        /*$response = $this->client->request('GET', 'http://localhost:5000/', [
             'headers' => [
                 'Content-Type' => 'multipart/form-data',
             ],
@@ -43,51 +44,108 @@ class MeteoController extends AbstractController
         $content = $response->getContent();
         $filePath = '../../public/meteo_form.txt';
 
-        file_put_contents($filePath, $content);
+        file_put_contents($filePath, $content);*/
+/*
 
+        $filePath = '../../public/form_meteo_output.txt';
         $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
-        $meteo = new Meteo();
+        $data = [
+            'fileYears' => $lines[0],
+            'sodiumChlorideConcentration' => $lines[1],
+            'waterFilmThickness' => $lines[2],
+            'humidityThreshold' => $lines[3],
+            'mechanicalAnnualSodium' => $lines[4],
+            'mechanicalMeanSodium' => $lines[5],
+            'mechanicalInterventions' => $lines[6],
+            'mechanicalInterval' => $lines[7],
+            'mechanicalSodiumWater' => $lines[8],
+            'mechanicalThresholdTemperature' => $lines[9],
+            'automaticAnnualSodium' => $lines[10],
+            'automaticMeanSodium' => $lines[11],
+            'automaticSprays' => $lines[12],
+            'automaticSprayInterval' => $lines[13],
+            'automaticSodiumWater' => $lines[14],
+            'automaticThresholdTemperature' => $lines[15],
+            'extTemperaturePosition' => $lines[16],
+            'extTemperaturePosition2' => $lines[17],
+            'extTemperatureAttenuation' => $lines[18],
+            'extTemperatureAttenuation2' => $lines[19],
+            'extTemperatureDifference' => $lines[20],
+            'extHumidityPosition' => $lines[21],
+            'extHumidityPosition2' => $lines[22],
+            'extHumidityAttenuation' => $lines[23],
+            'extHumidityAttenuation2' => $lines[24],
+            'extHumidityDifference' => $lines[25],
+            'intTemperaturePosition' => $lines[26],
+            'intTemperaturePosition2' => $lines[27],
+            'intTemperatureAttenuation' => $lines[28],
+            'intTemperatureAttenuation2' => $lines[29],
+            'intTemperatureDifference' => $lines[30],
+            'intHumidityPosition' => $lines[31],
+            'intHumidityPosition2' => $lines[32],
+            'intHumidityAttenuation' => $lines[33],
+            'intHumidityAttenuation2' => $lines[34],
+            'intHumidityDifference' => $lines[35],
+        ];
 
-        $meteo->setFileYears($lines[0]);
-        $meteo->setSodiumChlorideConcentration($lines[1]);
-        $meteo->setWaterFilmThickness($lines[2]);
-        $meteo->setHumidityThreshold($lines[3]);
-
-        $meteo->setMechanicalAnnualSodium($lines[4]);
-        $meteo->setMechanicalMeanSodium($lines[5]);
-        $meteo->setMechanicalInterval($lines[6]);
-        $meteo->setMechanicalSodiumWater($lines[7]);
-
-        $meteo->setAutomaticAnnualSodium($lines[8]);
-        $meteo->setAutomaticMeanSodium($lines[9]);
-        $meteo->setAutomaticSprayInterval($lines[10]);
-        $meteo->setAutomaticSodiumWater($lines[11]);
-
-        $meteo->setExtTemperaturePosition($lines[12]);
-        $meteo->setExtTemperaturePosition2($lines[13]);
-        $meteo->setExtTemperatureAttenuation($lines[14]);
-        $meteo->setExtTemperatureAttenuation2($lines[15]);
-        $meteo->setExtTemperatureDifference($lines[16]);
-        $meteo->setExtHumidityPosition($lines[17]);
-        $meteo->setExtHumidityPosition2($lines[18]);
-        $meteo->setExtHumidityAttenuation($lines[19]);
-        $meteo->setExtHumidityAttenuation2($lines[20]);
-        $meteo->setExtHumidityDifference($lines[21]);
-
-        $meteo->setIntTemperaturePosition($lines[22]);
-        $meteo->setIntTemperaturePosition2($lines[23]);
-        $meteo->setIntTemperatureAttenuation($lines[24]);
-        $meteo->setIntTemperatureAttenuation2($lines[25]);
-        $meteo->setIntTemperatureDifference($lines[26]);
-        $meteo->setIntHumidityPosition($lines[27]);
-        $meteo->setIntHumidityPosition2($lines[28]);
-        $meteo->setIntHumidityAttenuation($lines[29]);
-        $meteo->setIntHumidityAttenuation2($lines[30]);
-        $meteo->setIntHumidityDifference($lines[31]);
-
+        dump($data);
+        return new JsonResponse($data);
     }
 
+*/
 
+    #[Route('/meteo-form/init', name: 'meteo_form_init')]
+    public function init(): JsonResponse
+    {
+        $filePath = $this->getParameter('kernel.project_dir') . '/public/out/form_meteo_output.txt';
+
+        if (!file_exists($filePath)) {
+            return new JsonResponse(['error' => 'Fichier non trouvé'], Response::HTTP_NOT_FOUND);
+        }
+
+        $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        dump($lines);
+        if (count($lines) < 32) {
+            return new JsonResponse(['error' => 'Fichier incomplet'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $data = [
+            'fileYears' => $lines[0],
+            'sodiumChlorideConcentration' => $lines[1],
+            'waterFilmThickness' => $lines[2],
+            'humidityThreshold' => $lines[3],
+            'mechanicalAnnualSodium' => $lines[4],
+            'mechanicalMeanSodium' => $lines[5],
+            'mechanicalInterval' => $lines[6],
+            'mechanicalSodiumWater' => $lines[7],
+            'automaticAnnualSodium' => $lines[8],
+            'automaticMeanSodium' => $lines[9],
+            'automaticSprayInterval' => $lines[10],
+            'automaticSodiumWater' => $lines[11],
+            'extTemperaturePosition' => $lines[12],
+            'extTemperaturePosition2' => $lines[13],
+            'extTemperatureAttenuation' => $lines[14],
+            'extTemperatureAttenuation2' => $lines[15],
+            'extTemperatureDifference' => $lines[16],
+            'extHumidityPosition' => $lines[17],
+            'extHumidityPosition2' => $lines[18],
+            'extHumidityAttenuation' => $lines[19],
+            'extHumidityAttenuation2' => $lines[20],
+            'extHumidityDifference' => $lines[21],
+            'intTemperaturePosition' => $lines[22],
+            'intTemperaturePosition2' => $lines[23],
+            'intTemperatureAttenuation' => $lines[24],
+            'intTemperatureAttenuation2' => $lines[25],
+            'intTemperatureDifference' => $lines[26],
+            'intHumidityPosition' => $lines[27],
+            'intHumidityPosition2' => $lines[28],
+            'intHumidityAttenuation' => $lines[29],
+            'intHumidityAttenuation2' => $lines[30],
+            'intHumidityDifference' => $lines[31],
+        ];
+
+        return new JsonResponse($data);
+    }
 
 }
