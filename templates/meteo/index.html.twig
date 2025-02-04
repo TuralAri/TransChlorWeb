@@ -27,60 +27,72 @@
 				<p>[mm]</p>
 			</div>
 			<div class="flex gap-2 items-center justify-left">
-				{{form_row(form.humidityThreshold,{'attr':{'class':'ml-2p-2borderrounded-lgtext-center','type':'number','step':'1'}})}}
+				{{form_row(form.humidityThreshold,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center','type':'number','step':'1'}})}}
 				<p>[%]</p>
 			</div>
 
-			<section class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
-				<h2 class="text-xl font-semibold mb-4">Épandage Mécanique</h2>
-				<div class="flex gap-2 items-center w-fit justify-left">
+			<section id="part1" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+				<div class="flex justify-between items-center">
+					<h2 class="text-xl font-semibold">Épandage Mécanique</h2>
+					<button id="part1Button" class="text-xl font-bold  border-black p-4">
+						+
+					</button>
+				</div>
+				<div class="hidden gap-2 items-center w-fit justify-left">
 					{{ form_row(form.mechanicalAnnualSodium, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
 					<p>[g/m2]</p>
 				</div>
-				<div class="flex gap-2 items-center w-fit justify-left">
+				<div class="hidden gap-2 items-center w-fit justify-left">
 					{{ form_row(form.mechanicalMeanSodium, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
 					<p>[g/m2]</p>
 				</div>
-				<div class="flex gap-2 items-center w-fit justify-left">
+				<div class="hidden gap-2 items-center w-fit justify-left">
 					{{ form_row(form.mechanicalInterventions, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
 					<p>(Sera déterminé après le calcul)</p>
 				</div>
-				<div class="flex gap-2 items-center w-fit justify-left">
+				<div class="hidden gap-2 items-center w-fit justify-left">
 					{{ form_row(form.mechanicalInterval, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
 					<p>[h]</p>
 				</div>
-				<div class="flex gap-2 items-center w-fit justify-left">
+				<div class="hidden gap-2 items-center w-fit justify-left">
 					{{ form_row(form.mechanicalSodiumWater, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
 					<p>[%]</p>
 				</div>
-				<div class="flex gap-2 items-center w-fit justify-left">
+				<div class="hidden gap-2 items-center w-fit justify-left">
 					{{form_row(form.mechanicalThresholdTemperature,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
 					<p>[°C]</p>
 					<p>(Sera déterminé après le calcul)</p>
 				</div>
 			</section>
 
-			<section class="bg-white p-6 rounded-lg border-2 border-black flex flex-col space-y-4"><h2 class="text-xl font-semibold mb-4">Épandage Automatique</h2>
-				<div class="flex gap-2 items-center w-fit justify-left">
+			<section id="part2" class="bg-white p-6 rounded-lg border-2 border-black flex flex-col space-y-4">
+				<div class="flex justify-between items-center">
+					<h2 class="text-xl font-semibold">Épandage Automatique</h2>
+					<button id="part2Button" class="text-xl font-bold  border-black p-4">
+						+
+					</button>
+				</div>
+
+				<div class="hidden gap-2 items-center w-fit justify-left">
 					{{form_row(form.automaticAnnualSodium,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
 					<p>[g/m2]</p>
 				</div>
-				<div class="flex gap-2 items-cente rw-fit justify-left">
+				<div class="hidden gap-2 items-cente rw-fit justify-left">
 					{{form_row(form.automaticMeanSodium,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
 					<p>[g/m2]</p>
 				</div>
-				<div class="flex gap-2 items-center w-fit justify-left">
+				<div class="hidden gap-2 items-center w-fit justify-left">
 					{{form_row(form.automaticSprays,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
 					<p>(Sera déterminé après le calcul)</p>
 				</div>
-				<div class="flex gap-2 items-center w-fit justify-left">
+				<div class="hidden gap-2 items-center w-fit justify-left">
 					{{form_row(form.automaticSprayInterval,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
 				</div>
-				<div class="flex gap-2 items-center w-fit justify-left">
+				<div class="hidden gap-2 items-center w-fit justify-left">
 					{{form_row(form.automaticSodiumWater,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
 					<p>[%]</p>
 				</div>
-				<div class="flex gap-2 items-center w-fit justify-left">
+				<div class="hidden gap-2 items-center w-fit justify-left">
 					{{ form_row(form.automaticThresholdTemperature, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
 					<p>[°C]</p>
 					<p>(Sera déterminé après le calcul)</p>
@@ -90,9 +102,15 @@
 		</div>
 
 
-		<section class="p-6 rounded-lg border-2 border-black flex flex-col space-y-4">
-			<h2 class="text-xl font-semibold mb-4">Atténuation du signal (extérieur caisson)</h2>
-			<section class="flex flex-col space-y-4 shadow-lg">
+		<section id="part3" class="p-6 rounded-lg border-2 border-black flex flex-col space-y-4">
+			<div class="flex justify-between items-center">
+				<h2 class="text-xl font-semibold">Atténuation du signal (extérieur caisson)</h2>
+				<button id="part3Button" class="text-xl font-bold  border-black p-4">
+					+
+				</button>
+			</div>
+
+			<section class="hidden flex-col space-y-4 shadow-lg p-4 rounded-lg">
 				<h3 class="text-lg font-bold">Température</h3>
 				<div class="flex gap-2 items-center justify-left w-full">
 					{{ form_row(form.extTemperaturePosition, {'attr': {'class':'ml-2 p-2 border rounded-lg text-center'}}) }}
@@ -109,7 +127,7 @@
 					<p>[1/°C]</p>
 				</div>
 			</section>
-			<section class="flex flex-col space-y-4 shadow-lg">
+			<section class="hidden flex-col space-y-4 shadow-lg p-4 rounded-lg">
 				<h3 class="text-lg font-bold">Humidité relative</h3>
 				<div class="flex gap-2 items-center justify-left w-full">
 					{{ form_row(form.extHumidityPosition, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
@@ -127,20 +145,50 @@
 				</div>
 			</section>
 		</section>
-		<section>
-			<h2 class="text-xl font-semibold mb-4">Atténuation du signal (intérieur caisson)</h2>
-			{{ form_row(form.intTemperaturePosition, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-			{{ form_row(form.intTemperaturePosition2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-			{{ form_row(form.intTemperatureAttenuation, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-			{{ form_row(form.intTemperatureAttenuation2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-			{{ form_row(form.intTemperatureDifference, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-			{{ form_row(form.intHumidityPosition, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-			{{ form_row(form.intHumidityPosition2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-			{{ form_row(form.intHumidityAttenuation, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-			{{ form_row(form.intHumidityAttenuation2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-			{{ form_row(form.intHumidityDifference, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-		</section>
 
+		<section id="part4" class="p-6 rounded-lg border-2 border-black flex flex-col space-y-4">
+			<div class="flex justify-between items-center">
+				<h2 class="text-xl font-semibold">Atténuation du signal (intérieur caisson)</h2>
+				<button id="part4Button" class="text-xl font-bold  border-black p-4">
+					+
+				</button>
+			</div>
+
+			<section class="hidden flex-col space-y-4 shadow-lg p-4 rounded-lg">
+				<h3 class="text-lg font-bold">Température</h3>
+				<div class="flex gap-2 items-center justify-left w-full">
+					{{ form_row(form.intTemperaturePosition, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+					{{ form_row(form.intTemperaturePosition2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+					<p>des 2 extremums</p>
+				</div>
+				<div class="flex gap-2 items-center justify-left w-full">
+					{{ form_row(form.intTemperatureAttenuation, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+					{{ form_row(form.intTemperatureAttenuation2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+					<p>des la différence de T</p>
+				</div>
+				<div class="flex gap-2 items-center w-fit justify-left">
+					{{ form_row(form.intTemperatureDifference, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+					<p>[1/°C]</p>
+				</div>
+			</section>
+			<section class="hidden flex-col space-y-4 shadow-lg p-4 rounded-lg">
+				<h3 class="text-lg font-bold">Humidité relative</h3>
+				<div class="flex gap-2 items-center justify-left w-full">
+					{{ form_row(form.intHumidityPosition, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+					{{ form_row(form.intHumidityPosition2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+					<p>des 2 extremums</p>
+				</div>
+				<div class="flex gap-2 items-center justify-left w-full">
+					{{ form_row(form.intHumidityAttenuation, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+					{{ form_row(form.intHumidityAttenuation2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+					<p>des la différence de HR</p>
+				</div>
+				<div class="flex gap-2 items-center w-fit justify-left">
+					{{ form_row(form.intHumidityDifference, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+					<p>[1/%]</p>
+				</div>
+			</section>
+		</section>
 
 		<div class="mt-6">
 			{{ form_row(form.submit, {'attr': {'class': 'px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'}}) }}
