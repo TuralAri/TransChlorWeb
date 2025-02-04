@@ -27,4 +27,31 @@ class MeteoController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+
+/*
+    #Route('/meteo-form/init', name: 'meteo_form_init')
+    public function init(): void
+    {
+        $response = $this->client->request('GET', 'http://localhost:5000/', [
+            'headers' => [
+                'Content-Type' => 'multipart/form-data',
+            ],
+            'body' => []
+        ]);
+
+        $content = $response->getContent();
+        $filePath = '../../public/meteo_form.txt';
+
+        file_put_contents($filePath, $content);
+
+        $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+
+
+
+    }
+*/
+
+
 }
