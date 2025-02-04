@@ -148,4 +148,58 @@ class MeteoController extends AbstractController
         return new JsonResponse($data);
     }
 
+
+    #[Route('/meteo-form/calculate', name: 'meteo_form_calculate')]
+    public function calculate(Request $request): JsonResponse
+    {
+        $filePath = $this->getParameter('kernel.project_dir') . '/public/out/calc_form_meteo_output.txt';
+
+        if (!file_exists($filePath)) {
+            return new JsonResponse(['error' => 'Fichier non trouvé'], Response::HTTP_NOT_FOUND);
+        }
+
+        $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        dump($lines);
+        if (count($lines) < 32) {
+            return new JsonResponse(['error' => 'Fichier incomplet'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $data = [
+            'fileYears' => $lines[0],
+            'sodiumChlorideConcentration' => $lines[1],
+            'waterFilmThickness' => $lines[2],
+            'humidityThreshold' => $lines[3],
+            'mechanicalAnnualSodium' => $lines[4],
+            'mechanicalMeanSodium' => $lines[5],
+            'mechanicalInterval' => $lines[6],
+            'mechanicalSodiumWater' => $lines[7],
+            'automaticAnnualSodium' => $lines[8],
+            'automaticMeanSodium' => $lines[9],
+            'automaticSprayInterval' => $lines[10],
+            'automaticSodiumWater' => $lines[11],
+            'extTemperaturePosition' => $lines[12],
+            'extTemperaturePosition2' => $lines[13],
+            'extTemperatureAttenuation' => $lines[14],
+            'extTemperatureAttenuation2' => $lines[15],
+            'extTemperatureDifference' => $lines[16],
+            'extHumidityPosition' => $lines[17],
+            'extHumidityPosition2' => $lines[18],
+            'extHumidityAttenuation' => $lines[19],
+            'extHumidityAttenuation2' => $lines[20],
+            'extHumidityDifference' => $lines[21],
+            'intTemperaturePosition' => $lines[22],
+            'intTemperaturePosition2' => $lines[23],
+            'intTemperatureAttenuation' => $lines[24],
+            'intTemperatureAttenuation2' => $lines[25],
+            'intTemperatureDifference' => $lines[26],
+            'intHumidityPosition' => $lines[27],
+            'intHumidityPosition2' => $lines[28],
+            'intHumidityAttenuation' => $lines[29],
+            'intHumidityAttenuation2' => $lines[30],
+            'intHumidityDifference' => $lines[31],
+        ];
+
+        return new JsonResponse($data);
+    }
+
 }

@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		{% include 'partial/_header.html.twig' %}
-		<title>
-			{% block title %}Transchlor
-			{% endblock %}
-		</title>
-
-		{% block stylesheets %}
-			{{ encore_entry_link_tags('app') }}
+<head>
+	<meta charset="UTF-8">
+	{% include 'partial/_header.html.twig' %}
+	<title>
+		{% block title %}Transchlor
 		{% endblock %}
+	</title>
 
-	</head>
-	<body>
-		{% block body %}{% endblock %}
-	</body>
+	{% block stylesheets %}
+		{{ encore_entry_link_tags('app') }}
+	{% endblock %}
+
+	{% block javascripts %}
+		{{ encore_entry_script_tags('app') }}
+	{% endblock %}
+
+</head>
+<body>
+{% block body %}{% endblock %}
+</body>
+
 </html>
