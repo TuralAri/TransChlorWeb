@@ -4,81 +4,143 @@
 {% endblock %}
 
 {% block body %}
-	<div class=" mx-[20%] px-4 py-8 ">
+	<div class=" mx-[10%] px-4 py-8 ">
 
 		{{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
 
-		<h1 class="text-2xl font-bold mb-6">Formulaire Météo</h1>
-		
-		<div class="bg-white p-6 rounded-lg shadow-md">
+		<div class="flex justify-between items-center">
+			<h1 class="text-2xl font-bold mb-6">Formulaire Météo</h1>
+			<button class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-800">Importer un fichier météo</button>
+		</div>
+		<div class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
 			<h2 class="text-xl font-semibold mb-4">Hypothèses sur l'épandage des chlorures de sodium</h2>
-			<div class="flex gap-4 font-bold">
-				{{ form_row(form.fileYears, {'attr': {'class': ' p-2  border rounded'}}) }} <p>[ans]</p>
+			<div class="flex gap-2 items-center justify-left">
+				{{ form_row(form.fileYears, {'attr':{'class':'ml-2 p-2 border rounded-lg text-center', 'type': 'number', 'step': '0.001'}}) }}
+				<p>[ans]</p>
 			</div>
-			<div class="flex gap-4 font-bold">
-				{{ form_row(form.sodiumChlorideConcentration, {'attr': {'class': ' p-2 border rounded'}}) }} <p>[%]</p>
+			<div class="flex gap-2 items-center justify-left">
+				{{ form_row(form.sodiumChlorideConcentration, {'attr':{'class':'ml-2 p-2 border rounded-lg text-center', 'type': 'number', 'step': '0.001'}}) }}
+				<p>[%]</p>
 			</div>
-			<div class="flex gap-4 font-bold">
-				{{ form_row(form.waterFilmThickness, {'attr': {'class': ' p-2 border rounded'}}) }} <p>[mm]</p>
+			<div class="flex gap-2 items-center justify-left">
+				{{form_row(form.waterFilmThickness,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center','type':'number','step':'1'}})}}
+				<p>[mm]</p>
 			</div>
-			<div class="flex gap-4 font-bold">
-				{{ form_row(form.humidityThreshold, {'attr': {'class': ' p-2 border rounded'}}) }} <p>[%]</p>
+			<div class="flex gap-2 items-center justify-left">
+				{{form_row(form.humidityThreshold,{'attr':{'class':'ml-2p-2borderrounded-lgtext-center','type':'number','step':'1'}})}}
+				<p>[%]</p>
 			</div>
 
-			<section class="bg-white p-6 rounded-lg shadow-md">
-				<h2 class="text-xl font-semibold mb-4">Épandage Mécanique</h2>>
-				{{ form_row(form.mechanicalAnnualSodium, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-				{{ form_row(form.mechanicalMeanSodium, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-				{{ form_row(form.mechanicalInterventions, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-				{{ form_row(form.mechanicalInterval, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-				{{ form_row(form.mechanicalSodiumWater, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-				{{ form_row(form.mechanicalThresholdTemperature, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-			</section>
-
-			<section class="bg-white p-6 rounded-lg shadow-md">
-				<h2 class="text-xl font-semibold mb-4">Épandage Automatique</h2>
-				<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-					{{ form_row(form.automaticAnnualSodium, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-					{{ form_row(form.automaticMeanSodium, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-					{{ form_row(form.automaticSprays, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-					{{ form_row(form.automaticSprayInterval, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-					{{ form_row(form.automaticSodiumWater, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-					{{ form_row(form.automaticThresholdTemperature, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
+			<section class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+				<h2 class="text-xl font-semibold mb-4">Épandage Mécanique</h2>
+				<div class="flex gap-2 items-center w-fit justify-left">
+					{{ form_row(form.mechanicalAnnualSodium, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+					<p>[g/m2]</p>
+				</div>
+				<div class="flex gap-2 items-center w-fit justify-left">
+					{{ form_row(form.mechanicalMeanSodium, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+					<p>[g/m2]</p>
+				</div>
+				<div class="flex gap-2 items-center w-fit justify-left">
+					{{ form_row(form.mechanicalInterventions, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+					<p>(Sera déterminé après le calcul)</p>
+				</div>
+				<div class="flex gap-2 items-center w-fit justify-left">
+					{{ form_row(form.mechanicalInterval, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+					<p>[h]</p>
+				</div>
+				<div class="flex gap-2 items-center w-fit justify-left">
+					{{ form_row(form.mechanicalSodiumWater, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+					<p>[%]</p>
+				</div>
+				<div class="flex gap-2 items-center w-fit justify-left">
+					{{form_row(form.mechanicalThresholdTemperature,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
+					<p>[°C]</p>
+					<p>(Sera déterminé après le calcul)</p>
 				</div>
 			</section>
 
+			<section class="bg-white p-6 rounded-lg border-2 border-black flex flex-col space-y-4"><h2 class="text-xl font-semibold mb-4">Épandage Automatique</h2>
+				<div class="flex gap-2 items-center w-fit justify-left">
+					{{form_row(form.automaticAnnualSodium,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
+					<p>[g/m2]</p>
+				</div>
+				<div class="flex gap-2 items-cente rw-fit justify-left">
+					{{form_row(form.automaticMeanSodium,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
+					<p>[g/m2]</p>
+				</div>
+				<div class="flex gap-2 items-center w-fit justify-left">
+					{{form_row(form.automaticSprays,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
+					<p>(Sera déterminé après le calcul)</p>
+				</div>
+				<div class="flex gap-2 items-center w-fit justify-left">
+					{{form_row(form.automaticSprayInterval,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
+				</div>
+				<div class="flex gap-2 items-center w-fit justify-left">
+					{{form_row(form.automaticSodiumWater,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
+					<p>[%]</p>
+				</div>
+				<div class="flex gap-2 items-center w-fit justify-left">
+					{{ form_row(form.automaticThresholdTemperature, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+					<p>[°C]</p>
+					<p>(Sera déterminé après le calcul)</p>
+				</div>
+
+			</section>
 		</div>
 
 
-		<div class="bg-white p-6 rounded-lg shadow-md">
-			
-		</div>
+		<section class="p-6 rounded-lg border-2 border-black flex flex-col space-y-4">
+			<h2 class="text-xl font-semibold mb-4">Atténuation du signal (extérieur caisson)</h2>
+			<section class="flex flex-col space-y-4 shadow-lg">
+				<h3 class="text-lg font-bold">Température</h3>
+				<div class="flex gap-2 items-center justify-left w-full">
+					{{ form_row(form.extTemperaturePosition, {'attr': {'class':'ml-2 p-2 border rounded-lg text-center'}}) }}
+					{{ form_row(form.extTemperaturePosition2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+					<p>des 2 extremums</p>
+				</div>
+				<div class="flex gap-2 items-center justify-left w-full">
+					{{ form_row(form.extTemperatureAttenuation, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+					{{ form_row(form.extTemperatureAttenuation2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+					<p>des la différence de T</p>
+				</div>
+				<div class="flex gap-2 items-center w-fit justify-left">
+					{{ form_row(form.extTemperatureDifference, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+					<p>[1/°C]</p>
+				</div>
+			</section>
+			<section class="flex flex-col space-y-4 shadow-lg">
+				<h3 class="text-lg font-bold">Humidité relative</h3>
+				<div class="flex gap-2 items-center justify-left w-full">
+					{{ form_row(form.extHumidityPosition, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+					{{ form_row(form.extHumidityPosition2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+					<p>des 2 extremums</p>
+				</div>
+				<div class="flex gap-2 items-center justify-left w-full">
+					{{ form_row(form.extHumidityAttenuation, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+					{{ form_row(form.extHumidityAttenuation2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+					<p>des la différence de HR</p>
+				</div>
+				<div class="flex gap-2 items-center w-fit justify-left">
+					{{ form_row(form.extHumidityDifference, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+					<p>[1/%]</p>
+				</div>
+			</section>
+		</section>
+		<section>
+			<h2 class="text-xl font-semibold mb-4">Atténuation du signal (intérieur caisson)</h2>
+			{{ form_row(form.intTemperaturePosition, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+			{{ form_row(form.intTemperaturePosition2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+			{{ form_row(form.intTemperatureAttenuation, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+			{{ form_row(form.intTemperatureAttenuation2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+			{{ form_row(form.intTemperatureDifference, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+			{{ form_row(form.intHumidityPosition, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+			{{ form_row(form.intHumidityPosition2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+			{{ form_row(form.intHumidityAttenuation, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+			{{ form_row(form.intHumidityAttenuation2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+			{{ form_row(form.intHumidityDifference, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+		</section>
 
-		<div class="bg-white p-6 rounded-lg shadow-md">
-			<h2 class="text-xl font-semibold mb-4">Température et Humidité</h2>
-				{{ form_row(form.extTemperaturePosition, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-				{{ form_row(form.extTemperaturePosition2, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-				{{ form_row(form.extTemperatureAttenuation, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-				{{ form_row(form.extTemperatureAttenuation2, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-				{{ form_row(form.extTemperatureDifference, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-				{{ form_row(form.extHumidityPosition, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-				{{ form_row(form.extHumidityPosition2, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-				{{ form_row(form.extHumidityAttenuation, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-				{{ form_row(form.extHumidityAttenuation2, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-				{{ form_row(form.extHumidityDifference, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-
-
-				{{ form_row(form.intTemperaturePosition, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-				{{ form_row(form.intTemperaturePosition2, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-				{{ form_row(form.intTemperatureAttenuation, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-				{{ form_row(form.intTemperatureAttenuation2, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-				{{ form_row(form.intTemperatureDifference, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-				{{ form_row(form.intHumidityPosition, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-				{{ form_row(form.intHumidityPosition2, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-				{{ form_row(form.intHumidityAttenuation, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-				{{ form_row(form.intHumidityAttenuation2, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-				{{ form_row(form.intHumidityDifference, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
-		</div>
 
 		<div class="mt-6">
 			{{ form_row(form.submit, {'attr': {'class': 'px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'}}) }}
@@ -86,6 +148,4 @@
 
 		{{ form_end(form) }}
 	</div>
-
-
 {% endblock %}
