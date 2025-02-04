@@ -30,70 +30,34 @@ class MeteoController extends AbstractController
     }
 
 
-/*
-    #Route('/meteo-form/init', name: 'meteo_form_init')
-    public function init(): JsonResponse
+    #[Route('/upload-meteo', name: 'upload_meteo')]
+    public function uploadMeteo(Request $request): JsonResponse
     {
-        /*$response = $this->client->request('GET', 'http://localhost:5000/', [
-            'headers' => [
-                'Content-Type' => 'multipart/form-data',
-            ],
-            'body' => []
-        ]);
+        $file = $request->files->get('file');
 
-        $content = $response->getContent();
-        $filePath = '../../public/meteo_form.txt';
+        if ($file) {
+            $fileName = $file->getClientOriginalName();
 
-        file_put_contents($filePath, $content);*/
-/*
+            try {
+                $file->move(
+                    $this->getParameter('kernel.project_dir') . '/public/meteoFiles',
+                    $fileName
+                );
 
-        $filePath = '../../public/form_meteo_output.txt';
-        $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+                return new JsonResponse([
+                    'success' => true,
+                    'fileName' => $fileName
+                ]);
 
-        $data = [
-            'fileYears' => $lines[0],
-            'sodiumChlorideConcentration' => $lines[1],
-            'waterFilmThickness' => $lines[2],
-            'humidityThreshold' => $lines[3],
-            'mechanicalAnnualSodium' => $lines[4],
-            'mechanicalMeanSodium' => $lines[5],
-            'mechanicalInterventions' => $lines[6],
-            'mechanicalInterval' => $lines[7],
-            'mechanicalSodiumWater' => $lines[8],
-            'mechanicalThresholdTemperature' => $lines[9],
-            'automaticAnnualSodium' => $lines[10],
-            'automaticMeanSodium' => $lines[11],
-            'automaticSprays' => $lines[12],
-            'automaticSprayInterval' => $lines[13],
-            'automaticSodiumWater' => $lines[14],
-            'automaticThresholdTemperature' => $lines[15],
-            'extTemperaturePosition' => $lines[16],
-            'extTemperaturePosition2' => $lines[17],
-            'extTemperatureAttenuation' => $lines[18],
-            'extTemperatureAttenuation2' => $lines[19],
-            'extTemperatureDifference' => $lines[20],
-            'extHumidityPosition' => $lines[21],
-            'extHumidityPosition2' => $lines[22],
-            'extHumidityAttenuation' => $lines[23],
-            'extHumidityAttenuation2' => $lines[24],
-            'extHumidityDifference' => $lines[25],
-            'intTemperaturePosition' => $lines[26],
-            'intTemperaturePosition2' => $lines[27],
-            'intTemperatureAttenuation' => $lines[28],
-            'intTemperatureAttenuation2' => $lines[29],
-            'intTemperatureDifference' => $lines[30],
-            'intHumidityPosition' => $lines[31],
-            'intHumidityPosition2' => $lines[32],
-            'intHumidityAttenuation' => $lines[33],
-            'intHumidityAttenuation2' => $lines[34],
-            'intHumidityDifference' => $lines[35],
-        ];
+            } catch (Exception $e) {
+                return new JsonResponse([
+                    'error' => 'Erreur lors de l\'upload: ' . $e->getMessage()
+                ], 500);
+            }
+        }
 
-        dump($data);
-        return new JsonResponse($data);
+        return new JsonResponse(['error' => 'Aucun fichier reçu'], 400);
     }
-
-*/
 
     #[Route('/meteo-form/init', name: 'meteo_form_init')]
     public function init(): JsonResponse

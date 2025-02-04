@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", function () {
     const toggleButton = document.getElementById("part1Button");
     const section = document.getElementById("part1");

@@ -5,13 +5,18 @@
 
 {% block body %}
 	<div class=" mx-[10%] px-4 py-8 ">
-
+		<button id="initButton" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-800">Init form</button>
 		{{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
 
 		<div class="flex justify-between items-center">
 			<h1 class="text-2xl font-bold mb-6">Formulaire Météo</h1>
-			<button class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-800">Importer un fichier météo</button>
-			<button id="initButton" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-800">Init form</button>
+			<form id="uploadForm">
+				<input type="file" id="fileInput" class="hidden">
+				<button type="button" onclick="document.getElementById('fileInput').click()" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-800">
+					Importer un fichier météo
+				</button>
+			</form>
+
 		</div>
 		<div class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
 			<h2 class="text-xl font-semibold mb-4">Hypothèses sur l'épandage des chlorures de sodium</h2>
