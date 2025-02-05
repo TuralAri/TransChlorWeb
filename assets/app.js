@@ -1,4 +1,3 @@
-//import './bootstrap.js';
 /*
  * Welcome to your app's main JavaScript file!
  *
@@ -7,7 +6,6 @@
  */
 import './styles/app.css';
 import './js/subPartForm';
-import './js/initForm';
 import './js/calcForm';
 import './js/importMeteoFile';
 

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Meteo;
 use App\Form\MeteoType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,9 +45,21 @@ class MeteoController extends AbstractController
                     $fileName
                 );
 
+                $response = $this->sendFile($fileName);
+
+                if ($response->getStatusCode() === 200) {
+                    $responseContent = $response->getContent();
+                    $outputFileName = 'form_meteo_output.txt';
+                    $outputFilePath = $this->getParameter('kernel.project_dir') . '/public/out/' . $outputFileName;
+                    file_put_contents($outputFilePath, $responseContent);
+                }else {
+                    return new JsonResponse([
+                        'error' => 'Erreur lors de l\'envoi du fichier: ' . $response->getContent()
+                    ], 500);
+                }
+
                 return new JsonResponse([
-                    'success' => true,
-                    'fileName' => $fileName
+                    'success' => true
                 ]);
 
             } catch (Exception $e) {
@@ -116,6 +129,7 @@ class MeteoController extends AbstractController
     #[Route('/meteo-form/calculate', name: 'meteo_form_calculate')]
     public function calculate(Request $request): JsonResponse
     {
+
         $filePath = $this->getParameter('kernel.project_dir') . '/public/out/calc_form_meteo_output.txt';
 
         if (!file_exists($filePath)) {
@@ -170,4 +184,23 @@ class MeteoController extends AbstractController
         return new JsonResponse($data);
     }
 
+
+
+    public function sendFile(String $fileName): Response
+    {
+        $filePath = $this->getParameter('kernel.project_dir') . '/public/meteoFiles/' . $fileName;
+        $file = fopen($filePath, 'r');
+
+        $client = HttpClient::create();
+        $response = $client->request('POST', 'http://localhost:5000/', [
+            'headers' => [
+                'Content-Type' => 'multipart/form-data'
+            ],
+            'body' => [
+                'file' => $file
+            ]
+        ]);
+
+        return new Response($response->getContent(), $response->getStatusCode());
+    }
 }
