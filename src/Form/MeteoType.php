@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Meteo;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -16,12 +17,7 @@ class MeteoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add("importFile", ButtonType::class, [
-                'label' => 'Importer un fichier météo',
-                'attr' => [
-                    'class' => 'bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-800'
-                ]
-            ])
+
             ->add('fileYears', NumberType::class, ['label' => 'Nombre d\'années (fichier)'])
             ->add('sodiumChlorideConcentration', NumberType::class, ['label' => 'Concentration de chlorure de sodium au temps'])
             ->add('waterFilmThickness', NumberType::class, ['label' => 'Épaisseur du film d\'eau sur la chaussée'])

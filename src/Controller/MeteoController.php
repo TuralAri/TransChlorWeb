@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\ImportFile;
 use App\Entity\Meteo;
+use App\Form\ImportFileType;
 use App\Form\MeteoType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpClient\HttpClient;
@@ -10,6 +12,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class MeteoController extends AbstractController
 {
@@ -19,14 +25,17 @@ class MeteoController extends AbstractController
     {
         $meteo = new Meteo();
         $form = $this->createForm(MeteoType::class, $meteo);
-
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-        }
+        $importFile = new ImportFile();
+        $importForm = $this->createForm(ImportFileType::class, $importFile);
+        $importForm->handleRequest($request);
+
+
 
         return $this->render('meteo/index.html.twig', [
             'form' => $form->createView(),
+            'importForm' => $importForm->createView()
         ]);
     }
 
@@ -34,8 +43,8 @@ class MeteoController extends AbstractController
     #[Route('/upload-meteo', name: 'upload_meteo')]
     public function uploadMeteo(Request $request): JsonResponse
     {
-        $file = $request->files->get('file');
-        dump($file);
+        dump("ici");
+        $file = $request->files->get('importFile');
         if ($file) {
             $fileName = $file->getClientOriginalName();
 
@@ -43,8 +52,10 @@ class MeteoController extends AbstractController
                 $file->move(
                     $this->getParameter('kernel.project_dir') . '/public/meteoFiles',
                     $fileName
-                );
+
+                );/*
                 $response = $this->sendFile($fileName);
+
                 if ($response->getStatusCode() === 200) {
                     $responseContent = $response->getContent();
                     $outputFileName = 'form_meteo_output.txt';
@@ -55,7 +66,7 @@ class MeteoController extends AbstractController
                         'error' => 'Erreur lors de l\'envoi du fichier: ' . $response->getContent()
                     ], 500);
                 }
-
+*/
                 return new JsonResponse([
                     'success' => true
                 ]);
@@ -181,7 +192,6 @@ class MeteoController extends AbstractController
 
         return new JsonResponse($data);
     }
-
 
 
     public function sendFile(String $fileName): Response
