@@ -6,6 +6,7 @@ use App\Entity\ImportFile;
 use App\Entity\Meteo;
 use App\Form\ImportFileType;
 use App\Form\MeteoType;
+use PhpParser\Node\Expr\New_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -33,7 +34,12 @@ class MeteoController extends AbstractController
 
 
         if($importForm->isSubmitted() && $importForm->isValid()) {
-            $this->uploadMeteo($request);
+            $response = $this->uploadMeteo($request);
+            if($response->getStatusCode() === 200){
+                $this->addFlash('success', 'Fichier importé avec succès');
+            }else {
+                $this->addFlash('error', 'Erreur lors de l\'importation du fichier');
+            }
         }
 
 
@@ -70,7 +76,14 @@ class MeteoController extends AbstractController
                     ], 500);
                 }
 
-                $this->init($outputFilePath);
+                $response = $this->init($outputFilePath);
+
+
+                if($response->getStatusCode() != 200){
+                    return New JsonResponse([
+                        $response->getContent()
+                    ], $response->getStatusCode());
+                }
 
                 return new JsonResponse([
                     'success' => true
@@ -99,6 +112,7 @@ class MeteoController extends AbstractController
         $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
         if (count($lines) < 32) {
+
             return new JsonResponse(['error' => 'Fichier incomplet'], Response::HTTP_BAD_REQUEST);
         }
 
