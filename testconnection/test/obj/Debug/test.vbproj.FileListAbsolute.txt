@@ -1,0 +1,14 @@
+C:\Users\Mateo\source\repos\test\test\bin\Debug\test.exe.config
+C:\Users\Mateo\source\repos\test\test\bin\Debug\test.exe
+C:\Users\Mateo\source\repos\test\test\bin\Debug\test.pdb
+C:\Users\Mateo\source\repos\test\test\obj\Debug\test.vbproj.AssemblyReference.cache
+C:\Users\Mateo\source\repos\test\test\obj\Debug\test.vbproj.CoreCompileInputs.cache
+C:\Users\Mateo\source\repos\test\test\obj\Debug\test.exe
+C:\Users\Mateo\source\repos\test\test\obj\Debug\test.pdb
+C:\Users\Mateo\source\repos\testconnection\test\bin\Debug\test.exe.config
+C:\Users\Mateo\source\repos\testconnection\test\bin\Debug\test.exe
+C:\Users\Mateo\source\repos\testconnection\test\bin\Debug\test.pdb
+C:\Users\Mateo\source\repos\testconnection\test\obj\Debug\test.vbproj.AssemblyReference.cache
+C:\Users\Mateo\source\repos\testconnection\test\obj\Debug\test.vbproj.CoreCompileInputs.cache
+C:\Users\Mateo\source\repos\testconnection\test\obj\Debug\test.exe
+C:\Users\Mateo\source\repos\testconnection\test\obj\Debug\test.pdb

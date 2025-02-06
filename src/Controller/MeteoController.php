@@ -35,7 +35,7 @@ class MeteoController extends AbstractController
     public function uploadMeteo(Request $request): JsonResponse
     {
         $file = $request->files->get('file');
-
+        dump($file);
         if ($file) {
             $fileName = $file->getClientOriginalName();
 
@@ -44,9 +44,7 @@ class MeteoController extends AbstractController
                     $this->getParameter('kernel.project_dir') . '/public/meteoFiles',
                     $fileName
                 );
-
                 $response = $this->sendFile($fileName);
-
                 if ($response->getStatusCode() === 200) {
                     $responseContent = $response->getContent();
                     $outputFileName = 'form_meteo_output.txt';
@@ -62,7 +60,7 @@ class MeteoController extends AbstractController
                     'success' => true
                 ]);
 
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 return new JsonResponse([
                     'error' => 'Erreur lors de l\'upload: ' . $e->getMessage()
                 ], 500);
@@ -82,7 +80,7 @@ class MeteoController extends AbstractController
         }
 
         $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-        dump($lines);
+
         if (count($lines) < 32) {
             return new JsonResponse(['error' => 'Fichier incomplet'], Response::HTTP_BAD_REQUEST);
         }
@@ -188,11 +186,13 @@ class MeteoController extends AbstractController
 
     public function sendFile(String $fileName): Response
     {
+        dump($fileName);
         $filePath = $this->getParameter('kernel.project_dir') . '/public/meteoFiles/' . $fileName;
+        dump($filePath);
         $file = fopen($filePath, 'r');
 
         $client = HttpClient::create();
-        $response = $client->request('POST', 'http://localhost:5000/', [
+        $response = $client->request('POST', 'http://localhost:5000/precalcul', [
             'headers' => [
                 'Content-Type' => 'multipart/form-data'
             ],
@@ -200,7 +200,7 @@ class MeteoController extends AbstractController
                 'file' => $file
             ]
         ]);
-
+        dump("after request");
         return new Response($response->getContent(), $response->getStatusCode());
     }
 }

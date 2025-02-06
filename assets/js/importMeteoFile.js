@@ -1,12 +1,14 @@
 document.getElementById('fileInput').addEventListener('change', function(e) {
     const formData = new FormData();
     formData.append('file', this.files[0]);
-
+    console.log('file', this.files[0]);
     fetch('/upload-meteo', {
         method: 'POST',
         body: formData
     })
         .then(response => {
+
+            console.log(response);
             if (!response.ok) {
                 throw new Error('Erreur lors de l\'upload du fichier');
             }
