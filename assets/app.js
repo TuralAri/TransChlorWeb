@@ -7,5 +7,5 @@
 import './styles/app.css';
 import './js/subPartForm';
 import './js/calcForm';
-//import './js/importMeteoFile';
+
 
