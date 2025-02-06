@@ -32,6 +32,11 @@ class MeteoController extends AbstractController
         $importForm->handleRequest($request);
 
 
+        if($importForm->isSubmitted() && $importForm->isValid()) {
+            $this->uploadMeteo($request);
+        }
+
+
 
         return $this->render('meteo/index.html.twig', [
             'form' => $form->createView(),
@@ -40,7 +45,7 @@ class MeteoController extends AbstractController
     }
 
 
-    #[Route('/upload-meteo', name: 'upload_meteo')]
+
     public function uploadMeteo(Request $request): JsonResponse
     {
         $file = $request->files->get('import_file')['importFile'];
@@ -54,7 +59,6 @@ class MeteoController extends AbstractController
 
 
                 $response = $this->sendFile($fileName);
-
                 if ($response->getStatusCode() === 200) {
                     $responseContent = $response->getContent();
                     $outputFileName = 'form_meteo_output.txt';
@@ -65,6 +69,8 @@ class MeteoController extends AbstractController
                         'error' => 'Erreur lors de l\'envoi du fichier: ' . $response->getContent()
                     ], 500);
                 }
+
+                $this->init($outputFilePath);
 
                 return new JsonResponse([
                     'success' => true
@@ -86,14 +92,9 @@ class MeteoController extends AbstractController
         return new JsonResponse(['error' => 'Aucun fichier reçu'], 400);
     }
 
-    #[Route('/meteo-form/init', name: 'meteo_form_init')]
-    public function init(): JsonResponse
-    {
-        $filePath = $this->getParameter('kernel.project_dir') . '/public/out/form_meteo_output.txt';
 
-        if (!file_exists($filePath)) {
-            return new JsonResponse(['error' => 'Fichier non trouvé'], Response::HTTP_NOT_FOUND);
-        }
+    public function init(String $filePath): JsonResponse
+    {
 
         $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
@@ -215,7 +216,6 @@ class MeteoController extends AbstractController
                 'file' => $file
             ]
         ]);
-        dump("after request");
         return new Response($response->getContent(), $response->getStatusCode());
     }
 }

@@ -11,7 +11,7 @@
 		<div class="flex justify-between items-center">
 
 			<h1 class="text-2xl font-bold mb-6">Formulaire Météo</h1>
-			{{ form_start(importForm, {'action': path('upload_meteo'), 'attr': {'class': 'space-y-6','id': 'importForm','method': 'POST', 'enctype': 'multipart/form-data'}}) }}
+			{{ form_start(importForm, {'action': path('meteo_form'), 'attr': {'class': 'space-y-6','id': 'importForm','method': 'POST', 'enctype': 'multipart/form-data'}}) }}
 			<label for="{{ importForm.importFile.vars.id }}" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-800 cursor-pointer">
 				Importer un fichier météo
 			</label>
