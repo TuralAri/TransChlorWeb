@@ -43,7 +43,6 @@ class MeteoController extends AbstractController
     #[Route('/upload-meteo', name: 'upload_meteo')]
     public function uploadMeteo(Request $request): JsonResponse
     {
-        //dd($request);
         $file = $request->files->get('import_file')['importFile'];
         if ($file) {
             $fileName = $file->getClientOriginalName();
@@ -52,6 +51,21 @@ class MeteoController extends AbstractController
 
             try {
                 $file->move($destination, $fileName);
+
+
+                $response = $this->sendFile($fileName);
+
+                if ($response->getStatusCode() === 200) {
+                    $responseContent = $response->getContent();
+                    $outputFileName = 'form_meteo_output.txt';
+                    $outputFilePath = $this->getParameter('kernel.project_dir') . '/public/out/' . $outputFileName;
+                    file_put_contents($outputFilePath, $responseContent);
+                }else {
+                    return new JsonResponse([
+                        'error' => 'Erreur lors de l\'envoi du fichier: ' . $response->getContent()
+                    ], 500);
+                }
+
                 return new JsonResponse([
                     'success' => true
                 ]);
@@ -61,6 +75,12 @@ class MeteoController extends AbstractController
                     'error' => 'Erreur lors de l\'upload: ' . $e->getMessage()
                 ], 500);
             }
+
+
+
+
+
+
         }
 
         return new JsonResponse(['error' => 'Aucun fichier reçu'], 400);
@@ -181,9 +201,9 @@ class MeteoController extends AbstractController
 
     public function sendFile(String $fileName): Response
     {
-        dump($fileName);
+
         $filePath = $this->getParameter('kernel.project_dir') . '/public/meteoFiles/' . $fileName;
-        dump($filePath);
+
         $file = fopen($filePath, 'r');
 
         $client = HttpClient::create();
