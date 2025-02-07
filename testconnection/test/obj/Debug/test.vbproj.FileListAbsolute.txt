@@ -19,3 +19,10 @@ C:\Users\flori\Documents\Cours\A3\SAE\TransChlorWeb\testconnection\test\obj\Debu
 C:\Users\flori\Documents\Cours\A3\SAE\TransChlorWeb\testconnection\test\obj\Debug\test.vbproj.CoreCompileInputs.cache
 C:\Users\flori\Documents\Cours\A3\SAE\TransChlorWeb\testconnection\test\obj\Debug\test.exe
 C:\Users\flori\Documents\Cours\A3\SAE\TransChlorWeb\testconnection\test\obj\Debug\test.pdb
+C:\Users\Florian\Documents\Cours\3A\SAE\TransChlorWeb\testconnection\test\bin\Debug\test.exe.config
+C:\Users\Florian\Documents\Cours\3A\SAE\TransChlorWeb\testconnection\test\bin\Debug\test.exe
+C:\Users\Florian\Documents\Cours\3A\SAE\TransChlorWeb\testconnection\test\bin\Debug\test.pdb
+C:\Users\Florian\Documents\Cours\3A\SAE\TransChlorWeb\testconnection\test\obj\Debug\test.vbproj.AssemblyReference.cache
+C:\Users\Florian\Documents\Cours\3A\SAE\TransChlorWeb\testconnection\test\obj\Debug\test.vbproj.CoreCompileInputs.cache
+C:\Users\Florian\Documents\Cours\3A\SAE\TransChlorWeb\testconnection\test\obj\Debug\test.exe
+C:\Users\Florian\Documents\Cours\3A\SAE\TransChlorWeb\testconnection\test\obj\Debug\test.pdb

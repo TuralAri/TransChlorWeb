@@ -6,17 +6,12 @@ use App\Entity\ImportFile;
 use App\Entity\Meteo;
 use App\Form\ImportFileType;
 use App\Form\MeteoType;
-use PhpParser\Node\Expr\New_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class MeteoController extends AbstractController
 {
@@ -32,17 +27,43 @@ class MeteoController extends AbstractController
         $importForm = $this->createForm(ImportFileType::class, $importFile);
         $importForm->handleRequest($request);
 
-
         if($importForm->isSubmitted() && $importForm->isValid()) {
             $response = $this->uploadMeteo($request);
+
             if($response->getStatusCode() === 200){
+
+
+                $responseContent = json_decode(trim($response->getContent()), true);
+
+                if (isset($responseContent[0]) && is_string($responseContent[0])) {
+                    $responseContent = json_decode($responseContent[0], true);
+                }
+
+
+                $expectedKeys = [
+                    'fileYears', 'sodiumChlorideConcentration', 'waterFilmThickness',
+                    'humidityThreshold', 'mechanicalAnnualSodium', 'mechanicalMeanSodium',
+                    'mechanicalInterval', 'mechanicalSodiumWater', 'automaticAnnualSodium',
+                    'automaticMeanSodium', 'automaticSprayInterval', 'automaticSodiumWater',
+                    'extTemperaturePosition', 'extTemperaturePosition2', 'extTemperatureAttenuation',
+                    'extTemperatureAttenuation2', 'extTemperatureDifference', 'extHumidityPosition',
+                    'extHumidityPosition2', 'extHumidityAttenuation', 'extHumidityAttenuation2',
+                    'extHumidityDifference', 'intTemperaturePosition', 'intTemperaturePosition2',
+                    'intTemperatureAttenuation', 'intTemperatureAttenuation2', 'intTemperatureDifference',
+                    'intHumidityPosition', 'intHumidityPosition2', 'intHumidityAttenuation',
+                    'intHumidityAttenuation2', 'intHumidityDifference'
+                ];
+
+                foreach ($expectedKeys as $key) {
+
+                    $form->get($key)->setData(floatval(str_replace(',', '.', $responseContent[$key])));
+
+                }
                 $this->addFlash('success', 'Fichier importé avec succès');
             }else {
                 $this->addFlash('error', 'Erreur lors de l\'importation du fichier');
             }
         }
-
-
 
         return $this->render('meteo/index.html.twig', [
             'form' => $form->createView(),
@@ -78,27 +99,17 @@ class MeteoController extends AbstractController
 
                 $response = $this->init($outputFilePath);
 
-
-                if($response->getStatusCode() != 200){
-                    return New JsonResponse([
+                return New JsonResponse([
                         $response->getContent()
                     ], $response->getStatusCode());
-                }
 
-                return new JsonResponse([
-                    'success' => true
-                ]);
+
             } catch (\Exception $e) {
                 error_log("Upload error: " . $e->getMessage());
                 return new JsonResponse([
                     'error' => 'Erreur lors de l\'upload: ' . $e->getMessage()
                 ], 500);
             }
-
-
-
-
-
 
         }
 
@@ -108,9 +119,7 @@ class MeteoController extends AbstractController
 
     public function init(String $filePath): JsonResponse
     {
-
         $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-
         if (count($lines) < 32) {
 
             return new JsonResponse(['error' => 'Fichier incomplet'], Response::HTTP_BAD_REQUEST);
@@ -150,7 +159,6 @@ class MeteoController extends AbstractController
             'intHumidityAttenuation2' => $lines[30],
             'intHumidityDifference' => $lines[31],
         ];
-
         return new JsonResponse($data);
     }
 
@@ -158,7 +166,6 @@ class MeteoController extends AbstractController
     #[Route('/meteo-form/calculate', name: 'meteo_form_calculate')]
     public function calculate(Request $request): JsonResponse
     {
-
         $filePath = $this->getParameter('kernel.project_dir') . '/public/out/calc_form_meteo_output.txt';
 
         if (!file_exists($filePath)) {

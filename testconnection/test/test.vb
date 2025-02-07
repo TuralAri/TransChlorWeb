@@ -2,6 +2,7 @@
 Imports System.IO
 Imports System.Text
 Imports System.Linq
+Imports System.Windows.Forms
 
 Module Program
     Sub Main()
