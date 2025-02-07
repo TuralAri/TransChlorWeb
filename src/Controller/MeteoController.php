@@ -22,9 +22,53 @@ class MeteoController extends AbstractController
     #[Route('/meteo', name: 'meteo_form')]
     public function index(Request $request): Response
     {
+
+        $importFile = new ImportFile();
+        $importForm = $this->createForm(ImportFileType::class, $importFile);
+        $importForm->handleRequest($request);
+
         $meteo = new Meteo();
         $form = $this->createForm(MeteoType::class, $meteo);
         $form->handleRequest($request);
+
+        $exportFile = new ExportFile();
+        $exportForm = $this->createForm(ExportFileType::class, $exportFile);
+        $exportForm->handleRequest($request);
+
+        if($importForm->isSubmitted() && $importForm->isValid()) {
+            $request->getSession()->set('importedFileName',$importForm->get('importFile')->getData()->getClientOriginalName());
+            $response = $this->uploadMeteo($request);
+            if($response->getStatusCode() === 200){
+                $responseContent = json_decode(trim($response->getContent()), true);
+                if (isset($responseContent[0]) && is_string($responseContent[0])) {
+                    $responseContent = json_decode($responseContent[0], true);
+                }
+                $expectedKeys = [
+                    'fileYears', 'sodiumChlorideConcentration', 'waterFilmThickness',
+                    'humidityThreshold', 'mechanicalAnnualSodium', 'mechanicalMeanSodium',
+                    'mechanicalInterval', 'mechanicalSodiumWater', 'automaticAnnualSodium',
+                    'automaticMeanSodium', 'automaticSprayInterval', 'automaticSodiumWater',
+                    'extTemperaturePosition', 'extTemperaturePosition2', 'extTemperatureAttenuation',
+                    'extTemperatureAttenuation2', 'extTemperatureDifference', 'extHumidityPosition',
+                    'extHumidityPosition2', 'extHumidityAttenuation', 'extHumidityAttenuation2',
+                    'extHumidityDifference', 'intTemperaturePosition', 'intTemperaturePosition2',
+                    'intTemperatureAttenuation', 'intTemperatureAttenuation2', 'intTemperatureDifference',
+                    'intHumidityPosition', 'intHumidityPosition2', 'intHumidityAttenuation',
+                    'intHumidityAttenuation2', 'intHumidityDifference'
+                ];
+
+                foreach ($expectedKeys as $key) {
+                    $form->get($key)->setData(floatval(str_replace(',', '.', $responseContent[$key])));
+                }
+
+                $this->addFlash('success', 'Fichier importé avec succès');
+            }else {
+                $this->addFlash('error', 'Erreur lors de l\'importation du fichier');
+            }
+        }
+
+
+
         if($form->isSubmitted() && $form->isValid()){
             $formData = $form->getData();
             $formDataArray = [
@@ -62,13 +106,18 @@ class MeteoController extends AbstractController
                 'intHumidityDifference' => $formData->getIntHumidityDifference()
             ];
 
-            $response = $this->calculate($formDataArray);
+            $response = $this->calculate($formDataArray,$request->getSession()->get('importedFileName'));
 
             if($response->getStatusCode() == 200){
                 $responseContent = json_decode(trim($response->getContent()), true);
                 if (isset($responseContent[0]) && is_string($responseContent[0])) {
                     $responseContent = json_decode($responseContent[0], true);
                 }
+
+                $meteo = new Meteo();
+                $form = $this->createForm(MeteoType::class, $meteo);
+
+
                 $expectedKeys = [
                     'fileYears', 'sodiumChlorideConcentration', 'waterFilmThickness',
                     'humidityThreshold', 'mechanicalAnnualSodium', 'mechanicalMeanSodium',
@@ -95,43 +144,9 @@ class MeteoController extends AbstractController
         }
 
 
-        $importFile = new ImportFile();
-        $importForm = $this->createForm(ImportFileType::class, $importFile);
-        $importForm->handleRequest($request);
-        if($importForm->isSubmitted() && $importForm->isValid()) {
-            $response = $this->uploadMeteo($request);
-            if($response->getStatusCode() === 200){
-                $responseContent = json_decode(trim($response->getContent()), true);
-                if (isset($responseContent[0]) && is_string($responseContent[0])) {
-                    $responseContent = json_decode($responseContent[0], true);
-                }
-                $expectedKeys = [
-                    'fileYears', 'sodiumChlorideConcentration', 'waterFilmThickness',
-                    'humidityThreshold', 'mechanicalAnnualSodium', 'mechanicalMeanSodium',
-                    'mechanicalInterval', 'mechanicalSodiumWater', 'automaticAnnualSodium',
-                    'automaticMeanSodium', 'automaticSprayInterval', 'automaticSodiumWater',
-                    'extTemperaturePosition', 'extTemperaturePosition2', 'extTemperatureAttenuation',
-                    'extTemperatureAttenuation2', 'extTemperatureDifference', 'extHumidityPosition',
-                    'extHumidityPosition2', 'extHumidityAttenuation', 'extHumidityAttenuation2',
-                    'extHumidityDifference', 'intTemperaturePosition', 'intTemperaturePosition2',
-                    'intTemperatureAttenuation', 'intTemperatureAttenuation2', 'intTemperatureDifference',
-                    'intHumidityPosition', 'intHumidityPosition2', 'intHumidityAttenuation',
-                    'intHumidityAttenuation2', 'intHumidityDifference'
-                ];
 
-                foreach ($expectedKeys as $key) {
-                    $form->get($key)->setData(floatval(str_replace(',', '.', $responseContent[$key])));
-                }
 
-                $this->addFlash('success', 'Fichier importé avec succès');
-            }else {
-                $this->addFlash('error', 'Erreur lors de l\'importation du fichier');
-            }
-        }
 
-        $exportFile = new ExportFile();
-        $exportForm = $this->createForm(ExportFileType::class, $exportFile);
-        $exportForm->handleRequest($request);
 
         if($exportForm->isSubmitted() && $exportForm->isValid()) {
             $response = $this->export($request);
@@ -268,7 +283,7 @@ class MeteoController extends AbstractController
     }
 
 
-    public function calculate(array $data ): JsonResponse
+    public function calculate(array $data , String $meteoFileName ): JsonResponse
     {
         $outputFileName = 'form_meteo_output.txt';
         $outputFilePath = $this->getParameter('kernel.project_dir') . '/public/out/' . $outputFileName;
@@ -278,7 +293,7 @@ class MeteoController extends AbstractController
         $dataString = implode("\n", $data);
         file_put_contents($outputFilePath, $dataString);
 
-        $response = $this->sendFileForCalc($outputFileName, 'calcul');
+        $response = $this->sendFileForCalc($meteoFileName,$outputFileName, 'calcul');
         if ($response->getStatusCode() === 200) {
             $responseContent = $response->getContent();
             $outputFileName = 'calc_form_meteo_output.txt';
@@ -313,7 +328,6 @@ class MeteoController extends AbstractController
         }
 
         $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-        dump($lines);
         if (count($lines) < 36) {
             return new JsonResponse(['error' => 'Fichier incomplet'], Response::HTTP_BAD_REQUEST);
         }
@@ -362,17 +376,22 @@ class MeteoController extends AbstractController
     }
 
 
-    public function sendFileForCalc(String $fileName, String $route): Response
+    public function sendFileForCalc(String $meteoFileName ,String $fileName, String $route): Response
     {
-        $filePath = $this->getParameter('kernel.project_dir') . '/public/out/' . $fileName;
-        $file = fopen($filePath, 'r');
+        $filePath1 = $this->getParameter('kernel.project_dir') . '/public/meteoFiles/' . $meteoFileName;
+        $file1 = fopen($filePath1, 'r');
+
+
+        $filePath2 = $this->getParameter('kernel.project_dir') . '/public/out/' . $fileName;
+        $file2 = fopen($filePath2, 'r');
         $client = HttpClient::create();
         $response = $client->request('POST', 'http://localhost:5000/' . $route, [
             'headers' => [
                 'Content-Type' => 'multipart/form-data'
             ],
             'body' => [
-                'file' => $file
+                'file1' => $file1,
+                'file2' => $file2
             ]
         ]);
         return new Response($response->getContent(), $response->getStatusCode());
