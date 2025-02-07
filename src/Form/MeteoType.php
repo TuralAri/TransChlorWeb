@@ -25,14 +25,14 @@ class MeteoType extends AbstractType
 
             ->add('mechanicalAnnualSodium', NumberType::class, ['label' => 'Concentration annuelle en chlorure de sodium'])
             ->add('mechanicalMeanSodium', NumberType::class, ['label' => 'Quantité moyenne de chlorure de sodium'])
-            ->add('mechanicalInterventions', NumberType::class, ['label' => 'Nombre d\'interventions d\'épandage de chlorure de sodium'])
+            ->add('mechanicalInterventions', NumberType::class, ['label' => 'Nombre d\'interventions d\'épandage de chlorure de sodium', 'required' => false])
             ->add('mechanicalInterval', NumberType::class, ['label' => 'Intervalle minimal entre épandages'])
             ->add('mechanicalSodiumWater', NumberType::class, ['label' => 'Concentration de chlorure de sodium dans l\'eau'])
             ->add('mechanicalThresholdTemperature', NumberType::class, ['label' => 'Température seuil d\'intervention', 'required' => false])
 
             ->add('automaticAnnualSodium', NumberType::class, ['label' => 'Concentration annuelle en chlorure de sodium'])
             ->add('automaticMeanSodium', NumberType::class, ['label' => 'Quantité moyenne de chlorure de sodium'])
-            ->add('automaticSprays', NumberType::class, ['label' => 'Nombre de giclages annuels'])
+            ->add('automaticSprays', NumberType::class, ['label' => 'Nombre de giclages annuels', 'required' => false])
             ->add('automaticSprayInterval', NumberType::class, ['label' => 'Nombre de giclages sur un intervalle de temps'])
             ->add('automaticSodiumWater', NumberType::class, ['label' => 'Concentration de chlorure de sodium dans l\'eau (épandage) Si épandage solide (100%)'])
             ->add('automaticThresholdTemperature', NumberType::class, ['label' => 'Température seuil d\'intervention', 'required' => false])

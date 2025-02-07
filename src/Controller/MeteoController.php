@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\ExportFile;
 use App\Entity\ImportFile;
 use App\Entity\Meteo;
+use App\Form\ExportFileType;
 use App\Form\ImportFileType;
 use App\Form\MeteoType;
+use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,27 +22,27 @@ class MeteoController extends AbstractController
     #[Route('/meteo', name: 'meteo_form')]
     public function index(Request $request): Response
     {
-        $meteo = new Meteo();
-        $form = $this->createForm(MeteoType::class, $meteo);
-        $form->handleRequest($request);
 
         $importFile = new ImportFile();
         $importForm = $this->createForm(ImportFileType::class, $importFile);
         $importForm->handleRequest($request);
 
+        $meteo = new Meteo();
+        $form = $this->createForm(MeteoType::class, $meteo);
+        $form->handleRequest($request);
+
+        $exportFile = new ExportFile();
+        $exportForm = $this->createForm(ExportFileType::class, $exportFile);
+        $exportForm->handleRequest($request);
+
         if($importForm->isSubmitted() && $importForm->isValid()) {
+            $request->getSession()->set('importedFileName',$importForm->get('importFile')->getData()->getClientOriginalName());
             $response = $this->uploadMeteo($request);
-
             if($response->getStatusCode() === 200){
-
-
                 $responseContent = json_decode(trim($response->getContent()), true);
-
                 if (isset($responseContent[0]) && is_string($responseContent[0])) {
                     $responseContent = json_decode($responseContent[0], true);
                 }
-
-
                 $expectedKeys = [
                     'fileYears', 'sodiumChlorideConcentration', 'waterFilmThickness',
                     'humidityThreshold', 'mechanicalAnnualSodium', 'mechanicalMeanSodium',
@@ -55,19 +58,112 @@ class MeteoController extends AbstractController
                 ];
 
                 foreach ($expectedKeys as $key) {
-
                     $form->get($key)->setData(floatval(str_replace(',', '.', $responseContent[$key])));
-
                 }
+
                 $this->addFlash('success', 'Fichier importé avec succès');
             }else {
                 $this->addFlash('error', 'Erreur lors de l\'importation du fichier');
             }
         }
 
+
+
+        if($form->isSubmitted() && $form->isValid()){
+            $formData = $form->getData();
+            $formDataArray = [
+                'fileYears' => $formData->getFileYears(),
+                'sodiumChlorideConcentration' => $formData->getSodiumChlorideConcentration(),
+                'waterFilmThickness' => $formData->getWaterFilmThickness(),
+                'humidityThreshold' => $formData->getHumidityThreshold(),
+                'mechanicalAnnualSodium' => $formData->getMechanicalAnnualSodium(),
+                'mechanicalMeanSodium' => $formData->getMechanicalMeanSodium(),
+                'mechanicalInterval' => $formData->getMechanicalInterval(),
+                'mechanicalSodiumWater' => $formData->getMechanicalSodiumWater(),
+                'automaticAnnualSodium' => $formData->getAutomaticAnnualSodium(),
+                'automaticMeanSodium' => $formData->getAutomaticMeanSodium(),
+                'automaticSprayInterval' => $formData->getAutomaticSprayInterval(),
+                'automaticSodiumWater' => $formData->getAutomaticSodiumWater(),
+                'extTemperaturePosition' => $formData->getExtTemperaturePosition(),
+                'extTemperaturePosition2' => $formData->getExtTemperaturePosition2(),
+                'extTemperatureAttenuation' => $formData->getExtTemperatureAttenuation(),
+                'extTemperatureAttenuation2' => $formData->getExtTemperatureAttenuation2(),
+                'extTemperatureDifference' => $formData->getExtTemperatureDifference(),
+                'extHumidityPosition' => $formData->getExtHumidityPosition(),
+                'extHumidityPosition2' => $formData->getExtHumidityPosition2(),
+                'extHumidityAttenuation' => $formData->getExtHumidityAttenuation(),
+                'extHumidityAttenuation2' => $formData->getExtHumidityAttenuation2(),
+                'extHumidityDifference' => $formData->getExtHumidityDifference(),
+                'intTemperaturePosition' => $formData->getIntTemperaturePosition(),
+                'intTemperaturePosition2' => $formData->getIntTemperaturePosition2(),
+                'intTemperatureAttenuation' => $formData->getIntTemperatureAttenuation(),
+                'intTemperatureAttenuation2' => $formData->getIntTemperatureAttenuation2(),
+                'intTemperatureDifference' => $formData->getIntTemperatureDifference(),
+                'intHumidityPosition' => $formData->getIntHumidityPosition(),
+                'intHumidityPosition2' => $formData->getIntHumidityPosition2(),
+                'intHumidityAttenuation' => $formData->getIntHumidityAttenuation(),
+                'intHumidityAttenuation2' => $formData->getIntHumidityAttenuation2(),
+                'intHumidityDifference' => $formData->getIntHumidityDifference()
+            ];
+
+            $response = $this->calculate($formDataArray,$request->getSession()->get('importedFileName'));
+
+            if($response->getStatusCode() == 200){
+                $responseContent = json_decode(trim($response->getContent()), true);
+                if (isset($responseContent[0]) && is_string($responseContent[0])) {
+                    $responseContent = json_decode($responseContent[0], true);
+                }
+
+                $meteo = new Meteo();
+                $form = $this->createForm(MeteoType::class, $meteo);
+
+
+                $expectedKeys = [
+                    'fileYears', 'sodiumChlorideConcentration', 'waterFilmThickness',
+                    'humidityThreshold', 'mechanicalAnnualSodium', 'mechanicalMeanSodium',
+                    'mechanicalInterventions', 'mechanicalInterval', 'mechanicalSodiumWater',
+                    'mechanicalThresholdTemperature', 'automaticAnnualSodium', 'automaticMeanSodium',
+                    'automaticSprays', 'automaticSprayInterval', 'automaticSodiumWater',
+                    'automaticThresholdTemperature', 'extTemperaturePosition', 'extTemperaturePosition2',
+                    'extTemperatureAttenuation', 'extTemperatureAttenuation2', 'extTemperatureDifference',
+                    'extHumidityPosition', 'extHumidityPosition2', 'extHumidityAttenuation',
+                    'extHumidityAttenuation2', 'extHumidityDifference', 'intTemperaturePosition',
+                    'intTemperaturePosition2', 'intTemperatureAttenuation', 'intTemperatureAttenuation2',
+                    'intTemperatureDifference', 'intHumidityPosition', 'intHumidityPosition2',
+                    'intHumidityAttenuation', 'intHumidityAttenuation2', 'intHumidityDifference'
+                ];
+
+                foreach ($expectedKeys as $key) {
+                    $form->get($key)->setData(floatval(str_replace(',', '.', $responseContent[$key])));
+                }
+
+                $this->addFlash('success', 'Calcul effectué avec succès');
+            }
+
+
+        }
+
+
+
+
+
+
+        if($exportForm->isSubmitted() && $exportForm->isValid()) {
+            $response = $this->export($request);
+            if($response->getStatusCode() === 200){
+                $this->addFlash('success', 'Fichier exporté avec succès');
+            }else {
+                $this->addFlash('error', 'Erreur lors de l\'exportation du fichier');
+            }
+        }
+
+
+
+
         return $this->render('meteo/index.html.twig', [
             'form' => $form->createView(),
-            'importForm' => $importForm->createView()
+            'importForm' => $importForm->createView(),
+            'exportForm' => $exportForm->createView()
         ]);
     }
 
@@ -79,13 +175,10 @@ class MeteoController extends AbstractController
         if ($file) {
             $fileName = $file->getClientOriginalName();
             $destination = $this->getParameter('kernel.project_dir') . '/public/meteoFiles';
-
-
             try {
                 $file->move($destination, $fileName);
-
-
-                $response = $this->sendFile($fileName);
+                $this->troobleshoot($fileName);
+                $response = $this->sendFile($fileName, 'precalcul');
                 if ($response->getStatusCode() === 200) {
                     $responseContent = $response->getContent();
                     $outputFileName = 'form_meteo_output.txt';
@@ -96,23 +189,17 @@ class MeteoController extends AbstractController
                         'error' => 'Erreur lors de l\'envoi du fichier: ' . $response->getContent()
                     ], 500);
                 }
-
                 $response = $this->init($outputFilePath);
-
                 return New JsonResponse([
                         $response->getContent()
                     ], $response->getStatusCode());
-
-
             } catch (\Exception $e) {
                 error_log("Upload error: " . $e->getMessage());
                 return new JsonResponse([
                     'error' => 'Erreur lors de l\'upload: ' . $e->getMessage()
                 ], 500);
             }
-
         }
-
         return new JsonResponse(['error' => 'Aucun fichier reçu'], 400);
     }
 
@@ -163,18 +250,85 @@ class MeteoController extends AbstractController
     }
 
 
-    #[Route('/meteo-form/calculate', name: 'meteo_form_calculate')]
-    public function calculate(Request $request): JsonResponse
+       public function sendFile(String $fileName,String $route): Response
     {
-        $filePath = $this->getParameter('kernel.project_dir') . '/public/out/calc_form_meteo_output.txt';
+        $filePath = $this->getParameter('kernel.project_dir') . '/public/meteoFiles/' . $fileName;
+        $file = fopen($filePath, 'r');
+        $client = HttpClient::create();
+        $response = $client->request('POST', 'http://localhost:5000/' . $route , [
+            'headers' => [
+                'Content-Type' => 'multipart/form-data'
+            ],
+            'body' => [
+                'file' => $file
+            ]
+        ]);
+        return new Response($response->getContent(), $response->getStatusCode());
+    }
+
+    public function troobleshoot(String $fileName) : Response{
+
+        $response = $this->sendFile($fileName,'troubleshoot1');
+
+        if($response->getStatusCode() === 200) {
+            $this->addFlash('success', $response->getContent());
+        }
+
+        $response = $this->sendFile($fileName,'troubleshoot2');
+        if($response->getStatusCode() === 200) {
+            $this->addFlash('success', $response->getContent());
+        }
+
+        return new Response('Hello');
+    }
+
+
+    public function calculate(array $data , String $meteoFileName ): JsonResponse
+    {
+        $outputFileName = 'form_meteo_output.txt';
+        $outputFilePath = $this->getParameter('kernel.project_dir') . '/public/out/' . $outputFileName;
+
+
+
+        $dataString = implode("\n", $data);
+        file_put_contents($outputFilePath, $dataString);
+
+        $response = $this->sendFileForCalc($meteoFileName,$outputFileName, 'calcul');
+        if ($response->getStatusCode() === 200) {
+            $responseContent = $response->getContent();
+            $outputFileName = 'calc_form_meteo_output.txt';
+            $outputFilePath = $this->getParameter('kernel.project_dir') . '/public/out/' . $outputFileName;
+            file_put_contents($outputFilePath, $responseContent);
+
+            $response = $this->initAfterCalc($outputFilePath);
+            if($response->getStatusCode() === 200) {
+                return new JsonResponse([
+                    $response->getContent()
+                ], $response->getStatusCode());
+            }else {
+                return new JsonResponse([
+                    'error' => 'Erreur lors de l\'initialisation après calcul: ' . $response->getContent()
+                ], 500);
+            }
+
+
+        }else {
+            return new JsonResponse([
+                'error' => 'Erreur lors de l\'envoi du fichier: ' . $response->getContent()
+            ], 500);
+        }
+    }
+
+
+    public function initAfterCalc(String $filePath): JsonResponse
+    {
 
         if (!file_exists($filePath)) {
             return new JsonResponse(['error' => 'Fichier non trouvé'], Response::HTTP_NOT_FOUND);
         }
 
         $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-        dump($lines);
-        if (count($lines) < 32) {
+        if (count($lines) < 36) {
             return new JsonResponse(['error' => 'Fichier incomplet'], Response::HTTP_BAD_REQUEST);
         }
 
@@ -218,25 +372,44 @@ class MeteoController extends AbstractController
         ];
 
         return new JsonResponse($data);
+
     }
 
 
-    public function sendFile(String $fileName): Response
+    public function sendFileForCalc(String $meteoFileName ,String $fileName, String $route): Response
     {
+        $filePath1 = $this->getParameter('kernel.project_dir') . '/public/meteoFiles/' . $meteoFileName;
+        $file1 = fopen($filePath1, 'r');
 
-        $filePath = $this->getParameter('kernel.project_dir') . '/public/meteoFiles/' . $fileName;
 
-        $file = fopen($filePath, 'r');
-
+        $filePath2 = $this->getParameter('kernel.project_dir') . '/public/out/' . $fileName;
+        $file2 = fopen($filePath2, 'r');
         $client = HttpClient::create();
-        $response = $client->request('POST', 'http://localhost:5000/precalcul', [
+        $response = $client->request('POST', 'http://localhost:5000/' . $route, [
             'headers' => [
                 'Content-Type' => 'multipart/form-data'
             ],
             'body' => [
-                'file' => $file
+                'file1' => $file1,
+                'file2' => $file2
             ]
         ]);
         return new Response($response->getContent(), $response->getStatusCode());
     }
+
+
+    #[Route('/meteo-form/export', name: 'meteo_form_export')]
+    public function export(Request $request): Response
+    {
+
+
+
+
+
+        return new Response('Hello');
+    }
+
+
+
+
 }
