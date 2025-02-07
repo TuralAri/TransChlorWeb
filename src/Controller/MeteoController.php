@@ -106,6 +106,7 @@ class MeteoController extends AbstractController
                 'intHumidityDifference' => $formData->getIntHumidityDifference()
             ];
 
+
             $response = $this->calculate($formDataArray,$request->getSession()->get('importedFileName'));
 
             if($response->getStatusCode() == 200){
@@ -133,9 +134,14 @@ class MeteoController extends AbstractController
                     'intHumidityAttenuation', 'intHumidityAttenuation2', 'intHumidityDifference'
                 ];
 
+
                 foreach ($expectedKeys as $key) {
                     $form->get($key)->setData(floatval(str_replace(',', '.', $responseContent[$key])));
                 }
+
+
+
+
 
                 $this->addFlash('success', 'Calcul effectué avec succès');
             }
@@ -151,7 +157,7 @@ class MeteoController extends AbstractController
         if($exportForm->isSubmitted() && $exportForm->isValid()) {
             $response = $this->export($request);
             if($response->getStatusCode() === 200){
-                $this->addFlash('success', 'Fichier exporté avec succès');
+                $this->addFlash('success', 'Fichier exporté avec succès ils sont dans le dossier /public/exports du projet');
             }else {
                 $this->addFlash('error', 'Erreur lors de l\'exportation du fichier');
             }
@@ -398,15 +404,14 @@ class MeteoController extends AbstractController
     }
 
 
-    #[Route('/meteo-form/export', name: 'meteo_form_export')]
+
     public function export(Request $request): Response
     {
 
+        $response = $this->sendFileForCalc($request->getSession()->get('importedFileName'),'calc_form_meteo_output.txt','export');
 
+        return new Response( $response->getStatusCode());
 
-
-
-        return new Response('Hello');
     }
 
 
