@@ -3,6 +3,7 @@ Imports System.IO
 Imports System.Text
 Imports System.Linq
 Imports System.Windows.Forms
+Imports System.Collections.Generic
 
 Module Program
     Sub Main()
@@ -90,7 +91,48 @@ Module Program
                 Dim savePath As String = "C:\temp\reçu_fichier.dat" ' Change le chemin si nécessaire
                 File.WriteAllBytes(savePath, fileData)
 
-                Dim fileToSendPath As String = precalcul(savePath)
+                Dim fileToSendPath As String = MeteoTreatmentPrecalcul(savePath)
+                If File.Exists(fileToSendPath) Then
+                    Dim fileBytes As Byte() = File.ReadAllBytes(fileToSendPath)
+
+                    ' Définir les en-têtes pour indiquer qu'on envoie un fichier
+                    response.ContentType = "application/octet-stream"
+                    response.ContentLength64 = fileBytes.Length
+                    response.AddHeader("Content-Disposition", "attachment; filename=response_fichier.dat")
+
+                    ' Envoyer le fichier en réponse
+                    response.OutputStream.Write(fileBytes, 0, fileBytes.Length)
+                    Console.WriteLine("Fichier envoyé en réponse : " & fileToSendPath)
+                End If
+            End If
+            If request.Url.Equals("http://localhost:5000/calcul") AndAlso request.HttpMethod = "POST" AndAlso request.ContentType.StartsWith("multipart/form-data") Then
+                Console.WriteLine("Réception de fichiers...")
+
+                ' Lire le corps de la requête
+                Dim boundary As String = request.ContentType.Split("="c)(1)
+                Dim reader As New StreamReader(request.InputStream)
+                Dim requestBody As String = reader.ReadToEnd()
+
+                ' Séparer les fichiers reçus
+                Dim parts() As String = requestBody.Split(New String() {"--" & boundary}, StringSplitOptions.RemoveEmptyEntries)
+
+                Dim fileIndex As Integer = 1
+                Dim paths As New List(Of String)()
+                For Each part In parts
+                    If part.Contains("Content-Type: ") Then
+                        ' Trouver le début du fichier
+                        Dim fileStart As Integer = part.IndexOf("Content-Type: ") + part.Substring(part.IndexOf("Content-Type: ")).IndexOf(vbCrLf) + 4
+                        Dim fileData As Byte() = Encoding.UTF8.GetBytes(part.Substring(fileStart))
+
+                        ' Sauvegarder chaque fichier avec un nom différent
+                        Dim savePath As String = $"C:\temp\reçu_fichier_{fileIndex}.dat"
+                        paths.Add(savePath)
+                        File.WriteAllBytes(savePath, fileData)
+                        fileIndex += 1
+                    End If
+                Next
+
+                Dim fileToSendPath As String = MeteoTreatmentCalcul(paths)
                 If File.Exists(fileToSendPath) Then
                     Dim fileBytes As Byte() = File.ReadAllBytes(fileToSendPath)
 

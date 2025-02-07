@@ -213,18 +213,40 @@ class MeteoController extends AbstractController
     #[Route('/test', name: 'send_file')]
     public function test(): Response
     {
-        $filePath = __DIR__ . '/../../public/meteoFiles/METEO_DAVOS.TXT'; // Assure-toi que ce fichier existe
-        $file = fopen($filePath, 'r');
+        $filePath1 = __DIR__ . '/../../public/meteoFiles/METEO_DAVOS.TXT'; 
+        $file1 = fopen($filePath1, 'r');
 
         $response = $this->client->request('POST', 'http://localhost:5000/troubleshoot2', [
             'headers' => [
                 'Content-Type' => 'multipart/form-data'
             ],
             'body' => [
-                'file' => $file
+                'file1' => $file1,
             ]
         ]);
 
         return new Response('Réponse du serveur VB: ' . $response->getContent());
     }
+
+    #[Route('/test2', name: 'test2')]
+    public function test2(): Response
+    {
+        $filePath1 = __DIR__ . '/../../public/meteoFiles/METEO_DAVOS.TXT'; 
+        $filePath2 = __DIR__ . '/../../public/formFiles/TempSeuil.txt';
+        $file1 = fopen($filePath1, 'r');
+        $file2 = fopen($filePath2, 'r');
+
+        $response = $this->client->request('POST', 'http://localhost:5000/calcul', [
+            'headers' => [
+                'Content-Type' => 'multipart/form-data'
+            ],
+            'body' => [
+                'file1' => $file1,
+                'file2' => $file2
+            ]
+        ]);
+
+        return new Response('Réponse du serveur VB: ' . $response->getContent());
+    }
+
 }

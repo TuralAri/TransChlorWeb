@@ -1,5 +1,7 @@
 ﻿
+Imports System.Collections.Generic
 Imports System.Data.Common
+Imports System.IO
 Imports System.Linq
 Imports System.Runtime.CompilerServices
 Imports System.Runtime.InteropServices
@@ -425,7 +427,7 @@ Module Meteo
 
     End Function
 
-    Public Function precalcul(outfile As String)
+    Public Function precalcul(outfile As String, form As StrctForm)
         Dim PostFile As String
         Dim txtfile As String
         Dim Canc As Boolean = False
@@ -484,7 +486,7 @@ Module Meteo
         Next
         ReDim Preserve arrDaten(iAnzahl - 1)
 
-        Dim form As StrctForm
+
 
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -537,7 +539,7 @@ Module Meteo
         form.intervalle_minimal_entre_2 = 8
         form.concentration_chlorure_sodium_epandage_mecanique = 36
         form.quantite_moyenne_chlorure_epandage_automatique = 0.5
-        form.nb_giclage_par_intervalle = 25
+        form.nb_giclage_par_intervalle = 12
         form.concentration_chlorure_sodium_epandage_automatique = 21
         form.position_de_la_1_temperature_exterieur = 1
         form.position_de_la_2_temperature_exterieur = 3
@@ -560,19 +562,18 @@ Module Meteo
         form.attenuation_de_2_humidite_interieure = 1
         form.difference_de_humidite_interieure = 100
 
+        form.nb_intervention_epandage = form.quantite_moyenne_chlorure_epandage_mecanique
 
 
 
 
 
-        Dim Fichier As String = "C:\Users\Public\Documents\TempSeuil.txt"
-        WriteMeteoFormToTextFile(Fichier, form)
-        Return Fichier
+        Return form
+
 
     End Function
 
-    Public Sub InputDeicingSalt()
-        Dim form As StrctForm
+    Public Function InputDeicingSalt(form As StrctForm)
 
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -705,8 +706,9 @@ Module Meteo
             If arrMatrice(i).salage1 > EpNa1 Then arrMatrice(i).salage1 = EpNa1 'keep the maximal value
             If arrMatrice(i).salage2 > EpNa2 Then arrMatrice(i).salage2 = EpNa2
         Next
+        Return form
 
-    End Sub
+    End Function
 
     Public Sub CalculTHS()
         Dim form As StrctForm
@@ -1132,10 +1134,18 @@ Module Meteo
         Dim Canc As Boolean = False
 
         ReadMeteoFile(outfile, PostFile, txtfile, Canc)
-        InputDeicingSalt()
+        Dim Form As StrctForm
+        InputDeicingSalt(Form)
     End Function
 
+    Public Function MeteoTreatmentPrecalcul(outfile As String)
+        Dim Form As StrctForm
+        Form = precalcul(outfile, Form)
+        Dim Fichier As String = "C:\Users\Public\Documents\TempSeuil.txt"
+        WriteMeteoFormToTextFile(Fichier, Form, False)
+        Return Fichier
 
+    End Function
     Public Sub MeteoTreatment()
 
         Dim outfile As String
@@ -1161,9 +1171,22 @@ Module Meteo
         End If
 
     End Sub
+    Public Function MeteoTreatmentCalcul(outfiles As List(Of String))
+        Dim PostFile As String
+        Dim txtfile As String
+        Dim Canc As Boolean = False
+        ReadMeteoFile(outfiles(0), PostFile, txtfile, Canc)
+        Troubleshoot(-1)
+        Dim Form As StrctForm
+        Form = InputDeicingSalt(Form)
+        Form = precalcul(outfiles(0), Form)
+        Form = WCal(outfiles(1), Form)
+        Dim Fichier As String = "C:\Users\Public\Documents\TempSeuil.txt"
+        WriteMeteoFormToTextFile(Fichier, Form, True)
+        Return Fichier
+    End Function
 
-    Public Sub WCal()
-        Dim form As StrctForm
+    Public Function WCal(file As String, form As StrctForm)
         Dim NbrAns As Double '[-]
         Dim i As Integer '[-]
         Dim DureeIntrvent As Integer '[h]
@@ -1259,12 +1282,12 @@ Module Meteo
         Loop
         'frmTempSeuil.Label24.Text = CInt(Tseuil2 * 10) / 10
         form.temperature_seuil_epandage_automatique = CInt(Tseuil2 * 10) / 10
-
+        Return form
         'frmTempSeuil.ButtonExportFile.Show()
         'frmTempSeuil.ButtonExportDB.Show()
         'frmTempSeuil.LabelOR.Show()
 
-    End Sub
+    End Function
 
     Private Sub CalNeige()
         Dim i As Integer '[-]
@@ -1386,7 +1409,7 @@ Module Meteo
     End Sub
 
 
-    Public Sub WriteMeteoFormToTextFile(outfile As String, form As StrctForm)
+    Public Sub WriteMeteoFormToTextFile(outfile As String, form As StrctForm, isCalcul As Boolean)
         ' Ouvrir le fichier texte en mode écriture
         Dim nFic As Integer = FreeFile()
         Dim sw As New System.IO.StreamWriter(outfile)
@@ -1399,18 +1422,28 @@ Module Meteo
 
         sw.WriteLine(form.concentration_annuelle_chlorure_sodium_epandage_mecanique)
         sw.WriteLine(form.quantite_moyenne_chlorure_epandage_mecanique)
+        If isCalcul Then
+            sw.WriteLine(form.nb_intervention_epandage)
+        End If
         'PrintLine(nFic, frmTempSeuil.Label6.Text)
         sw.WriteLine(form.intervalle_minimal_entre_2)
         sw.WriteLine(form.concentration_chlorure_sodium_epandage_mecanique)
         'PrintLine(nFic, frmTempSeuil.Label22.Text)
-
+        If isCalcul Then
+            sw.WriteLine(form.temperature_seuil_epandage_mecanique)
+        End If
         sw.WriteLine(form.concentration_annuelle_chlorure_sodium_epandage_automatique)
         sw.WriteLine(form.quantite_moyenne_chlorure_epandage_automatique)
+        If isCalcul Then
+            sw.WriteLine(form.nb_giclages_annuel)
+        End If
         'PrintLine(nFic, frmTempSeuil.Label76.Text)
         sw.WriteLine(form.nb_giclage_par_intervalle)
         sw.WriteLine(form.concentration_chlorure_sodium_epandage_automatique)
         'PrintLine(nFic, frmTempSeuil.Label66.Text)
-
+        If isCalcul Then
+            sw.WriteLine(form.temperature_seuil_epandage_automatique)
+        End If
         sw.WriteLine(form.position_de_la_1_temperature_exterieur)
         sw.WriteLine(form.position_de_la_2_temperature_exterieur)
         sw.WriteLine(form.attenuation_de_1_temperature_exterieur)
@@ -1437,6 +1470,66 @@ Module Meteo
         ' Fermer le fichier
 
     End Sub
+
+    Public Function ReadMeteoFormFromTextFile(infile As String) As StrctForm
+        Dim form As New StrctForm()
+
+        ' Vérifier si le fichier existe
+        If Not File.Exists(infile) Then
+            Throw New FileNotFoundException("Le fichier spécifié n'existe pas.", infile)
+        End If
+
+        ' Lire le fichier ligne par ligne
+        Dim lines() As String = File.ReadAllLines(infile)
+        Dim index As Integer = 0
+
+        Try
+            form.nb_annees = Double.Parse(lines(index)) : index += 1
+            form.concentration_chlorure = Double.Parse(lines(index)) : index += 1
+            form.epaisseur_film_eau_chaussee = Double.Parse(lines(index)) : index += 1
+            form.humidite_relative_seuil_intervention = Double.Parse(lines(index)) : index += 1
+
+            form.concentration_annuelle_chlorure_sodium_epandage_mecanique = Double.Parse(lines(index)) : index += 1
+            form.quantite_moyenne_chlorure_epandage_mecanique = Double.Parse(lines(index)) : index += 1
+            form.intervalle_minimal_entre_2 = Double.Parse(lines(index)) : index += 1
+            form.concentration_chlorure_sodium_epandage_mecanique = Double.Parse(lines(index)) : index += 1
+
+            form.concentration_annuelle_chlorure_sodium_epandage_automatique = Double.Parse(lines(index)) : index += 1
+            form.quantite_moyenne_chlorure_epandage_automatique = Double.Parse(lines(index)) : index += 1
+            form.nb_giclage_par_intervalle = Integer.Parse(lines(index)) : index += 1
+            form.concentration_chlorure_sodium_epandage_automatique = Double.Parse(lines(index)) : index += 1
+
+            form.position_de_la_1_temperature_exterieur = Double.Parse(lines(index)) : index += 1
+            form.position_de_la_2_temperature_exterieur = Double.Parse(lines(index)) : index += 1
+            form.attenuation_de_1_temperature_exterieur = Double.Parse(lines(index)) : index += 1
+            form.attenuation_de_2_temperature_exterieur = Double.Parse(lines(index)) : index += 1
+            form.difference_de_temperature_exterieur = Double.Parse(lines(index)) : index += 1
+
+            form.position_de_la_1_humidite_exterieur = Double.Parse(lines(index)) : index += 1
+            form.position_de_la_2_humidite_exterieur = Double.Parse(lines(index)) : index += 1
+            form.attenuation_de_1_humidite_exterieur = Double.Parse(lines(index)) : index += 1
+            form.attenuation_de_2_humidite_exterieur = Double.Parse(lines(index)) : index += 1
+            form.difference_de_humidite_exterieur = Double.Parse(lines(index)) : index += 1
+
+            form.position_de_la_1_temperature_interieure = Double.Parse(lines(index)) : index += 1
+            form.position_de_la_2_temperature_interieure = Double.Parse(lines(index)) : index += 1
+            form.attenuation_de_1_temperature_interieure = Double.Parse(lines(index)) : index += 1
+            form.attenuation_de_2_temperature_interieure = Double.Parse(lines(index)) : index += 1
+            form.difference_de_temperature_interieure = Double.Parse(lines(index)) : index += 1
+
+            form.position_de_la_1_humidite_interieure = Double.Parse(lines(index)) : index += 1
+            form.position_de_la_2_humidite_interieure = Double.Parse(lines(index)) : index += 1
+            form.attenuation_de_1_humidite_interieure = Double.Parse(lines(index)) : index += 1
+            form.attenuation_de_2_humidite_interieure = Double.Parse(lines(index)) : index += 1
+            form.difference_de_humidite_interieure = Double.Parse(lines(index)) : index += 1
+
+        Catch ex As Exception
+            Throw New FormatException("Erreur lors de la lecture du fichier. Assurez-vous qu'il suit le bon format.", ex)
+        End Try
+
+        Return form
+    End Function
+
 
 
 End Module
