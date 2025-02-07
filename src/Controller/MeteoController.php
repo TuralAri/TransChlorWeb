@@ -236,7 +236,7 @@ class MeteoController extends AbstractController
         $file1 = fopen($filePath1, 'r');
         $file2 = fopen($filePath2, 'r');
 
-        $response = $this->client->request('POST', 'http://localhost:5000/calcul', [
+        $response = $this->client->request('POST', 'http://localhost:5000/export', [
             'headers' => [
                 'Content-Type' => 'multipart/form-data'
             ],

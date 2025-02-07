@@ -709,7 +709,92 @@ Module Meteo
         Return form
 
     End Function
+    Public Sub ExportFile(Form As StrctForm)
 
+
+
+        'calcul de la concentration en NaCl dans l'eau
+        'Dim DureeInt As Short = frmTempSeuil.NumericUpDown2.Text
+        Dim DureeInt As Short = Form.intervalle_minimal_entre_2
+        'Dim QNa1 As Single = frmTempSeuil.NumericUpDown1.Text
+        Dim QNa1 As Single = Form.quantite_moyenne_chlorure_epandage_mecanique
+        'Dim QNa2 As Single = frmTempSeuil.NumericUpDown24.Text * frmTempSeuil.NumericUpDown25.Text
+        Dim QNa2 As Single = Form.quantite_moyenne_chlorure_epandage_automatique * Form.nb_giclage_par_intervalle
+        'Dim Tseuil1 As Single = frmTempSeuil.Label22.Text
+        Dim Tseuil1 As Single = Form.temperature_seuil_epandage_mecanique
+        'Dim Tseuil2 As Single = frmTempSeuil.Label66.Text
+        Dim Tseuil2 As Single = Form.temperature_seuil_epandage_automatique
+        'Dim HRseuil As Single = frmTempSeuil.NumericUpDown3.Text
+        Dim HRseuil As Single = Form.humidite_relative_seuil_intervention
+        'Dim EpNa1 As Single = frmTempSeuil.NumericUpDown4.Text / 100
+        Dim EpNa1 As Single = Form.concentration_chlorure_sodium_epandage_mecanique / 100
+        'Dim EpNa2 As Single = frmTempSeuil.NumericUpDown23.Text / 100
+        Dim EpNa2 As Single = Form.concentration_chlorure_sodium_epandage_automatique / 100
+        'Dim Feau As Single = frmTempSeuil.NumericUpDown5.Text
+        Dim Feau As Single = Form.epaisseur_film_eau_chaussee
+
+        Dim Dint1 As Short = 0
+        Dim Dint2 As Short = 0
+        Dim PluieOld As Boolean = False
+
+        For i As Integer = 0 To iAnzahl - 1
+            If Dint1 <> 0 Then Dint1 = Dint1 + 1
+            If Dint2 <> 0 Then Dint2 = Dint2 + 1
+            If Dint1 >= DureeInt Then Dint1 = 0
+            If Dint1 = 0 And arrDaten(i).moy6 / 10 < Tseuil1 And (arrDaten(i).moy13 / 10 >= HRseuil Or arrDaten(i).moy17 / 10 > 0) Then 'why or
+                If arrDaten(i).moy17 / 10 = 0 Then 'we don't have rain now
+                    arrMatrice(i).salage1 = EpNa1
+                Else 'we have rain now
+                    If PluieOld = False Then 'we didn't have rain the step before
+                        arrMatrice(i).salage1 = QNa1 / (1000 * arrDaten(i).moy17 / 10)
+                    Else ' we had rain the step before
+                        If i <> 0 Then arrMatrice(i).salage1 = (arrMatrice(i - 1).salage1 * 1000 * Feau + QNa1) / ((Feau + arrDaten(i).moy17 / 10) * 1000)
+                    End If
+                End If
+                Dint1 = Dint1 + 1
+            End If
+            If Dint2 = 0 And arrDaten(i).moy6 / 10 < Tseuil2 And (arrDaten(i).moy13 / 10 >= HRseuil Or arrDaten(i).moy17 / 10 > 0) Then
+                If arrDaten(i).moy17 / 10 = 0 Then
+                    arrMatrice(i).salage2 = EpNa2
+                Else
+                    If PluieOld = False Then
+                        arrMatrice(i).salage2 = QNa2 / (1000 * arrDaten(i).moy17 / 10)
+                    Else
+                        If i <> 0 Then arrMatrice(i).salage2 = (arrMatrice(i - 1).salage2 * 1000 * Feau + QNa2) / ((Feau + arrDaten(i).moy17 / 10) * 1000)
+                    End If
+
+                End If
+                Dint2 = Dint2 + 1
+            End If
+            If arrDaten(i).moy17 / 10 <> 0 Then
+                PluieOld = True
+            Else
+                PluieOld = False
+            End If
+            If Dint1 <> 1 Then
+                If PluieOld = True Then
+                    If i <> 0 Then arrMatrice(i).salage1 = arrMatrice(i - 1).salage1 * 1000 * Feau / ((Feau + arrDaten(i).moy17 / 10) * 1000)
+                Else 'PluieOld = False
+                    If i <> 0 Then arrMatrice(i).salage1 = arrMatrice(i - 1).salage1
+                End If
+                'If i = 0 Then arrMatrice(i).salage1 = frmTempSeuil.NumericUpDown6.Value / 100
+                If i = 0 Then arrMatrice(i).salage1 = Form.concentration_chlorure / 100
+            End If
+            If Dint2 <> 1 Then
+                If PluieOld = True Then
+                    If i > 0 Then arrMatrice(i).salage2 = arrMatrice(i - 1).salage2 * 1000 * Feau / ((Feau + arrDaten(i).moy17 / 10) * 1000)
+                Else
+                    If i > 0 Then arrMatrice(i).salage2 = arrMatrice(i - 1).salage2
+                End If
+                'If i = 0 Then arrMatrice(i).salage2 = frmTempSeuil.NumericUpDown24.Value * frmTempSeuil.NumericUpDown25.Text / 100
+                If i = 0 Then arrMatrice(i).salage2 = Form.quantite_moyenne_chlorure_epandage_automatique * Form.nb_giclage_par_intervalle / 100
+                If arrMatrice(i).salage2 <= 0.1 * EpNa2 Then Dint2 = 0 '???
+            End If
+            If arrMatrice(i).salage1 > EpNa1 Then arrMatrice(i).salage1 = EpNa1 'keep the maximal value
+            If arrMatrice(i).salage2 > EpNa2 Then arrMatrice(i).salage2 = EpNa2
+        Next
+        CalculTHS()
+    End Sub
     Public Sub CalculTHS()
         Dim form As StrctForm
         Dim InputMatrice(DataLength) As Single
@@ -758,7 +843,7 @@ Module Meteo
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         '''
         Dim NbPluie As Short = 0 'Ajout Bitume TSANCHEZ
-        Dim NbPluieMax As Short = InputBox("Bitume delay For Humidity (Default: 50 [Salam Bah])", "Bitume Property", 50)
+        Dim NbPluieMax As Short = 50 'valeu par défaut
 
         For i As Integer = 0 To (iAnzahl - 1)
 
@@ -841,7 +926,7 @@ Module Meteo
         'création des fichiers INPUT
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         Dim INFile1, INFile2, INFile3, INFile4, INFile5, INFile6, INFile7, INFile8, INFile9, INFile10, INFile11, INFile12, INFile13, INFile14, INFile15, INFile16, INFile17, INFile18 As System.IO.TextWriter
-
+        PostFile = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../public/export/")
         OutFile = PostFile & "EXPO_M_E_E_" & txtFile & ".txt"
         INFile1 = System.IO.File.CreateText(OutFile)
         OutFile = PostFile & "EXPO_M_E_O_" & txtFile & ".txt"
@@ -1100,9 +1185,6 @@ Module Meteo
             INFile18.WriteLine(arrINPUT_M_BIT(i).HR & vbTab & vbTab & arrINPUT_M_BIT(i).Sel & vbTab & vbTab & arrINPUT_M_BIT(i).Tsurf, i)
         Next
         INFile18.Close()
-
-        MsgBox("Files written successfully !")
-
     End Sub
 
     Public Function MeteoTreatmentTroubleshootingPart1(outfile As String)
@@ -1162,13 +1244,7 @@ Module Meteo
 
         CalculTHS()
 
-        If Export = "File" Then
-            WriteExpoFile(outfile, PostFile, txtfile, Canc)
-
-
-        Else MsgBox("Error: Don't understand file or Database ??")
-
-        End If
+        WriteExpoFile(outfile, PostFile, txtfile, Canc)
 
     End Sub
     Public Function MeteoTreatmentCalcul(outfiles As List(Of String))
@@ -1186,6 +1262,20 @@ Module Meteo
         Return Fichier
     End Function
 
+    Public Function MeteoTreatmentExport(outfiles As List(Of String))
+        Dim PostFile As String
+        Dim txtfile As String
+        Dim Canc As Boolean = False
+        Dim form As New StrctForm()
+        ReadMeteoFile(outfiles(0), PostFile, txtfile, Canc)
+        Troubleshoot(-1)
+        form = ReadMeteoFormFromTextFile(outfiles(1))
+        ExportFile(form)
+        WriteExpoFile(outfiles(1), PostFile, txtfile, Canc)
+
+        Return "good"
+
+    End Function
     Public Function WCal(file As String, form As StrctForm)
         Dim NbrAns As Double '[-]
         Dim i As Integer '[-]
@@ -1491,13 +1581,23 @@ Module Meteo
 
             form.concentration_annuelle_chlorure_sodium_epandage_mecanique = Double.Parse(lines(index)) : index += 1
             form.quantite_moyenne_chlorure_epandage_mecanique = Double.Parse(lines(index)) : index += 1
+
+            form.nb_intervention_epandage = Double.Parse(lines(index)) : index += 1
+
             form.intervalle_minimal_entre_2 = Double.Parse(lines(index)) : index += 1
             form.concentration_chlorure_sodium_epandage_mecanique = Double.Parse(lines(index)) : index += 1
 
+            form.temperature_seuil_epandage_mecanique = Double.Parse(lines(index)) : index += 1
+
             form.concentration_annuelle_chlorure_sodium_epandage_automatique = Double.Parse(lines(index)) : index += 1
             form.quantite_moyenne_chlorure_epandage_automatique = Double.Parse(lines(index)) : index += 1
-            form.nb_giclage_par_intervalle = Integer.Parse(lines(index)) : index += 1
+
+            form.nb_giclages_annuel = Double.Parse(lines(index)) : index += 1
+
+            form.nb_giclage_par_intervalle = Double.Parse(lines(index)) : index += 1
             form.concentration_chlorure_sodium_epandage_automatique = Double.Parse(lines(index)) : index += 1
+
+            form.temperature_seuil_epandage_automatique = Double.Parse(lines(index)) : index += 1
 
             form.position_de_la_1_temperature_exterieur = Double.Parse(lines(index)) : index += 1
             form.position_de_la_2_temperature_exterieur = Double.Parse(lines(index)) : index += 1

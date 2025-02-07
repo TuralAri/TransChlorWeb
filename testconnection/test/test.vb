@@ -146,6 +146,37 @@ Module Program
                     Console.WriteLine("Fichier envoyé en réponse : " & fileToSendPath)
                 End If
             End If
+            If request.Url.Equals("http://localhost:5000/export") AndAlso request.HttpMethod = "POST" AndAlso request.ContentType.StartsWith("multipart/form-data") Then
+                Console.WriteLine("Réception de fichiers...")
+
+                ' Lire le corps de la requête
+                Dim boundary As String = request.ContentType.Split("="c)(1)
+                Dim reader As New StreamReader(request.InputStream)
+                Dim requestBody As String = reader.ReadToEnd()
+
+                ' Séparer les fichiers reçus
+                Dim parts() As String = requestBody.Split(New String() {"--" & boundary}, StringSplitOptions.RemoveEmptyEntries)
+
+                Dim fileIndex As Integer = 1
+                Dim paths As New List(Of String)()
+                For Each part In parts
+                    If part.Contains("Content-Type: ") Then
+                        ' Trouver le début du fichier
+                        Dim fileStart As Integer = part.IndexOf("Content-Type: ") + part.Substring(part.IndexOf("Content-Type: ")).IndexOf(vbCrLf) + 4
+                        Dim fileData As Byte() = Encoding.UTF8.GetBytes(part.Substring(fileStart))
+
+                        ' Sauvegarder chaque fichier avec un nom différent
+                        Dim savePath As String = $"C:\temp\reçu_fichier_{fileIndex}.dat"
+                        paths.Add(savePath)
+                        File.WriteAllBytes(savePath, fileData)
+                        fileIndex += 1
+                    End If
+                Next
+
+                Dim buffer_1 As Byte() = System.Text.Encoding.UTF8.GetBytes(MeteoTreatmentExport(paths))
+                response.ContentLength64 = buffer_1.Length
+                response.OutputStream.Write(buffer_1, 0, buffer_1.Length)
+            End If
 
 
             response.OutputStream.Close()
