@@ -14,199 +14,199 @@ class Meteo
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $fileYears;
+    private int $id;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $sodiumChlorideConcentration;
+    private float $fileYears;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $waterFilmThickness;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $humidityThreshold;
+    private float $sodiumChlorideConcentration;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $mechanicalAnnualSodium;
+    private float $waterFilmThickness;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $mechanicalMeanSodium;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $mechanicalInterventions;
+    private float $humidityThreshold;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $mechanicalInterval;
+    private float $mechanicalAnnualSodium;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      */
-    private $mechanicalSodiumWater;
+    private float $mechanicalMeanSodium;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private float $mechanicalInterventions;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private float $mechanicalInterval;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private float $mechanicalSodiumWater;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $mechanicalThresholdTemperature;
+    private float $mechanicalThresholdTemperature;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $automaticAnnualSodium;
+    private float $automaticAnnualSodium;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $automaticMeanSodium;
+    private float $automaticMeanSodium;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      */
-    private $automaticSprays;
+    private float $automaticSprays;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      */
-    private $automaticSprayInterval;
+    private float $automaticSprayInterval;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      */
-    private $automaticSodiumWater;
+    private float $automaticSodiumWater;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $automaticThresholdTemperature;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $extTemperaturePosition;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $extTemperaturePosition2;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $extTemperatureAttenuation;
+    private float $automaticThresholdTemperature;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $extTemperatureAttenuation2;
+    private float $extTemperaturePosition;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $extTemperatureDifference;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $extHumidityPosition;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $extHumidityPosition2;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $extHumidityAttenuation;
+    private float $extTemperaturePosition2;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $extHumidityAttenuation2;
+    private float $extTemperatureAttenuation;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $extHumidityDifference;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $intTemperaturePosition;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $intTemperaturePosition2;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $intTemperatureAttenuation;
+    private float $extTemperatureAttenuation2;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $intTemperatureAttenuation2;
+    private float $extTemperatureDifference;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $intTemperatureDifference;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $intHumidityPosition;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $intHumidityPosition2;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $intHumidityAttenuation;
+    private float $extHumidityPosition;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $intHumidityAttenuation2;
+    private float $extHumidityPosition2;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $intHumidityDifference;
+    private float $extHumidityAttenuation;
 
-    public function getId(): ?int
+    /**
+     * @ORM\Column(type="float")
+     */
+    private float $extHumidityAttenuation2;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private float $extHumidityDifference;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private float $intTemperaturePosition;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private float $intTemperaturePosition2;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private float $intTemperatureAttenuation;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private float $intTemperatureAttenuation2;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private float $intTemperatureDifference;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private float $intHumidityPosition;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private float $intHumidityPosition2;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private float $intHumidityAttenuation;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private float $intHumidityAttenuation2;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private float $intHumidityDifference;
+
+    public function getId(): ?float
     {
         return $this->id;
     }
 
-    public function getFileYears(): ?int
+    public function getFileYears(): ?float
     {
         return $this->fileYears;
     }
 
-    public function setFileYears(int $fileYears): self
+    public function setFileYears(float $fileYears): self
     {
         $this->fileYears = $fileYears;
         return $this;
@@ -234,12 +234,12 @@ class Meteo
         return $this;
     }
 
-    public function getHumidityThreshold(): ?int
+    public function getHumidityThreshold(): ?float
     {
         return $this->humidityThreshold;
     }
 
-    public function setHumidityThreshold(int $humidityThreshold): self
+    public function setHumidityThreshold(float $humidityThreshold): self
     {
         $this->humidityThreshold = $humidityThreshold;
         return $this;
@@ -267,12 +267,12 @@ class Meteo
         return $this;
     }
 
-    public function getMechanicalInterventions(): ?int
+    public function getMechanicalInterventions(): ?float
     {
         return $this->mechanicalInterventions;
     }
 
-    public function setMechanicalInterventions(int $mechanicalInterventions): self
+    public function setMechanicalInterventions(float $mechanicalInterventions): self
     {
         $this->mechanicalInterventions = $mechanicalInterventions;
         return $this;
@@ -289,12 +289,12 @@ class Meteo
         return $this;
     }
 
-    public function getMechanicalSodiumWater(): ?int
+    public function getMechanicalSodiumWater(): ?float
     {
         return $this->mechanicalSodiumWater;
     }
 
-    public function setMechanicalSodiumWater(int $mechanicalSodiumWater): self
+    public function setMechanicalSodiumWater(float $mechanicalSodiumWater): self
     {
         $this->mechanicalSodiumWater = $mechanicalSodiumWater;
         return $this;
@@ -333,34 +333,34 @@ class Meteo
         return $this;
     }
 
-    public function getAutomaticSprays(): ?int
+    public function getAutomaticSprays(): ?float
     {
         return $this->automaticSprays;
     }
 
-    public function setAutomaticSprays(int $automaticSprays): self
+    public function setAutomaticSprays(float $automaticSprays): self
     {
         $this->automaticSprays = $automaticSprays;
         return $this;
     }
 
-    public function getAutomaticSprayInterval(): ?int
+    public function getAutomaticSprayInterval(): ?float
     {
         return $this->automaticSprayInterval;
     }
 
-    public function setAutomaticSprayInterval(int $automaticSprayInterval): self
+    public function setAutomaticSprayInterval(float $automaticSprayInterval): self
     {
         $this->automaticSprayInterval = $automaticSprayInterval;
         return $this;
     }
 
-    public function getAutomaticSodiumWater(): ?int
+    public function getAutomaticSodiumWater(): ?float
     {
         return $this->automaticSodiumWater;
     }
 
-    public function setAutomaticSodiumWater(int $automaticSodiumWater): self
+    public function setAutomaticSodiumWater(float $automaticSodiumWater): self
     {
         $this->automaticSodiumWater = $automaticSodiumWater;
         return $this;
@@ -377,34 +377,34 @@ class Meteo
         return $this;
     }
 
-    public function getExtTemperaturePosition(): ?int
+    public function getExtTemperaturePosition(): ?float
     {
         return $this->extTemperaturePosition;
     }
 
-    public function setExtTemperaturePosition(int $extTemperaturePosition): self
+    public function setExtTemperaturePosition(float $extTemperaturePosition): self
     {
         $this->extTemperaturePosition = $extTemperaturePosition;
         return $this;
     }
 
-    public function getExtTemperaturePosition2(): ?int
+    public function getExtTemperaturePosition2(): ?float
     {
         return $this->extTemperaturePosition2;
     }
 
-    public function setExtTemperaturePosition2(int $extTemperaturePosition2): self
+    public function setExtTemperaturePosition2(float $extTemperaturePosition2): self
     {
         $this->extTemperaturePosition2 = $extTemperaturePosition2;
         return $this;
     }
 
-    public function getExtTemperatureAttenuation(): ?int
+    public function getExtTemperatureAttenuation(): ?float
     {
         return $this->extTemperatureAttenuation;
     }
 
-    public function setExtTemperatureAttenuation(int $extTemperatureAttenuation): self
+    public function setExtTemperatureAttenuation(float $extTemperatureAttenuation): self
     {
         $this->extTemperatureAttenuation = $extTemperatureAttenuation;
         return $this;
@@ -432,34 +432,34 @@ class Meteo
         return $this;
     }
 
-    public function getExtHumidityPosition(): ?int
+    public function getExtHumidityPosition(): ?float
     {
         return $this->extHumidityPosition;
     }
 
-    public function setExtHumidityPosition(int $extHumidityPosition): self
+    public function setExtHumidityPosition(float $extHumidityPosition): self
     {
         $this->extHumidityPosition = $extHumidityPosition;
         return $this;
     }
 
-    public function getExtHumidityPosition2(): ?int
+    public function getExtHumidityPosition2(): ?float
     {
         return $this->extHumidityPosition2;
     }
 
-    public function setExtHumidityPosition2(int $extHumidityPosition2): self
+    public function setExtHumidityPosition2(float $extHumidityPosition2): self
     {
         $this->extHumidityPosition2 = $extHumidityPosition2;
         return $this;
     }
 
-    public function getExtHumidityAttenuation(): ?int
+    public function getExtHumidityAttenuation(): ?float
     {
         return $this->extHumidityAttenuation;
     }
 
-    public function setExtHumidityAttenuation(int $extHumidityAttenuation): self
+    public function setExtHumidityAttenuation(float $extHumidityAttenuation): self
     {
         $this->extHumidityAttenuation = $extHumidityAttenuation;
         return $this;
@@ -487,34 +487,34 @@ class Meteo
         return $this;
     }
 
-    public function getIntTemperaturePosition(): ?int
+    public function getIntTemperaturePosition(): ?float
     {
         return $this->intTemperaturePosition;
     }
 
-    public function setIntTemperaturePosition(int $intTemperaturePosition): self
+    public function setIntTemperaturePosition(float $intTemperaturePosition): self
     {
         $this->intTemperaturePosition = $intTemperaturePosition;
         return $this;
     }
 
-    public function getIntTemperaturePosition2(): ?int
+    public function getIntTemperaturePosition2(): ?float
     {
         return $this->intTemperaturePosition2;
     }
 
-    public function setIntTemperaturePosition2(int $intTemperaturePosition2): self
+    public function setIntTemperaturePosition2(float $intTemperaturePosition2): self
     {
         $this->intTemperaturePosition2 = $intTemperaturePosition2;
         return $this;
     }
 
-    public function getIntTemperatureAttenuation(): ?int
+    public function getIntTemperatureAttenuation(): ?float
     {
         return $this->intTemperatureAttenuation;
     }
 
-    public function setIntTemperatureAttenuation(int $intTemperatureAttenuation): self
+    public function setIntTemperatureAttenuation(float $intTemperatureAttenuation): self
     {
         $this->intTemperatureAttenuation = $intTemperatureAttenuation;
         return $this;
@@ -542,34 +542,34 @@ class Meteo
         return $this;
     }
 
-    public function getIntHumidityPosition(): ?int
+    public function getIntHumidityPosition(): ?float
     {
         return $this->intHumidityPosition;
     }
 
-    public function setIntHumidityPosition(int $intHumidityPosition): self
+    public function setIntHumidityPosition(float $intHumidityPosition): self
     {
         $this->intHumidityPosition = $intHumidityPosition;
         return $this;
     }
 
-    public function getIntHumidityPosition2(): ?int
+    public function getIntHumidityPosition2(): ?float
     {
         return $this->intHumidityPosition2;
     }
 
-    public function setIntHumidityPosition2(int $intHumidityPosition2): self
+    public function setIntHumidityPosition2(float $intHumidityPosition2): self
     {
         $this->intHumidityPosition2 = $intHumidityPosition2;
         return $this;
     }
 
-    public function getIntHumidityAttenuation(): ?int
+    public function getIntHumidityAttenuation(): ?float
     {
         return $this->intHumidityAttenuation;
     }
 
-    public function setIntHumidityAttenuation(int $intHumidityAttenuation): self
+    public function setIntHumidityAttenuation(float $intHumidityAttenuation): self
     {
         $this->intHumidityAttenuation = $intHumidityAttenuation;
         return $this;
