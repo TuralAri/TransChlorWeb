@@ -531,14 +531,42 @@ Module Meteo
 
         form.quantite_moyenne_chlorure_epandage_mecanique = 10
 
-        Dim Fichier As String = "C:\Users\Public\Documents\TempSeuil.txt"
-        Dim sw As New System.IO.StreamWriter(Fichier)
-        sw.WriteLine("nb_annees=" & form.nb_annees)
-        sw.WriteLine("concentration_annuelle_chlorure_sodium_epandage_mecanique=" & form.concentration_annuelle_chlorure_sodium_epandage_mecanique)
-        sw.WriteLine("concentration_annuelle_chlorure_sodium_epandage_automatique=" & form.concentration_annuelle_chlorure_sodium_epandage_automatique)
-        sw.WriteLine("quantite_moyenne_chlorure_epandage_mecanique=" & form.quantite_moyenne_chlorure_epandage_mecanique)
+        form.concentration_chlorure = 0.001
+        form.epaisseur_film_eau_chaussee = 2
+        form.humidite_relative_seuil_intervention = 95
+        form.intervalle_minimal_entre_2 = 8
+        form.concentration_chlorure_sodium_epandage_mecanique = 36
+        form.quantite_moyenne_chlorure_epandage_automatique = 0.5
+        form.nb_giclage_par_intervalle = 25
+        form.concentration_chlorure_sodium_epandage_automatique = 21
+        form.position_de_la_1_temperature_exterieur = 1
+        form.position_de_la_2_temperature_exterieur = 3
+        form.attenuation_de_1_temperature_exterieur = 1
+        form.attenuation_de_2_temperature_exterieur = 2
+        form.difference_de_temperature_exterieur = 100
+        form.position_de_la_1_humidite_exterieur = 2
+        form.position_de_la_2_humidite_exterieur = 3
+        form.attenuation_de_1_humidite_exterieur = 1
+        form.attenuation_de_2_humidite_exterieur = 4
+        form.difference_de_humidite_exterieur = 100
+        form.position_de_la_1_temperature_interieure = 1
+        form.position_de_la_2_temperature_interieure = 3
+        form.attenuation_de_1_temperature_interieure = 1
+        form.attenuation_de_2_temperature_interieure = 8
+        form.difference_de_temperature_interieure = 100
+        form.position_de_la_1_humidite_interieure = 2
+        form.position_de_la_2_humidite_interieure = 3
+        form.attenuation_de_1_humidite_interieure = 1
+        form.attenuation_de_2_humidite_interieure = 1
+        form.difference_de_humidite_interieure = 100
 
-        sw.Close()
+
+
+
+
+
+        Dim Fichier As String = "C:\Users\Public\Documents\TempSeuil.txt"
+        WriteMeteoFormToTextFile(Fichier, form)
         Return Fichier
 
     End Function
@@ -1356,6 +1384,60 @@ Module Meteo
         Next
 
     End Sub
+
+
+    Public Sub WriteMeteoFormToTextFile(outfile As String, form As StrctForm)
+        ' Ouvrir le fichier texte en mode écriture
+        Dim nFic As Integer = FreeFile()
+        Dim sw As New System.IO.StreamWriter(outfile)
+
+
+        sw.WriteLine(form.nb_annees)
+        sw.WriteLine(form.concentration_chlorure)
+        sw.WriteLine(form.epaisseur_film_eau_chaussee)
+        sw.WriteLine(form.humidite_relative_seuil_intervention)
+
+        sw.WriteLine(form.concentration_annuelle_chlorure_sodium_epandage_mecanique)
+        sw.WriteLine(form.quantite_moyenne_chlorure_epandage_mecanique)
+        'PrintLine(nFic, frmTempSeuil.Label6.Text)
+        sw.WriteLine(form.intervalle_minimal_entre_2)
+        sw.WriteLine(form.concentration_chlorure_sodium_epandage_mecanique)
+        'PrintLine(nFic, frmTempSeuil.Label22.Text)
+
+        sw.WriteLine(form.concentration_annuelle_chlorure_sodium_epandage_automatique)
+        sw.WriteLine(form.quantite_moyenne_chlorure_epandage_automatique)
+        'PrintLine(nFic, frmTempSeuil.Label76.Text)
+        sw.WriteLine(form.nb_giclage_par_intervalle)
+        sw.WriteLine(form.concentration_chlorure_sodium_epandage_automatique)
+        'PrintLine(nFic, frmTempSeuil.Label66.Text)
+
+        sw.WriteLine(form.position_de_la_1_temperature_exterieur)
+        sw.WriteLine(form.position_de_la_2_temperature_exterieur)
+        sw.WriteLine(form.attenuation_de_1_temperature_exterieur)
+        sw.WriteLine(form.attenuation_de_2_temperature_exterieur)
+        sw.WriteLine(form.difference_de_temperature_exterieur)
+        sw.WriteLine(form.position_de_la_1_humidite_exterieur)
+        sw.WriteLine(form.position_de_la_2_humidite_exterieur)
+        sw.WriteLine(form.attenuation_de_1_humidite_exterieur)
+        sw.WriteLine(form.attenuation_de_2_humidite_exterieur)
+        sw.WriteLine(form.difference_de_humidite_exterieur)
+
+        sw.WriteLine(form.position_de_la_1_temperature_interieure)
+        sw.WriteLine(form.position_de_la_2_temperature_interieure)
+        sw.WriteLine(form.attenuation_de_1_temperature_interieure)
+        sw.WriteLine(form.attenuation_de_2_temperature_interieure)
+        sw.WriteLine(form.difference_de_temperature_interieure)
+        sw.WriteLine(form.position_de_la_1_humidite_interieure)
+        sw.WriteLine(form.position_de_la_2_humidite_interieure)
+        sw.WriteLine(form.attenuation_de_1_humidite_interieure)
+        sw.WriteLine(form.attenuation_de_2_humidite_interieure)
+        sw.WriteLine(form.difference_de_humidite_interieure)
+        sw.Close()
+
+        ' Fermer le fichier
+
+    End Sub
+
 
 End Module
 

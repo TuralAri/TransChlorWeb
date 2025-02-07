@@ -10,10 +10,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class MeteoController extends AbstractController
 {
-    
+    private HttpClientInterface $client;
+
+    public function __construct(HttpClientInterface $client)
+    {
+        $this->client = $client;
+    }
     #[Route('/meteo', name: 'meteo_form')]
     public function index(Request $request): Response
     {
@@ -202,5 +208,23 @@ class MeteoController extends AbstractController
         ]);
         dump("after request");
         return new Response($response->getContent(), $response->getStatusCode());
+    }
+
+    #[Route('/test', name: 'send_file')]
+    public function test(): Response
+    {
+        $filePath = __DIR__ . '/../../public/meteoFiles/METEO_DAVOS.TXT'; // Assure-toi que ce fichier existe
+        $file = fopen($filePath, 'r');
+
+        $response = $this->client->request('POST', 'http://localhost:5000/troubleshoot2', [
+            'headers' => [
+                'Content-Type' => 'multipart/form-data'
+            ],
+            'body' => [
+                'file' => $file
+            ]
+        ]);
+
+        return new Response('Réponse du serveur VB: ' . $response->getContent());
     }
 }

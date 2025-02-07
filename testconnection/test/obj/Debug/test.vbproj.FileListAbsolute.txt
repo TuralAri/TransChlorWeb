@@ -12,3 +12,10 @@ C:\Users\Mateo\source\repos\testconnection\test\obj\Debug\test.vbproj.AssemblyRe
 C:\Users\Mateo\source\repos\testconnection\test\obj\Debug\test.vbproj.CoreCompileInputs.cache
 C:\Users\Mateo\source\repos\testconnection\test\obj\Debug\test.exe
 C:\Users\Mateo\source\repos\testconnection\test\obj\Debug\test.pdb
+C:\Users\01mat\OneDrive\Documents\Cours\IUT Bourg en Bresse\3eme annee\TransChlorWeb\testconnection\test\bin\Debug\test.exe.config
+C:\Users\01mat\OneDrive\Documents\Cours\IUT Bourg en Bresse\3eme annee\TransChlorWeb\testconnection\test\bin\Debug\test.exe
+C:\Users\01mat\OneDrive\Documents\Cours\IUT Bourg en Bresse\3eme annee\TransChlorWeb\testconnection\test\bin\Debug\test.pdb
+C:\Users\01mat\OneDrive\Documents\Cours\IUT Bourg en Bresse\3eme annee\TransChlorWeb\testconnection\test\obj\Debug\test.vbproj.AssemblyReference.cache
+C:\Users\01mat\OneDrive\Documents\Cours\IUT Bourg en Bresse\3eme annee\TransChlorWeb\testconnection\test\obj\Debug\test.vbproj.CoreCompileInputs.cache
+C:\Users\01mat\OneDrive\Documents\Cours\IUT Bourg en Bresse\3eme annee\TransChlorWeb\testconnection\test\obj\Debug\test.exe
+C:\Users\01mat\OneDrive\Documents\Cours\IUT Bourg en Bresse\3eme annee\TransChlorWeb\testconnection\test\obj\Debug\test.pdb
