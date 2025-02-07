@@ -926,7 +926,7 @@ Module Meteo
         'création des fichiers INPUT
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         Dim INFile1, INFile2, INFile3, INFile4, INFile5, INFile6, INFile7, INFile8, INFile9, INFile10, INFile11, INFile12, INFile13, INFile14, INFile15, INFile16, INFile17, INFile18 As System.IO.TextWriter
-        PostFile = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../public/export/")
+        PostFile = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../public/exports/")
         OutFile = PostFile & "EXPO_M_E_E_" & txtFile & ".txt"
         INFile1 = System.IO.File.CreateText(OutFile)
         OutFile = PostFile & "EXPO_M_E_O_" & txtFile & ".txt"
