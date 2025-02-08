@@ -17,6 +17,11 @@ class MeteoController extends AbstractController
     #[Route('/meteo', name: 'meteo_form')]
     public function index(Request $request): Response
     {
+
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('index');
+        }
+        
         $meteo = new Meteo();
         $form = $this->createForm(MeteoType::class, $meteo);
 
@@ -33,6 +38,9 @@ class MeteoController extends AbstractController
     #[Route('/upload-meteo', name: 'upload_meteo')]
     public function uploadMeteo(Request $request): JsonResponse
     {
+
+        
+
         $file = $request->files->get('file');
         
         if ($file) {

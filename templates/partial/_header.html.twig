@@ -3,13 +3,26 @@
 
 		<a href="{{path('index')}}" class="hover:text-[#808080]">Accueil</a>
 
-		<a href="{{path('meteo_form')}}" class="hover:text-[#808080]">Climat</a>
+		<a href="{{path('meteo_form')}}" class="hover:text-[#808080] disabled-link">Climat</a>
 
-		<a href="{{path('index')}}" class="hover:text-[#808080]">Transport model</a>
+		<a href="{{path('index')}}" class="hover:text-[#808080] disabled-link">Transport model</a>
 
-		<a href="{{path('index')}}" class="hover:text-[#808080]">Probabiliste</a>
+		<a href="{{path('index')}}" class="hover:text-[#808080] disabled-link">Probabiliste</a>
 
-		<a href="{{path('app_login')}}" class="hover:text-[#808080]">Connexion</a>
+		{% if app.user %}
+			<a href="{{ path('app_logout') }}" class="hover:text-[#808080]">Déconnexion</a>
+		{% else %}
+			<a href="{{ path('app_login') }}" class="hover:text-[#808080]">Connexion</a>
+		{% endif %}
 
 	</nav>
+{% if not app.user %}
+	<style>
+		.disabled-link {
+			color: #808080;
+			pointer-events: none;
+			cursor: default;
+		}
+	</style>
+{% endif %}
 </header>
