@@ -14,7 +14,9 @@ use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Exception;
 
 class MeteoController extends AbstractController
 {
@@ -22,6 +24,11 @@ class MeteoController extends AbstractController
     #[Route('/meteo', name: 'meteo_form')]
     public function index(Request $request): Response
     {
+
+
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('index');
+        }
 
         $importFile = new ImportFile();
         $importForm = $this->createForm(ImportFileType::class, $importFile);
@@ -201,11 +208,13 @@ class MeteoController extends AbstractController
                     ], $response->getStatusCode());
             } catch (\Exception $e) {
                 error_log("Upload error: " . $e->getMessage());
+
                 return new JsonResponse([
                     'error' => 'Erreur lors de l\'upload: ' . $e->getMessage()
                 ], 500);
             }
         }
+
         return new JsonResponse(['error' => 'Aucun fichier reçu'], 400);
     }
 

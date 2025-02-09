@@ -5,6 +5,7 @@
 
 {% block body %}
 	<div class=" mx-[10%] px-4 py-8 ">
+
 		{% for message in app.flashes('success') %}
 			<div class="bg-green-100 p-4 mb-4 rounded-lg">
 				{{ message }}
@@ -29,8 +30,6 @@
 			{{ form_end(importForm) }}
 
 		</div>
-
-
 
 
 
@@ -123,9 +122,35 @@
 					<p>(Sera déterminé après le calcul)</p>
 				</div>
 
+
 			</section>
 		</div>
 
+
+				<div class="hidden gap-2 items-center w-fit justify-left">
+					{{form_row(form.automaticAnnualSodium,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
+					<p>[g/m2]</p>
+				</div>
+				<div class="hidden gap-2 items-cente rw-fit justify-left">
+					{{form_row(form.automaticMeanSodium,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
+					<p>[g/m2]</p>
+				</div>
+				<div class="hidden gap-2 items-center w-fit justify-left">
+					{{form_row(form.automaticSprays,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
+					<p>(Sera déterminé après le calcul)</p>
+				</div>
+				<div class="hidden gap-2 items-center w-fit justify-left">
+					{{form_row(form.automaticSprayInterval,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
+				</div>
+				<div class="hidden gap-2 items-center w-fit justify-left">
+					{{form_row(form.automaticSodiumWater,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
+					<p>[%]</p>
+				</div>
+				<div class="hidden gap-2 items-center w-fit justify-left">
+					{{ form_row(form.automaticThresholdTemperature, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+					<p>[°C]</p>
+					<p>(Sera déterminé après le calcul)</p>
+				</div>
 
 		<section id="part3" class="p-6 rounded-lg border-2 border-black flex flex-col space-y-4">
 			<div class="flex justify-between items-center">
@@ -229,6 +254,7 @@
 
 	</div>
 
+{% endblock %}
 
 	<script>
 		document.getElementById("{{ importForm.importFile.vars.id }}").addEventListener("change", function() {
@@ -236,3 +262,4 @@
 		});
 	</script>
 {% endblock %}
+
