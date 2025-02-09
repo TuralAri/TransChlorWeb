@@ -6,21 +6,40 @@
 {% block body %}
 	<div class=" mx-[10%] px-4 py-8 ">
 
-		{{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+		{% for message in app.flashes('success') %}
+			<div class="bg-green-100 p-4 mb-4 rounded-lg">
+				{{ message }}
+			</div>
+		{% endfor %}
+
+		{% for message in app.flashes('error') %}
+			<div class="bg-red-100 p-4 mb-4 rounded-lg">
+				{{ message }}
+			</div>
+		{% endfor %}
+
 
 		<div class="flex justify-between items-center">
+
 			<h1 class="text-2xl font-bold mb-6">Formulaire Météo</h1>
-			<form id="uploadForm">
-				<input type="file" id="fileInput" class="hidden">
-				<button type="button" onclick="document.getElementById('fileInput').click()" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-800">
-					Importer un fichier météo
-				</button>
-			</form>
+			{{ form_start(importForm, {'action': path('meteo_form'), 'attr': {'class': 'space-y-6','autocomplete':'off','id': 'importForm','method': 'POST', 'enctype': 'multipart/form-data'}}) }}
+			<label for="{{ importForm.importFile.vars.id }}" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-800 cursor-pointer">
+				Importer un fichier météo
+			</label>
+			{{ form_widget(importForm.importFile) }}
+			{{ form_end(importForm) }}
+
 		</div>
+
+
+
+	{{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+
+
 		<div class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
 			<h2 class="text-xl font-semibold mb-4">Hypothèses sur l'épandage des chlorures de sodium</h2>
 			<div class="flex gap-2 items-center justify-left">
-				{{ form_row(form.fileYears, {'attr':{'class':'ml-2 p-2 border rounded-lg text-center', 'type': 'number', 'step': '0.001'}}) }}
+				{{ form_row(form.fileYears, {'attr':{'class':'ml-2 p-2 border rounded-lg text-center', 'type': 'number', 'step': '0.000001'}}) }}
 				<p>[ans]</p>
 			</div>
 			<div class="flex gap-2 items-center justify-left">
@@ -103,9 +122,35 @@
 					<p>(Sera déterminé après le calcul)</p>
 				</div>
 
+
 			</section>
 		</div>
 
+
+				<div class="hidden gap-2 items-center w-fit justify-left">
+					{{form_row(form.automaticAnnualSodium,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
+					<p>[g/m2]</p>
+				</div>
+				<div class="hidden gap-2 items-cente rw-fit justify-left">
+					{{form_row(form.automaticMeanSodium,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
+					<p>[g/m2]</p>
+				</div>
+				<div class="hidden gap-2 items-center w-fit justify-left">
+					{{form_row(form.automaticSprays,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
+					<p>(Sera déterminé après le calcul)</p>
+				</div>
+				<div class="hidden gap-2 items-center w-fit justify-left">
+					{{form_row(form.automaticSprayInterval,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
+				</div>
+				<div class="hidden gap-2 items-center w-fit justify-left">
+					{{form_row(form.automaticSodiumWater,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
+					<p>[%]</p>
+				</div>
+				<div class="hidden gap-2 items-center w-fit justify-left">
+					{{ form_row(form.automaticThresholdTemperature, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+					<p>[°C]</p>
+					<p>(Sera déterminé après le calcul)</p>
+				</div>
 
 		<section id="part3" class="p-6 rounded-lg border-2 border-black flex flex-col space-y-4">
 			<div class="flex justify-between items-center">
@@ -200,5 +245,21 @@
 		</div>
 
 		{{ form_end(form) }}
+
+
+		{{ form_start(exportForm, {'action': path('meteo_form'), 'attr': {'class': 'mt-4 space-y-6','method': 'POST', 'enctype': 'multipart/form-data'}}) }}
+		{{ form_row(exportForm.exportFile, {'attr': {'class': 'px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'}}) }}
+		{{ form_end(exportForm) }}
+
+
 	</div>
+
 {% endblock %}
+
+	<script>
+		document.getElementById("{{ importForm.importFile.vars.id }}").addEventListener("change", function() {
+			document.getElementById("importForm").submit();
+		});
+	</script>
+{% endblock %}
+

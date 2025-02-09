@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\Meteo;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -15,48 +17,49 @@ class MeteoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+
             ->add('fileYears', NumberType::class, ['label' => 'Nombre d\'années (fichier)'])
             ->add('sodiumChlorideConcentration', NumberType::class, ['label' => 'Concentration de chlorure de sodium au temps'])
             ->add('waterFilmThickness', NumberType::class, ['label' => 'Épaisseur du film d\'eau sur la chaussée'])
-            ->add('humidityThreshold', IntegerType::class, ['label' => 'Humidité relative seuil d\'intervention en cas de basses températures'])
+            ->add('humidityThreshold', NumberType::class, ['label' => 'Humidité relative seuil d\'intervention en cas de basses températures'])
 
             ->add('mechanicalAnnualSodium', NumberType::class, ['label' => 'Concentration annuelle en chlorure de sodium'])
             ->add('mechanicalMeanSodium', NumberType::class, ['label' => 'Quantité moyenne de chlorure de sodium'])
-            ->add('mechanicalInterventions', IntegerType::class, ['label' => 'Nombre d\'interventions d\'épandage de chlorure de sodium'])
+            ->add('mechanicalInterventions', NumberType::class, ['label' => 'Nombre d\'interventions d\'épandage de chlorure de sodium', 'required' => false])
             ->add('mechanicalInterval', NumberType::class, ['label' => 'Intervalle minimal entre épandages'])
-            ->add('mechanicalSodiumWater', IntegerType::class, ['label' => 'Concentration de chlorure de sodium dans l\'eau'])
+            ->add('mechanicalSodiumWater', NumberType::class, ['label' => 'Concentration de chlorure de sodium dans l\'eau'])
             ->add('mechanicalThresholdTemperature', NumberType::class, ['label' => 'Température seuil d\'intervention', 'required' => false])
 
             ->add('automaticAnnualSodium', NumberType::class, ['label' => 'Concentration annuelle en chlorure de sodium'])
             ->add('automaticMeanSodium', NumberType::class, ['label' => 'Quantité moyenne de chlorure de sodium'])
-            ->add('automaticSprays', IntegerType::class, ['label' => 'Nombre de giclages annuels'])
-            ->add('automaticSprayInterval', IntegerType::class, ['label' => 'Nombre de giclages sur un intervalle de temps'])
-            ->add('automaticSodiumWater', IntegerType::class, ['label' => 'Concentration de chlorure de sodium dans l\'eau (épandage) Si épandage solide (100%)'])
+            ->add('automaticSprays', NumberType::class, ['label' => 'Nombre de giclages annuels', 'required' => false])
+            ->add('automaticSprayInterval', NumberType::class, ['label' => 'Nombre de giclages sur un intervalle de temps'])
+            ->add('automaticSodiumWater', NumberType::class, ['label' => 'Concentration de chlorure de sodium dans l\'eau (épandage) Si épandage solide (100%)'])
             ->add('automaticThresholdTemperature', NumberType::class, ['label' => 'Température seuil d\'intervention', 'required' => false])
 
-            ->add('extTemperaturePosition', IntegerType::class, ['label' => 'Position de la moyenne au'])
-            ->add('extTemperaturePosition2', IntegerType::class, ['label' => '/'])
-            ->add('extTemperatureAttenuation', IntegerType::class, ['label' => 'Atténuation de'])
-            ->add('extTemperatureAttenuation2', IntegerType::class, ['label' => '/'])
-            ->add('extTemperatureDifference', IntegerType::class, ['label' => 'Différence de température limite'])
+            ->add('extTemperaturePosition', NumberType::class, ['label' => 'Position de la moyenne au'])
+            ->add('extTemperaturePosition2', NumberType::class, ['label' => '/'])
+            ->add('extTemperatureAttenuation', NumberType::class, ['label' => 'Atténuation de'])
+            ->add('extTemperatureAttenuation2', NumberType::class, ['label' => '/'])
+            ->add('extTemperatureDifference', NumberType::class, ['label' => 'Différence de température limite'])
 
-            ->add('extHumidityPosition', IntegerType::class, ['label' => 'Position de la moyenne au'])
-            ->add('extHumidityPosition2', IntegerType::class, ['label' => '/'])
-            ->add('extHumidityAttenuation', IntegerType::class, ['label' => 'Atténuation de'])
-            ->add('extHumidityAttenuation2', IntegerType::class, ['label' => '/'])
-            ->add('extHumidityDifference', IntegerType::class, ['label' => 'Différence Humidité relative limite'])
+            ->add('extHumidityPosition', NumberType::class, ['label' => 'Position de la moyenne au'])
+            ->add('extHumidityPosition2', NumberType::class, ['label' => '/'])
+            ->add('extHumidityAttenuation', NumberType::class, ['label' => 'Atténuation de'])
+            ->add('extHumidityAttenuation2', NumberType::class, ['label' => '/'])
+            ->add('extHumidityDifference', NumberType::class, ['label' => 'Différence Humidité relative limite'])
 
-            ->add('intTemperaturePosition', IntegerType::class, ['label' => 'Position de la moyenne au'])
-            ->add('intTemperaturePosition2', IntegerType::class, ['label' => '/'])
-            ->add('intTemperatureAttenuation', IntegerType::class, ['label' => 'Atténuation de'])
-            ->add('intTemperatureAttenuation2', IntegerType::class, ['label' => '/'])
-            ->add('intTemperatureDifference', IntegerType::class, ['label' => 'Différence de température limite'])
+            ->add('intTemperaturePosition', NumberType::class, ['label' => 'Position de la moyenne au'])
+            ->add('intTemperaturePosition2', NumberType::class, ['label' => '/'])
+            ->add('intTemperatureAttenuation', NumberType::class, ['label' => 'Atténuation de'])
+            ->add('intTemperatureAttenuation2', NumberType::class, ['label' => '/'])
+            ->add('intTemperatureDifference', NumberType::class, ['label' => 'Différence de température limite'])
 
-            ->add('intHumidityPosition', IntegerType::class, ['label' => 'Position de la moyenne au'])
-            ->add('intHumidityPosition2', IntegerType::class, ['label' => '/'])
-            ->add('intHumidityAttenuation', IntegerType::class, ['label' => 'Atténuation de'])
-            ->add('intHumidityAttenuation2', IntegerType::class, ['label' => '/'])
-            ->add('intHumidityDifference', IntegerType::class, ['label' => 'Différence Humidité relative limite'])
+            ->add('intHumidityPosition', NumberType::class, ['label' => 'Position de la moyenne au'])
+            ->add('intHumidityPosition2', NumberType::class, ['label' => '/'])
+            ->add('intHumidityAttenuation', NumberType::class, ['label' => 'Atténuation de'])
+            ->add('intHumidityAttenuation2', NumberType::class, ['label' => '/'])
+            ->add('intHumidityDifference', NumberType::class, ['label' => 'Différence Humidité relative limite'])
 
 
             ->add('submit', SubmitType::class, [
