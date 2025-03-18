@@ -1,4 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
+    document.querySelector("form").addEventListener("submit", function () {
+        document.querySelectorAll(".hidden input").forEach(input => {
+            input.classList.remove("hidden");
+        });
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
     const toggleButton = document.getElementById("part1Button");
     const section = document.getElementById("part1");
     const hiddenDivs = section.querySelectorAll(".hidden");
