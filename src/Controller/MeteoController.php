@@ -7,7 +7,8 @@ use App\Entity\ImportFile;
 use App\Entity\Meteo;
 use App\Form\ExportFileType;
 use App\Form\ImportFileType;
-use App\Form\MeteoType;
+use App\Form\MeteoFormType;
+use App\Form\SaveFormType;
 use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpClient\HttpClient;
@@ -34,12 +35,15 @@ class MeteoController extends AbstractController
         $importForm->handleRequest($request);
 
         $meteo = new Meteo();
-        $form = $this->createForm(MeteoType::class, $meteo);
+        $form = $this->createForm(MeteoFormType::class, $meteo);
         $form->handleRequest($request);
 
         $exportFile = new ExportFile();
         $exportForm = $this->createForm(ExportFileType::class, $exportFile);
         $exportForm->handleRequest($request);
+
+        $saveForm = $this->createForm(SaveFormType::class);
+        $saveForm->handleRequest($request);
 
         if($importForm->isSubmitted() && $importForm->isValid()) {
             $request->getSession()->set('importedFileName',$importForm->get('importFile')->getData()->getClientOriginalName());
@@ -122,7 +126,7 @@ class MeteoController extends AbstractController
                 }
 
                 $meteo = new Meteo();
-                $form = $this->createForm(MeteoType::class, $meteo);
+                $form = $this->createForm(MeteoFormType::class, $meteo);
 
 
                 $expectedKeys = [
@@ -175,7 +179,8 @@ class MeteoController extends AbstractController
         return $this->render('meteo/index.html.twig', [
             'form' => $form->createView(),
             'importForm' => $importForm->createView(),
-            'exportForm' => $exportForm->createView()
+            'exportForm' => $exportForm->createView(),
+            'saveForm' => $saveForm->createView(),
         ]);
     }
 
