@@ -8,17 +8,15 @@ use App\Entity\Meteo;
 use App\Form\ExportFileType;
 use App\Form\ImportFileType;
 use App\Form\MeteoFormType;
-use App\Form\SaveFormType;
 use App\Repository\MeteoRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use PhpParser\Node\Expr\Array_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Exception;
+
 
 class MeteoController extends AbstractController
 {
@@ -45,8 +43,6 @@ class MeteoController extends AbstractController
         $exportForm = $this->createForm(ExportFileType::class, $exportFile);
         $exportForm->handleRequest($request);
 
-        $saveForm = $this->createForm(SaveFormType::class);
-        $saveForm->handleRequest($request);
 
         if($importForm->isSubmitted() && $importForm->isValid()) {
             $request->getSession()->set('importedFileName',$importForm->get('importFile')->getData()->getClientOriginalName());
@@ -75,6 +71,7 @@ class MeteoController extends AbstractController
             $formDataArray = $this->getFormData($formData);
 
 
+
             $response = $this->calculate($formDataArray,$request->getSession()->get('importedFileName'));
 
             if($response->getStatusCode() == 200){
@@ -92,45 +89,23 @@ class MeteoController extends AbstractController
 
                 foreach ($expectedKeys as $key) {
                     $form->get($key)->setData(floatval(str_replace(',', '.', $responseContent[$key])));
+                    $setter = 'set' . ucfirst($key);
+                    if (method_exists($meteo, $setter)) {
+                        $meteo->$setter(floatval(str_replace(',', '.', $responseContent[$key])));
+                    }
                 }
 
 
 
+                $doctrine->getManager()->persist($meteo);
+                $doctrine->getManager()->flush();
+
 
 
                 $this->addFlash('success', 'Calcul effectué avec succès');
+                $this->addFlash('success', 'Sauvegarde des champs dans la base de données effectuée avec succès');
             }
-
-
-
-
-
         }
-
-        if($saveForm->isSubmitted() && $saveForm->isValid()) {
-
-            $meteo = new Meteo();
-
-            $formData = $form->getData();
-            dd($formData);
-            $formDataArray = $this->getFormData($formData);
-            dump($formDataArray);
-            $expectedKeys = $this->getExpectedKeys(36);
-            dd($expectedKeys);
-            foreach ($expectedKeys as $key) {
-                $meteo->$key = $formDataArray[$key];
-            }
-
-
-
-
-            $entityManager = $doctrine->getManager();
-            $entityManager->persist($meteo);
-            $entityManager->flush();
-            $this->addFlash('success', 'Données sauvegardées avec succès');
-        }
-
-
 
         if($exportForm->isSubmitted() && $exportForm->isValid()) {
             $response = $this->export($request);
@@ -148,7 +123,6 @@ class MeteoController extends AbstractController
             'form' => $form->createView(),
             'importForm' => $importForm->createView(),
             'exportForm' => $exportForm->createView(),
-            'saveForm' => $saveForm->createView(),
         ]);
     }
 
