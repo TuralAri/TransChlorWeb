@@ -9,7 +9,9 @@ use App\Form\ExportFileType;
 use App\Form\ImportFileType;
 use App\Form\MeteoFormType;
 use App\Form\SaveFormType;
-use Doctrine\ORM\Mapping\Entity;
+use App\Repository\MeteoRepository;
+use Doctrine\Persistence\ManagerRegistry;
+use PhpParser\Node\Expr\Array_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,13 +24,14 @@ class MeteoController extends AbstractController
 {
     
     #[Route('/meteo', name: 'meteo_form')]
-    public function index(Request $request): Response
+    public function index(Request $request,ManagerRegistry $doctrine, MeteoRepository $userRepository): Response
     {
 
 
         if (!$this->getUser()) {
             return $this->redirectToRoute('index');
         }
+
 
         $importFile = new ImportFile();
         $importForm = $this->createForm(ImportFileType::class, $importFile);
@@ -53,19 +56,7 @@ class MeteoController extends AbstractController
                 if (isset($responseContent[0]) && is_string($responseContent[0])) {
                     $responseContent = json_decode($responseContent[0], true);
                 }
-                $expectedKeys = [
-                    'fileYears', 'sodiumChlorideConcentration', 'waterFilmThickness',
-                    'humidityThreshold', 'mechanicalAnnualSodium', 'mechanicalMeanSodium',
-                    'mechanicalInterval', 'mechanicalSodiumWater', 'automaticAnnualSodium',
-                    'automaticMeanSodium', 'automaticSprayInterval', 'automaticSodiumWater',
-                    'extTemperaturePosition', 'extTemperaturePosition2', 'extTemperatureAttenuation',
-                    'extTemperatureAttenuation2', 'extTemperatureDifference', 'extHumidityPosition',
-                    'extHumidityPosition2', 'extHumidityAttenuation', 'extHumidityAttenuation2',
-                    'extHumidityDifference', 'intTemperaturePosition', 'intTemperaturePosition2',
-                    'intTemperatureAttenuation', 'intTemperatureAttenuation2', 'intTemperatureDifference',
-                    'intHumidityPosition', 'intHumidityPosition2', 'intHumidityAttenuation',
-                    'intHumidityAttenuation2', 'intHumidityDifference'
-                ];
+                $expectedKeys = $this->getExpectedKeys(32);
 
                 foreach ($expectedKeys as $key) {
                     $form->get($key)->setData(floatval(str_replace(',', '.', $responseContent[$key])));
@@ -81,40 +72,7 @@ class MeteoController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()){
             $formData = $form->getData();
-            $formDataArray = [
-                'fileYears' => $formData->getFileYears(),
-                'sodiumChlorideConcentration' => $formData->getSodiumChlorideConcentration(),
-                'waterFilmThickness' => $formData->getWaterFilmThickness(),
-                'humidityThreshold' => $formData->getHumidityThreshold(),
-                'mechanicalAnnualSodium' => $formData->getMechanicalAnnualSodium(),
-                'mechanicalMeanSodium' => $formData->getMechanicalMeanSodium(),
-                'mechanicalInterval' => $formData->getMechanicalInterval(),
-                'mechanicalSodiumWater' => $formData->getMechanicalSodiumWater(),
-                'automaticAnnualSodium' => $formData->getAutomaticAnnualSodium(),
-                'automaticMeanSodium' => $formData->getAutomaticMeanSodium(),
-                'automaticSprayInterval' => $formData->getAutomaticSprayInterval(),
-                'automaticSodiumWater' => $formData->getAutomaticSodiumWater(),
-                'extTemperaturePosition' => $formData->getExtTemperaturePosition(),
-                'extTemperaturePosition2' => $formData->getExtTemperaturePosition2(),
-                'extTemperatureAttenuation' => $formData->getExtTemperatureAttenuation(),
-                'extTemperatureAttenuation2' => $formData->getExtTemperatureAttenuation2(),
-                'extTemperatureDifference' => $formData->getExtTemperatureDifference(),
-                'extHumidityPosition' => $formData->getExtHumidityPosition(),
-                'extHumidityPosition2' => $formData->getExtHumidityPosition2(),
-                'extHumidityAttenuation' => $formData->getExtHumidityAttenuation(),
-                'extHumidityAttenuation2' => $formData->getExtHumidityAttenuation2(),
-                'extHumidityDifference' => $formData->getExtHumidityDifference(),
-                'intTemperaturePosition' => $formData->getIntTemperaturePosition(),
-                'intTemperaturePosition2' => $formData->getIntTemperaturePosition2(),
-                'intTemperatureAttenuation' => $formData->getIntTemperatureAttenuation(),
-                'intTemperatureAttenuation2' => $formData->getIntTemperatureAttenuation2(),
-                'intTemperatureDifference' => $formData->getIntTemperatureDifference(),
-                'intHumidityPosition' => $formData->getIntHumidityPosition(),
-                'intHumidityPosition2' => $formData->getIntHumidityPosition2(),
-                'intHumidityAttenuation' => $formData->getIntHumidityAttenuation(),
-                'intHumidityAttenuation2' => $formData->getIntHumidityAttenuation2(),
-                'intHumidityDifference' => $formData->getIntHumidityDifference()
-            ];
+            $formDataArray = $this->getFormData($formData);
 
 
             $response = $this->calculate($formDataArray,$request->getSession()->get('importedFileName'));
@@ -129,20 +87,7 @@ class MeteoController extends AbstractController
                 $form = $this->createForm(MeteoFormType::class, $meteo);
 
 
-                $expectedKeys = [
-                    'fileYears', 'sodiumChlorideConcentration', 'waterFilmThickness',
-                    'humidityThreshold', 'mechanicalAnnualSodium', 'mechanicalMeanSodium',
-                    'mechanicalInterventions', 'mechanicalInterval', 'mechanicalSodiumWater',
-                    'mechanicalThresholdTemperature', 'automaticAnnualSodium', 'automaticMeanSodium',
-                    'automaticSprays', 'automaticSprayInterval', 'automaticSodiumWater',
-                    'automaticThresholdTemperature', 'extTemperaturePosition', 'extTemperaturePosition2',
-                    'extTemperatureAttenuation', 'extTemperatureAttenuation2', 'extTemperatureDifference',
-                    'extHumidityPosition', 'extHumidityPosition2', 'extHumidityAttenuation',
-                    'extHumidityAttenuation2', 'extHumidityDifference', 'intTemperaturePosition',
-                    'intTemperaturePosition2', 'intTemperatureAttenuation', 'intTemperatureAttenuation2',
-                    'intTemperatureDifference', 'intHumidityPosition', 'intHumidityPosition2',
-                    'intHumidityAttenuation', 'intHumidityAttenuation2', 'intHumidityDifference'
-                ];
+                $expectedKeys = $this->getExpectedKeys(36);
 
 
                 foreach ($expectedKeys as $key) {
@@ -157,10 +102,33 @@ class MeteoController extends AbstractController
             }
 
 
+
+
+
         }
 
+        if($saveForm->isSubmitted() && $saveForm->isValid()) {
+
+            $meteo = new Meteo();
+
+            $formData = $form->getData();
+            dd($formData);
+            $formDataArray = $this->getFormData($formData);
+            dump($formDataArray);
+            $expectedKeys = $this->getExpectedKeys(36);
+            dd($expectedKeys);
+            foreach ($expectedKeys as $key) {
+                $meteo->$key = $formDataArray[$key];
+            }
 
 
+
+
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($meteo);
+            $entityManager->flush();
+            $this->addFlash('success', 'Données sauvegardées avec succès');
+        }
 
 
 
@@ -231,40 +199,7 @@ class MeteoController extends AbstractController
             return new JsonResponse(['error' => 'Fichier incomplet'], Response::HTTP_BAD_REQUEST);
         }
 
-        $data = [
-            'fileYears' => $lines[0],
-            'sodiumChlorideConcentration' => $lines[1],
-            'waterFilmThickness' => $lines[2],
-            'humidityThreshold' => $lines[3],
-            'mechanicalAnnualSodium' => $lines[4],
-            'mechanicalMeanSodium' => $lines[5],
-            'mechanicalInterval' => $lines[6],
-            'mechanicalSodiumWater' => $lines[7],
-            'automaticAnnualSodium' => $lines[8],
-            'automaticMeanSodium' => $lines[9],
-            'automaticSprayInterval' => $lines[10],
-            'automaticSodiumWater' => $lines[11],
-            'extTemperaturePosition' => $lines[12],
-            'extTemperaturePosition2' => $lines[13],
-            'extTemperatureAttenuation' => $lines[14],
-            'extTemperatureAttenuation2' => $lines[15],
-            'extTemperatureDifference' => $lines[16],
-            'extHumidityPosition' => $lines[17],
-            'extHumidityPosition2' => $lines[18],
-            'extHumidityAttenuation' => $lines[19],
-            'extHumidityAttenuation2' => $lines[20],
-            'extHumidityDifference' => $lines[21],
-            'intTemperaturePosition' => $lines[22],
-            'intTemperaturePosition2' => $lines[23],
-            'intTemperatureAttenuation' => $lines[24],
-            'intTemperatureAttenuation2' => $lines[25],
-            'intTemperatureDifference' => $lines[26],
-            'intHumidityPosition' => $lines[27],
-            'intHumidityPosition2' => $lines[28],
-            'intHumidityAttenuation' => $lines[29],
-            'intHumidityAttenuation2' => $lines[30],
-            'intHumidityDifference' => $lines[31],
-        ];
+        $data = $this->getData(32,$lines);
         return new JsonResponse($data);
     }
 
@@ -351,44 +286,7 @@ class MeteoController extends AbstractController
             return new JsonResponse(['error' => 'Fichier incomplet'], Response::HTTP_BAD_REQUEST);
         }
 
-        $data = [
-            'fileYears' => $lines[0],
-            'sodiumChlorideConcentration' => $lines[1],
-            'waterFilmThickness' => $lines[2],
-            'humidityThreshold' => $lines[3],
-            'mechanicalAnnualSodium' => $lines[4],
-            'mechanicalMeanSodium' => $lines[5],
-            'mechanicalInterventions' => $lines[6],
-            'mechanicalInterval' => $lines[7],
-            'mechanicalSodiumWater' => $lines[8],
-            'mechanicalThresholdTemperature' => $lines[9],
-            'automaticAnnualSodium' => $lines[10],
-            'automaticMeanSodium' => $lines[11],
-            'automaticSprays' => $lines[12],
-            'automaticSprayInterval' => $lines[13],
-            'automaticSodiumWater' => $lines[14],
-            'automaticThresholdTemperature' => $lines[15],
-            'extTemperaturePosition' => $lines[16],
-            'extTemperaturePosition2' => $lines[17],
-            'extTemperatureAttenuation' => $lines[18],
-            'extTemperatureAttenuation2' => $lines[19],
-            'extTemperatureDifference' => $lines[20],
-            'extHumidityPosition' => $lines[21],
-            'extHumidityPosition2' => $lines[22],
-            'extHumidityAttenuation' => $lines[23],
-            'extHumidityAttenuation2' => $lines[24],
-            'extHumidityDifference' => $lines[25],
-            'intTemperaturePosition' => $lines[26],
-            'intTemperaturePosition2' => $lines[27],
-            'intTemperatureAttenuation' => $lines[28],
-            'intTemperatureAttenuation2' => $lines[29],
-            'intTemperatureDifference' => $lines[30],
-            'intHumidityPosition' => $lines[31],
-            'intHumidityPosition2' => $lines[32],
-            'intHumidityAttenuation' => $lines[33],
-            'intHumidityAttenuation2' => $lines[34],
-            'intHumidityDifference' => $lines[35],
-        ];
+        $data = $this->getData(36,$lines);
 
         return new JsonResponse($data);
 
@@ -428,6 +326,158 @@ class MeteoController extends AbstractController
     }
 
 
+
+    public function getFormData($formData): array
+    {
+       return  [
+            'fileYears' => $formData->getFileYears(),
+            'sodiumChlorideConcentration' => $formData->getSodiumChlorideConcentration(),
+            'waterFilmThickness' => $formData->getWaterFilmThickness(),
+            'humidityThreshold' => $formData->getHumidityThreshold(),
+            'mechanicalAnnualSodium' => $formData->getMechanicalAnnualSodium(),
+            'mechanicalMeanSodium' => $formData->getMechanicalMeanSodium(),
+            'mechanicalInterval' => $formData->getMechanicalInterval(),
+            'mechanicalSodiumWater' => $formData->getMechanicalSodiumWater(),
+            'automaticAnnualSodium' => $formData->getAutomaticAnnualSodium(),
+            'automaticMeanSodium' => $formData->getAutomaticMeanSodium(),
+            'automaticSprayInterval' => $formData->getAutomaticSprayInterval(),
+            'automaticSodiumWater' => $formData->getAutomaticSodiumWater(),
+            'extTemperaturePosition' => $formData->getExtTemperaturePosition(),
+            'extTemperaturePosition2' => $formData->getExtTemperaturePosition2(),
+            'extTemperatureAttenuation' => $formData->getExtTemperatureAttenuation(),
+            'extTemperatureAttenuation2' => $formData->getExtTemperatureAttenuation2(),
+            'extTemperatureDifference' => $formData->getExtTemperatureDifference(),
+            'extHumidityPosition' => $formData->getExtHumidityPosition(),
+            'extHumidityPosition2' => $formData->getExtHumidityPosition2(),
+            'extHumidityAttenuation' => $formData->getExtHumidityAttenuation(),
+            'extHumidityAttenuation2' => $formData->getExtHumidityAttenuation2(),
+            'extHumidityDifference' => $formData->getExtHumidityDifference(),
+            'intTemperaturePosition' => $formData->getIntTemperaturePosition(),
+            'intTemperaturePosition2' => $formData->getIntTemperaturePosition2(),
+            'intTemperatureAttenuation' => $formData->getIntTemperatureAttenuation(),
+            'intTemperatureAttenuation2' => $formData->getIntTemperatureAttenuation2(),
+            'intTemperatureDifference' => $formData->getIntTemperatureDifference(),
+            'intHumidityPosition' => $formData->getIntHumidityPosition(),
+            'intHumidityPosition2' => $formData->getIntHumidityPosition2(),
+            'intHumidityAttenuation' => $formData->getIntHumidityAttenuation(),
+            'intHumidityAttenuation2' => $formData->getIntHumidityAttenuation2(),
+            'intHumidityDifference' => $formData->getIntHumidityDifference()
+        ];
+    }
+
+    public function getExpectedKeys(int $nb) : array
+    {
+        if ($nb == 36) {
+            return [
+                'fileYears', 'sodiumChlorideConcentration', 'waterFilmThickness',
+                'humidityThreshold', 'mechanicalAnnualSodium', 'mechanicalMeanSodium',
+                'mechanicalInterventions', 'mechanicalInterval', 'mechanicalSodiumWater',
+                'mechanicalThresholdTemperature', 'automaticAnnualSodium', 'automaticMeanSodium',
+                'automaticSprays', 'automaticSprayInterval', 'automaticSodiumWater',
+                'automaticThresholdTemperature', 'extTemperaturePosition', 'extTemperaturePosition2',
+                'extTemperatureAttenuation', 'extTemperatureAttenuation2', 'extTemperatureDifference',
+                'extHumidityPosition', 'extHumidityPosition2', 'extHumidityAttenuation',
+                'extHumidityAttenuation2', 'extHumidityDifference', 'intTemperaturePosition',
+                'intTemperaturePosition2', 'intTemperatureAttenuation', 'intTemperatureAttenuation2',
+                'intTemperatureDifference', 'intHumidityPosition', 'intHumidityPosition2',
+                'intHumidityAttenuation', 'intHumidityAttenuation2', 'intHumidityDifference'
+            ];
+        } else if ($nb == 32) {
+            return [
+                'fileYears', 'sodiumChlorideConcentration', 'waterFilmThickness',
+                'humidityThreshold', 'mechanicalAnnualSodium', 'mechanicalMeanSodium',
+                'mechanicalInterval', 'mechanicalSodiumWater', 'automaticAnnualSodium',
+                'automaticMeanSodium', 'automaticSprayInterval', 'automaticSodiumWater',
+                'extTemperaturePosition', 'extTemperaturePosition2', 'extTemperatureAttenuation',
+                'extTemperatureAttenuation2', 'extTemperatureDifference', 'extHumidityPosition',
+                'extHumidityPosition2', 'extHumidityAttenuation', 'extHumidityAttenuation2',
+                'extHumidityDifference', 'intTemperaturePosition', 'intTemperaturePosition2',
+                'intTemperatureAttenuation', 'intTemperatureAttenuation2', 'intTemperatureDifference',
+                'intHumidityPosition', 'intHumidityPosition2', 'intHumidityAttenuation',
+                'intHumidityAttenuation2', 'intHumidityDifference'
+            ];
+        }
+        return [];
+    }
+
+    public function getData(int $nb,$lines) : array {
+        if($nb == 36){
+            return [
+                'fileYears' => $lines[0],
+                'sodiumChlorideConcentration' => $lines[1],
+                'waterFilmThickness' => $lines[2],
+                'humidityThreshold' => $lines[3],
+                'mechanicalAnnualSodium' => $lines[4],
+                'mechanicalMeanSodium' => $lines[5],
+                'mechanicalInterventions' => $lines[6],
+                'mechanicalInterval' => $lines[7],
+                'mechanicalSodiumWater' => $lines[8],
+                'mechanicalThresholdTemperature' => $lines[9],
+                'automaticAnnualSodium' => $lines[10],
+                'automaticMeanSodium' => $lines[11],
+                'automaticSprays' => $lines[12],
+                'automaticSprayInterval' => $lines[13],
+                'automaticSodiumWater' => $lines[14],
+                'automaticThresholdTemperature' => $lines[15],
+                'extTemperaturePosition' => $lines[16],
+                'extTemperaturePosition2' => $lines[17],
+                'extTemperatureAttenuation' => $lines[18],
+                'extTemperatureAttenuation2' => $lines[19],
+                'extTemperatureDifference' => $lines[20],
+                'extHumidityPosition' => $lines[21],
+                'extHumidityPosition2' => $lines[22],
+                'extHumidityAttenuation' => $lines[23],
+                'extHumidityAttenuation2' => $lines[24],
+                'extHumidityDifference' => $lines[25],
+                'intTemperaturePosition' => $lines[26],
+                'intTemperaturePosition2' => $lines[27],
+                'intTemperatureAttenuation' => $lines[28],
+                'intTemperatureAttenuation2' => $lines[29],
+                'intTemperatureDifference' => $lines[30],
+                'intHumidityPosition' => $lines[31],
+                'intHumidityPosition2' => $lines[32],
+                'intHumidityAttenuation' => $lines[33],
+                'intHumidityAttenuation2' => $lines[34],
+                'intHumidityDifference' => $lines[35],
+            ];
+        }else if($nb == 32){
+            return [
+                'fileYears' => $lines[0],
+                'sodiumChlorideConcentration' => $lines[1],
+                'waterFilmThickness' => $lines[2],
+                'humidityThreshold' => $lines[3],
+                'mechanicalAnnualSodium' => $lines[4],
+                'mechanicalMeanSodium' => $lines[5],
+                'mechanicalInterval' => $lines[6],
+                'mechanicalSodiumWater' => $lines[7],
+                'automaticAnnualSodium' => $lines[8],
+                'automaticMeanSodium' => $lines[9],
+                'automaticSprayInterval' => $lines[10],
+                'automaticSodiumWater' => $lines[11],
+                'extTemperaturePosition' => $lines[12],
+                'extTemperaturePosition2' => $lines[13],
+                'extTemperatureAttenuation' => $lines[14],
+                'extTemperatureAttenuation2' => $lines[15],
+                'extTemperatureDifference' => $lines[16],
+                'extHumidityPosition' => $lines[17],
+                'extHumidityPosition2' => $lines[18],
+                'extHumidityAttenuation' => $lines[19],
+                'extHumidityAttenuation2' => $lines[20],
+                'extHumidityDifference' => $lines[21],
+                'intTemperaturePosition' => $lines[22],
+                'intTemperaturePosition2' => $lines[23],
+                'intTemperatureAttenuation' => $lines[24],
+                'intTemperatureAttenuation2' => $lines[25],
+                'intTemperatureDifference' => $lines[26],
+                'intHumidityPosition' => $lines[27],
+                'intHumidityPosition2' => $lines[28],
+                'intHumidityAttenuation' => $lines[29],
+                'intHumidityAttenuation2' => $lines[30],
+                'intHumidityDifference' => $lines[31],
+            ];
+        }
+        return [];
+    }
 
 
 }
