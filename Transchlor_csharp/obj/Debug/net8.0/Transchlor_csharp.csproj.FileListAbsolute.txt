@@ -1,0 +1,14 @@
+C:\Users\01mat\OneDrive\Documents\Cours\IUT Bourg en Bresse\3eme annee\sae\transchlor bibliotheque\Transchlor_csharp\bin\Debug\net8.0\Transchlor_csharp.exe
+C:\Users\01mat\OneDrive\Documents\Cours\IUT Bourg en Bresse\3eme annee\sae\transchlor bibliotheque\Transchlor_csharp\bin\Debug\net8.0\Transchlor_csharp.deps.json
+C:\Users\01mat\OneDrive\Documents\Cours\IUT Bourg en Bresse\3eme annee\sae\transchlor bibliotheque\Transchlor_csharp\bin\Debug\net8.0\Transchlor_csharp.runtimeconfig.json
+C:\Users\01mat\OneDrive\Documents\Cours\IUT Bourg en Bresse\3eme annee\sae\transchlor bibliotheque\Transchlor_csharp\bin\Debug\net8.0\Transchlor_csharp.dll
+C:\Users\01mat\OneDrive\Documents\Cours\IUT Bourg en Bresse\3eme annee\sae\transchlor bibliotheque\Transchlor_csharp\bin\Debug\net8.0\Transchlor_csharp.pdb
+C:\Users\01mat\OneDrive\Documents\Cours\IUT Bourg en Bresse\3eme annee\sae\transchlor bibliotheque\Transchlor_csharp\obj\Debug\net8.0\Transchlor_csharp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\01mat\OneDrive\Documents\Cours\IUT Bourg en Bresse\3eme annee\sae\transchlor bibliotheque\Transchlor_csharp\obj\Debug\net8.0\Transchlor_csharp.AssemblyInfoInputs.cache
+C:\Users\01mat\OneDrive\Documents\Cours\IUT Bourg en Bresse\3eme annee\sae\transchlor bibliotheque\Transchlor_csharp\obj\Debug\net8.0\Transchlor_csharp.AssemblyInfo.cs
+C:\Users\01mat\OneDrive\Documents\Cours\IUT Bourg en Bresse\3eme annee\sae\transchlor bibliotheque\Transchlor_csharp\obj\Debug\net8.0\Transchlor_csharp.csproj.CoreCompileInputs.cache
+C:\Users\01mat\OneDrive\Documents\Cours\IUT Bourg en Bresse\3eme annee\sae\transchlor bibliotheque\Transchlor_csharp\obj\Debug\net8.0\Transchlor_csharp.dll
+C:\Users\01mat\OneDrive\Documents\Cours\IUT Bourg en Bresse\3eme annee\sae\transchlor bibliotheque\Transchlor_csharp\obj\Debug\net8.0\refint\Transchlor_csharp.dll
+C:\Users\01mat\OneDrive\Documents\Cours\IUT Bourg en Bresse\3eme annee\sae\transchlor bibliotheque\Transchlor_csharp\obj\Debug\net8.0\Transchlor_csharp.pdb
+C:\Users\01mat\OneDrive\Documents\Cours\IUT Bourg en Bresse\3eme annee\sae\transchlor bibliotheque\Transchlor_csharp\obj\Debug\net8.0\Transchlor_csharp.genruntimeconfig.cache
+C:\Users\01mat\OneDrive\Documents\Cours\IUT Bourg en Bresse\3eme annee\sae\transchlor bibliotheque\Transchlor_csharp\obj\Debug\net8.0\ref\Transchlor_csharp.dll
