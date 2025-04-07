@@ -23,3 +23,16 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+*.db
+/.vs/TransChlorWeb/CopilotIndices/17.12.53.23981/SemanticSymbols.db-shm
+*.db-wal
+*.vsidx
+/.vs/TransChlorWeb/v17/DocumentLayout.backup.json
+/.vs/slnx.sqlite
+*.db-shm
+/testconnection/.vs/test/FileContentIndex/0600b277-b960-461f-aa3a-e78b4632700e.vsidx
+*.sqlite-journal
+/testconnection/.vs/test/FileContentIndex/0afa0fd8-dbcc-4d66-95d7-aebd18e5520e.vsidx
+*.cs
+*.cache
+*.editorconfig
