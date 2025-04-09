@@ -1,7 +1,127 @@
 {% extends 'base.html.twig' %}
-{% block title %}Transchlor - L'application web
+{% block title %}Transchlor - L'application web de modélisation d'ions chlorures
 {% endblock %}
 
 {% block body %}
-	<h1 class="text-4xl text-center font-bold tracking-widest">Page d'accueil de Transchlor</h1>
+    <div class="relative text-white">
+        <div class="absolute inset-0 z-0 overflow-hidden">
+			<img src="{{ asset('images/wallpaper_bridge.jpg') }}" alt="Pont en béton" class="object-cover w-full h-full" />
+        </div>
+        <div class="relative z-10 container mx-auto px-4 py-16 md:py-24">
+        </div>
+    </div>
+
+    <div class="bg-white py-12 md:py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Fonctionnalités principales</h2>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-gray-50 p-6 rounded-lg shadow-md">
+                    <div class="bg-blue-100 p-3 rounded-full w-16 h-16 flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Modèle Climatique</h3>
+                    <p class="text-gray-600">Intégration des données climatiques pour une modélisation précise de l'influence des conditions environnementales sur la pénétration des chlorures.</p>
+                </div>
+                
+                <div class="bg-gray-50 p-6 rounded-lg shadow-md">
+                    <div class="bg-green-100 p-3 rounded-full w-16 h-16 flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Transport Model</h3>
+                    <p class="text-gray-600">Simulation du transport ionique à travers différentes structures en béton, tenant compte des caractéristiques spécifiques des matériaux.</p>
+                </div>
+                
+                <div class="bg-gray-50 p-6 rounded-lg shadow-md">
+                    <div class="bg-purple-100 p-3 rounded-full w-16 h-16 flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Analyse Probabiliste</h3>
+                    <p class="text-gray-600">Évaluation des risques et prédiction de la durée de vie des structures avec quantification des incertitudes.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-gray-100 py-12 md:py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Comment ça fonctionne</h2>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden shadow-lg">
+                        <img src="{{ asset('images/chloride.png') }}" alt="Illustration du modèle de transport" class="object-cover w-full h-full" />
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1">
+                                <span class="font-bold">1</span>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-semibold mb-2">Collecte des données</h3>
+                                <p class="text-gray-600">Importez les paramètres structurels du pont et les données environnementales pour initialiser le modèle.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1">
+                                <span class="font-bold">2</span>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-semibold mb-2">Simulation du transport ionique</h3>
+                                <p class="text-gray-600">Notre algorithme calcule la pénétration des ions chlorures en fonction du temps et des conditions spécifiques.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1">
+                                <span class="font-bold">3</span>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-semibold mb-2">Analyse des résultats</h3>
+                                <p class="text-gray-600">Visualisez les résultats sous forme de graphiques interactifs et de rapports détaillés pour prendre des décisions éclairées.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <footer class="bg-gray-800 text-gray-300 py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Transchlor</h3>
+                    <p class="mb-4">Solution de pointe pour la modélisation du transport des ions chlorures dans les infrastructures en béton.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Liens rapides</h3>
+                    <ul class="space-y-2">
+                        <li><a href="{{ path('index') }}" class="hover:text-white transition-colors">Accueil</a></li>
+                        <li><a href="{{ path('meteo_form') }}" class="hover:text-white transition-colors {{ not app.user ? 'opacity-50 cursor-not-allowed' : '' }}">Climat</a></li>
+                        <li><a href="{{ path('index') }}" class="hover:text-white transition-colors {{ not app.user ? 'opacity-50 cursor-not-allowed' : '' }}">Transport model</a></li>
+                        <li><a href="{{ path('index') }}" class="hover:text-white transition-colors {{ not app.user ? 'opacity-50 cursor-not-allowed' : '' }}">Probabiliste</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contact</h3>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p>&copy; {% if "now"|date("Y") == "2025" %}2025{% else %}2025 - {{ "now"|date("Y") }}{% endif %} Transchlor. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
 {% endblock %}
