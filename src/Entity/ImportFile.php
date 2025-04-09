@@ -1,30 +1,11 @@
 <?php
 
 namespace App\Entity;
-use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity()
- */
 class ImportFile
 {
-
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
     private $id;
-
-
-    /**
-     * @ORM\Column(type="string")
-     */
     private $fileName;
-
-    /**
-     * @ORM\Column(type="string")
-     */
     private $filePath;
 
     public function getId(): ?int
