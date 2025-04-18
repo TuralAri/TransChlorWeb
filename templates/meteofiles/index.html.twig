@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Meteo Files
+{% endblock %}
+
+{% block body %}
+    <div class="mx-[10%] px-4 py-8 ">
+        <h1 class="text-2xl font-bold mb-6">Vos fichiers méteos</h1>
+        <div class="flex justify-between items-center p-6 bg-gray-50 border border-gray-200 rounded-lg shadow-sm">
+            <p class="text-xl">Ajouter un nouveau fichier</p>
+            <a href="{{ path('meteo_files_add') }}" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 focus:outline-none cursor-pointer">Ajouter</a>
+        </div>
+
+        <section class="space-y-4">
+            <div class="flex justify-between items-center p-6 bg-gray-50 border border-gray-200 rounded-lg shadow-sm mt-4">
+                <p class="text-lg font-medium text-gray-700">Fichier 1</p>
+                <a href="#" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none transition-all">Voir</a>
+            </div>
+
+            {# Ajouter d'autres fichiers ici si nécessaire #}
+
+        </section>
+    </div>
+{% endblock %}

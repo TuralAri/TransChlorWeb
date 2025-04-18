@@ -225,7 +225,7 @@ class MeteoController extends AbstractController
         if ($response->getStatusCode() === 200) {
             $responseContent = $response->getContent();
             $outputFileName = 'calc_form_meteo_output.txt';
-            $outputFilePath = $this->getParameter('kernel.project_dir') . '/public/out/' . $outputFileName;
+            $outputFilePath = $this->getParameter('kernel.k') . '/public/out/' . $outputFileName;
             file_put_contents($outputFilePath, $responseContent);
 
             $response = $this->initAfterCalc($outputFilePath);

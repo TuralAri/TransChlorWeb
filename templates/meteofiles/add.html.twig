@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Meteo Form
+{% endblock %}
+
+{% block body %}
+    {% form_theme form 'tailwind_2_layout.html.twig' %}
+    <div class="mx-[10%] px-4 py-8 ">
+        <h1 class="text-2xl font-bold mb-6">Ajouter un nouveau fichier météo</h1>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn">Submit</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

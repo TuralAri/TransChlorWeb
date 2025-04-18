@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -33,6 +35,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    /**
+     * @var Collection<int, MeteoFile>
+     */
+    #[ORM\OneToMany(targetEntity: MeteoFile::class, mappedBy: 'uploadedBy')]
+    private Collection $meteoFiles;
+
+    public function __construct()
+    {
+        $this->meteoFiles = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -106,5 +119,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, MeteoFile>
+     */
+    public function getMeteoFiles(): Collection
+    {
+        return $this->meteoFiles;
+    }
+
+    public function addMeteoFile(MeteoFile $meteoFile): static
+    {
+        if (!$this->meteoFiles->contains($meteoFile)) {
+            $this->meteoFiles->add($meteoFile);
+            $meteoFile->setUploadedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMeteoFile(MeteoFile $meteoFile): static
+    {
+        if ($this->meteoFiles->removeElement($meteoFile)) {
+            // set the owning side to null (unless already changed)
+            if ($meteoFile->getUploadedBy() === $this) {
+                $meteoFile->setUploadedBy(null);
+            }
+        }
+
+        return $this;
     }
 }
