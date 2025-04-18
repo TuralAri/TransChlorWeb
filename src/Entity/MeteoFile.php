@@ -23,6 +23,9 @@ class MeteoFile
     #[ORM\JoinColumn(nullable: false)]
     private ?User $uploadedBy = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $local_file_name = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +63,18 @@ class MeteoFile
     public function setUploadedBy(?User $uploadedBy): static
     {
         $this->uploadedBy = $uploadedBy;
+
+        return $this;
+    }
+
+    public function getLocalFileName(): ?string
+    {
+        return $this->local_file_name;
+    }
+
+    public function setLocalFileName(string $local_file_name): static
+    {
+        $this->local_file_name = $local_file_name;
 
         return $this;
     }

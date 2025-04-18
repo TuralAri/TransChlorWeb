@@ -15,13 +15,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class MeteoFilesController extends AbstractController
 {
     #[Route('/meteofiles', name: 'meteo_files')]
-    public function index()
+    public function index(MeteoFileRepository $repository)
     {
         if(!$this->getUser()){
             return $this->redirectToRoute('index');
         }
 
-        return $this->render('meteofiles/index.html.twig', []);
+        $meteoFiles = $this->getUser()->getMeteoFiles();
+
+        return $this->render('meteofiles/index.html.twig', [
+            'meteoFiles' => $meteoFiles,
+        ]);
     }
 
     #[Route('/meteofiles/add', name: 'meteo_files_add')]
@@ -38,6 +42,7 @@ class MeteoFilesController extends AbstractController
             $uploadMeteoFile = $form->get('filename')->getData();
 
             $meteoFile = $form->getData();
+            $meteoFile->setLocalFileName($uploadMeteoFile->getClientOriginalName());
             $meteoFile->setUploadedBy($this->getUser());
             $meteoFile->setUploadedAt(new \DateTimeImmutable('now'));
 
