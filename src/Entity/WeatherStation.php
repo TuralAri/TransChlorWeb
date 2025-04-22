@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\WeatherStationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: WeatherStationRepository::class)]
@@ -34,6 +36,17 @@ class WeatherStation
 
     #[ORM\Column]
     private ?float $automatic_annual_sodium = null;
+
+    /**
+     * @var Collection<int, ExposureSeries>
+     */
+    #[ORM\OneToMany(targetEntity: ExposureSeries::class, mappedBy: 'weatherStation')]
+    private Collection $exposureSeries;
+
+    public function __construct()
+    {
+        $this->exposureSeries = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -120,6 +133,36 @@ class WeatherStation
     public function setAutomaticAnnualSodium(float $automatic_annual_sodium): static
     {
         $this->automatic_annual_sodium = $automatic_annual_sodium;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExposureSeries>
+     */
+    public function getExposureSeries(): Collection
+    {
+        return $this->exposureSeries;
+    }
+
+    public function addExposureSeries(ExposureSeries $exposureSeries): static
+    {
+        if (!$this->exposureSeries->contains($exposureSeries)) {
+            $this->exposureSeries->add($exposureSeries);
+            $exposureSeries->setWeatherStation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExposureSeries(ExposureSeries $exposureSeries): static
+    {
+        if ($this->exposureSeries->removeElement($exposureSeries)) {
+            // set the owning side to null (unless already changed)
+            if ($exposureSeries->getWeatherStation() === $this) {
+                $exposureSeries->setWeatherStation(null);
+            }
+        }
 
         return $this;
     }
