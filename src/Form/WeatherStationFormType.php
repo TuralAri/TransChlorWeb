@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\MeteoFile;
+use App\Entity\WeatherStation;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class MeteoFileFormType extends AbstractType
+class WeatherStationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -30,7 +30,7 @@ class MeteoFileFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => MeteoFile::class,
+            'data_class' => WeatherStation::class,
         ]);
     }
 }

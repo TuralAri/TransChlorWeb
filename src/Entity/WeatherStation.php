@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\MeteoFileRepository;
+use App\Repository\WeatherStationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: MeteoFileRepository::class)]
-class MeteoFile
+#[ORM\Entity(repositoryClass: WeatherStationRepository::class)]
+class WeatherStation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

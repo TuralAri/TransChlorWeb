@@ -2,22 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\MeteoFile;
+use App\Entity\WeatherStation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<MeteoFile>
+ * @extends ServiceEntityRepository<WeatherStation>
  */
-class MeteoFileRepository extends ServiceEntityRepository
+class WeatherStationRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, MeteoFile::class);
+        parent::__construct($registry, WeatherStation::class);
     }
 
     //    /**
-    //     * @return MeteoFile[] Returns an array of MeteoFile objects
+    //     * @return WeatherStation[] Returns an array of WeatherStation objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -31,7 +31,7 @@ class MeteoFileRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?MeteoFile
+    //    public function findOneBySomeField($value): ?WeatherStation
     //    {
     //        return $this->createQueryBuilder('m')
     //            ->andWhere('m.exampleField = :val')

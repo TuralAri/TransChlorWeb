@@ -37,9 +37,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     /**
-     * @var Collection<int, MeteoFile>
+     * @var Collection<int, WeatherStation>
      */
-    #[ORM\OneToMany(targetEntity: MeteoFile::class, mappedBy: 'uploadedBy')]
+    #[ORM\OneToMany(targetEntity: WeatherStation::class, mappedBy: 'uploadedBy')]
     private Collection $meteoFiles;
 
     public function __construct()
@@ -122,14 +122,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, MeteoFile>
+     * @return Collection<int, WeatherStation>
      */
     public function getMeteoFiles(): Collection
     {
         return $this->meteoFiles;
     }
 
-    public function addMeteoFile(MeteoFile $meteoFile): static
+    public function addMeteoFile(WeatherStation $meteoFile): static
     {
         if (!$this->meteoFiles->contains($meteoFile)) {
             $this->meteoFiles->add($meteoFile);
@@ -139,7 +139,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeMeteoFile(MeteoFile $meteoFile): static
+    public function removeMeteoFile(WeatherStation $meteoFile): static
     {
         if ($this->meteoFiles->removeElement($meteoFile)) {
             // set the owning side to null (unless already changed)
