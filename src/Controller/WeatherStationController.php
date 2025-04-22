@@ -59,20 +59,25 @@ class WeatherStationController extends AbstractController
 //                $uploadMeteoFile->move($uploadDirectory, $newFileName);
 //                $values = json_decode($this->uploadAndPrecalculate($uploadMeteoFile, $newFileName));
                 $jsonResponse = $this->uploadAndPrecalculate($uploadMeteoFile, $newFileName);
-                $responseContent = $jsonResponse->getContent();
-                $values = json_decode($responseContent, true);
+                if($jsonResponse->getStatusCode() === 200){
+                    $responseContent = $jsonResponse->getContent();
+                    $values = json_decode($responseContent, true);
 
-                if (isset($values[0]) && is_string($values[0])) {
-                    $values = json_decode($values[0], true);
+                    if (isset($values[0]) && is_string($values[0])) {
+                        $values = json_decode($values[0], true);
+                    }
+
+                    $weatherStation->setFilename($newFileName);
+                    $weatherStation->setFileYears($values['fileYears']);
+                    $weatherStation->setMechanicalAnnualSodium($values['mechanicalAnnualSodium']);
+                    $weatherStation->setAutomaticAnnualSodium($values['automaticAnnualSodium']);
+
+                    $em->persist($weatherStation);
+                    $em->flush();
+                    $this->addFlash('success', 'Fichier importé avec succès');
+                }else{
+                    $this->addFlash('error', 'Erreur lors de l\'importation du fichier');
                 }
-
-                $weatherStation->setFilename($newFileName);
-                $weatherStation->setFileYears($values['fileYears']);
-                $weatherStation->setMechanicalAnnualSodium($values['mechanicalAnnualSodium']);
-                $weatherStation->setAutomaticAnnualSodium($values['automaticAnnualSodium']);
-
-                $em->persist($weatherStation);
-                $em->flush();
             }catch (FileException $e){
                 //On verra ça plus tard
                 $this->addFlash('error', 'Erreur lors de l\'upload du fichier');
@@ -102,6 +107,22 @@ class WeatherStationController extends AbstractController
         return new Response($response->getContent(), $response->getStatusCode());
     }
 
+    public function troubleshoot(String $fileName) : Response{
+
+        $response = $this->sendFile($fileName,'troubleshoot1');
+
+        if($response->getStatusCode() === 200) {
+            $this->addFlash('success', $response->getContent());
+        }
+
+        $response = $this->sendFile($fileName,'troubleshoot2');
+        if($response->getStatusCode() === 200) {
+            $this->addFlash('success', $response->getContent());
+        }
+
+        return new Response('Hello');
+    }
+
     public function extractPrecalcValues(string $filePath): JsonResponse
     {
         $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
@@ -125,6 +146,7 @@ class WeatherStationController extends AbstractController
 
         try {
             $file->move($destination, $newFileName);
+            $this->troubleshoot($newFileName);
             $response = $this->sendFile($newFileName, 'precalcul');
             if ($response->getStatusCode() === 200) {
                 $responseContent = $response->getContent();
