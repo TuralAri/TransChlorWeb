@@ -46,6 +46,7 @@ class WeatherStation
     public function __construct()
     {
         $this->exposureSeries = new ArrayCollection();
+        $this->uploadedAt = new \DateTimeImmutable('now');
     }
 
     public function getId(): ?int

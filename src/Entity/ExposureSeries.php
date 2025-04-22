@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ExposureSeriesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -16,6 +18,19 @@ class ExposureSeries
 
     #[ORM\ManyToOne(inversedBy: 'exposureSeries')]
     private ?WeatherStation $weatherStation = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $label = null;
+
+    public function getLabel(): ?string
+    {
+        return $this->label;
+    }
+
+    public function setLabel(?string $label): void
+    {
+        $this->label = $label;
+    }
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -130,6 +145,18 @@ class ExposureSeries
 
     #[ORM\Column]
     private ?float $intHumidityDifference = null;
+
+    /**
+     * @var Collection<int, Exposure>
+     */
+    #[ORM\OneToMany(targetEntity: Exposure::class, mappedBy: 'ExposureSerie')]
+    private Collection $exposures;
+
+    public function __construct()
+    {
+        $this->exposures = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable('now');
+    }
 
     public function getId(): ?int
     {
@@ -600,6 +627,36 @@ class ExposureSeries
     public function setIntHumidityDifference(float $intHumidityDifference): static
     {
         $this->intHumidityDifference = $intHumidityDifference;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Exposure>
+     */
+    public function getExposures(): Collection
+    {
+        return $this->exposures;
+    }
+
+    public function addExposure(Exposure $exposure): static
+    {
+        if (!$this->exposures->contains($exposure)) {
+            $this->exposures->add($exposure);
+            $exposure->setExposureSerie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExposure(Exposure $exposure): static
+    {
+        if ($this->exposures->removeElement($exposure)) {
+            // set the owning side to null (unless already changed)
+            if ($exposure->getExposureSerie() === $this) {
+                $exposure->setExposureSerie(null);
+            }
+        }
 
         return $this;
     }
