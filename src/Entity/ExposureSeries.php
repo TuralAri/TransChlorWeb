@@ -156,6 +156,7 @@ class ExposureSeries
     {
         $this->exposures = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable('now');
+        $this->initValues();
     }
 
     public function getId(): ?int
@@ -637,6 +638,48 @@ class ExposureSeries
     public function getExposures(): Collection
     {
         return $this->exposures;
+    }
+
+    public function initValues()
+    {
+        //Valeurs partie haute formulaire
+        $this->setSodiumChlorideConcentration(0.001);
+        $this->setWaterFilmThickness(2.0);
+        $this->setHumidityThreshold(95.0);
+        //VALEURS EPANDAGE MECHANIQUE
+        $this->setMechanicalMeanSodium(10.0);
+        $this->setMechanicalInterval(8.0);
+        $this->setMechanicalSodiumWater(36.0);
+        //VALEURS EPANDAGE AUTOMATIQUE
+        $this->setAutomaticMeanSodium(0.5);
+        $this->setAutomaticSprayInterval(12.0);
+        $this->setAutomaticSodiumWater(21.0);
+        //Atténuation du signal (extérieur caisson)
+            //Température
+        $this->setExtTemperaturePosition(1.0);
+        $this->setExtTemperaturePosition2(3.0);
+        $this->setExtTemperatureAttenuation(1.0);
+        $this->setExtTemperatureAttenuation2(2.0);
+        $this->setExtTemperatureDifference(100.0);
+            //Humidité relative
+        $this->setExtHumidityPosition(2.0);
+        $this->setExtHumidityPosition2(3.0);
+        $this->setExtHumidityAttenuation(1.0);
+        $this->setExtHumidityAttenuation2(4.0);
+        $this->setExtHumidityDifference(100.0);
+        //Atténuation du signal (intérieur caisson)
+            //Température
+        $this->setIntTemperaturePosition(1.0);
+        $this->setIntTemperaturePosition2(3.0);
+        $this->setIntTemperatureAttenuation(1.0);
+        $this->setIntTemperatureAttenuation2(8.0);
+        $this->setIntTemperatureDifference(100.0);
+            //Humidité relative
+        $this->setIntHumidityPosition(2.0);
+        $this->setIntHumidityPosition2(3.0);
+        $this->setIntHumidityAttenuation(1.0);
+        $this->setIntHumidityAttenuation2(1.0);
+        $this->setIntHumidityDifference(100.0);
     }
 
     public function addExposure(Exposure $exposure): static
