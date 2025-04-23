@@ -26,7 +26,7 @@
             {% for meteoFile in meteoFiles %}
             <div class="flex justify-between items-center p-6 bg-gray-50 border border-gray-200 rounded-lg shadow-sm mt-4">
                 <p class="text-lg font-medium text-gray-700">{{ meteoFile.getLocalFileName() }}</p>
-                <a href="#" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none transition-all">Voir</a>
+                <a href="{{ path('exposure_series', {'id': meteoFile.id}) }}" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none transition-all">Expositions</a>
             </div>
             {% endfor %}
             {# Ajouter d'autres fichiers ici si nécessaire #}

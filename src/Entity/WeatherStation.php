@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\WeatherStationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: WeatherStationRepository::class)]
@@ -25,6 +27,27 @@ class WeatherStation
 
     #[ORM\Column(length: 255)]
     private ?string $local_file_name = null;
+
+    #[ORM\Column]
+    private ?float $file_years = null;
+
+    #[ORM\Column]
+    private ?float $mechanical_annual_sodium = null;
+
+    #[ORM\Column]
+    private ?float $automatic_annual_sodium = null;
+
+    /**
+     * @var Collection<int, ExposureSeries>
+     */
+    #[ORM\OneToMany(targetEntity: ExposureSeries::class, mappedBy: 'weatherStation')]
+    private Collection $exposureSeries;
+
+    public function __construct()
+    {
+        $this->exposureSeries = new ArrayCollection();
+        $this->uploadedAt = new \DateTimeImmutable('now');
+    }
 
     public function getId(): ?int
     {
@@ -75,6 +98,72 @@ class WeatherStation
     public function setLocalFileName(string $local_file_name): static
     {
         $this->local_file_name = $local_file_name;
+
+        return $this;
+    }
+
+    public function getFileYears(): ?float
+    {
+        return $this->file_years;
+    }
+
+    public function setFileYears(float $file_years): static
+    {
+        $this->file_years = $file_years;
+
+        return $this;
+    }
+
+    public function getMechanicalAnnualSodium(): ?float
+    {
+        return $this->mechanical_annual_sodium;
+    }
+
+    public function setMechanicalAnnualSodium(float $mechanical_annual_sodium): static
+    {
+        $this->mechanical_annual_sodium = $mechanical_annual_sodium;
+
+        return $this;
+    }
+
+    public function getAutomaticAnnualSodium(): ?float
+    {
+        return $this->automatic_annual_sodium;
+    }
+
+    public function setAutomaticAnnualSodium(float $automatic_annual_sodium): static
+    {
+        $this->automatic_annual_sodium = $automatic_annual_sodium;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExposureSeries>
+     */
+    public function getExposureSeries(): Collection
+    {
+        return $this->exposureSeries;
+    }
+
+    public function addExposureSeries(ExposureSeries $exposureSeries): static
+    {
+        if (!$this->exposureSeries->contains($exposureSeries)) {
+            $this->exposureSeries->add($exposureSeries);
+            $exposureSeries->setWeatherStation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExposureSeries(ExposureSeries $exposureSeries): static
+    {
+        if ($this->exposureSeries->removeElement($exposureSeries)) {
+            // set the owning side to null (unless already changed)
+            if ($exposureSeries->getWeatherStation() === $this) {
+                $exposureSeries->setWeatherStation(null);
+            }
+        }
 
         return $this;
     }

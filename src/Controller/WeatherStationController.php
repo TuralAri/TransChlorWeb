@@ -8,9 +8,14 @@ use App\Repository\WeatherStationRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use function Symfony\Component\Translation\t;
 
 class WeatherStationController extends AbstractController
 {
@@ -51,21 +56,123 @@ class WeatherStationController extends AbstractController
             $uploadDirectory = $this->getParameter('upload_directory') . '/Ressources/MeteoFiles';
 
             try{
-                $uploadMeteoFile->move($uploadDirectory, $newFileName);
+//                $uploadMeteoFile->move($uploadDirectory, $newFileName);
+//                $values = json_decode($this->uploadAndPrecalculate($uploadMeteoFile, $newFileName));
+                $jsonResponse = $this->uploadAndPrecalculate($uploadMeteoFile, $newFileName);
+                if($jsonResponse->getStatusCode() === 200){
+                    $responseContent = $jsonResponse->getContent();
+                    $values = json_decode($responseContent, true);
+
+                    if (isset($values[0]) && is_string($values[0])) {
+                        $values = json_decode($values[0], true);
+                    }
+
+                    $weatherStation->setFilename($newFileName);
+                    $weatherStation->setFileYears($values['fileYears']);
+                    $weatherStation->setMechanicalAnnualSodium($values['mechanicalAnnualSodium']);
+                    $weatherStation->setAutomaticAnnualSodium($values['automaticAnnualSodium']);
+
+                    $em->persist($weatherStation);
+                    $em->flush();
+                    $this->addFlash('success', 'Fichier importé avec succès');
+                }else{
+                    $this->addFlash('error', 'Erreur lors de l\'importation du fichier');
+                }
             }catch (FileException $e){
                 //On verra ça plus tard
+                $this->addFlash('error', 'Erreur lors de l\'upload du fichier');
             }
 
-            $weatherStation->setFilename($newFileName);
-
-            $em->persist($weatherStation);
-            $em->flush();
             return $this->redirectToRoute('weather_stations');
         }
 
         return $this->render('weatherstations/add.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    public function sendFile(String $fileName,String $route): Response
+    {
+        $filePath = $this->getParameter('upload_directory') . '/Ressources/MeteoFiles/' . $fileName;
+        $file = fopen($filePath, 'r');
+        $client = HttpClient::create();
+        $response = $client->request('POST', 'http://localhost:5000/' . $route , [
+            'headers' => [
+                'Content-Type' => 'multipart/form-data'
+            ],
+            'body' => [
+                'file' => $file
+            ]
+        ]);
+        return new Response($response->getContent(), $response->getStatusCode());
+    }
+
+    public function troubleshoot(String $fileName) : Response{
+
+        $response = $this->sendFile($fileName,'troubleshoot1');
+
+        if($response->getStatusCode() === 200) {
+            $this->addFlash('success', $response->getContent());
+        }
+
+        $response = $this->sendFile($fileName,'troubleshoot2');
+        if($response->getStatusCode() === 200) {
+            $this->addFlash('success', $response->getContent());
+        }
+
+        return new Response('Hello');
+    }
+
+    public function extractPrecalcValues(string $filePath): JsonResponse
+    {
+        $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+        if (count($lines) < 32) {
+            throw new \Exception('Le fichier précalcul est incomplet.');
+        }
+
+        $data = [
+            'fileYears' => floatval(str_replace(',', '.', $lines[0])),
+            'mechanicalAnnualSodium' => floatval(str_replace(',', '.', $lines[4])),
+            'automaticAnnualSodium' => floatval(str_replace(',', '.', $lines[8])),
+        ];
+
+        return new JsonResponse($data);
+    }
+
+    public function uploadAndPrecalculate(UploadedFile $file, string $newFileName): JsonResponse
+    {
+        $destination = $this->getParameter('upload_directory') . '/Ressources/MeteoFiles';
+
+        try {
+            $file->move($destination, $newFileName);
+            $this->troubleshoot($newFileName);
+            $response = $this->sendFile($newFileName, 'precalcul');
+            if ($response->getStatusCode() === 200) {
+                $responseContent = $response->getContent();
+                $outputFileName = 'form_meteo_output_' . $newFileName;
+                $outputFilePath = $this->getParameter('upload_directory') . '/Ressources/out/' . $outputFileName;
+                file_put_contents($outputFilePath, $responseContent);
+            } else {
+                return new JsonResponse([
+                    'error' => 'Erreur lors de l\'envoi du fichier: ' . $response->getContent()
+                ], 500);
+            }
+            $response = $this->extractPrecalcValues($outputFilePath);
+            if(file_exists($outputFilePath)){
+                unlink($outputFilePath);
+            }
+
+            return new JsonResponse([$response->getContent()], $response->getStatusCode());
+
+        } catch (\Exception $e) {
+            error_log('Upload error' . $e->getMessage());
+
+            return new JsonResponse([
+                'error' => 'Erreur lors de l\'upload: ' . $e->getMessage()
+            ], 500);
+        }
+
     }
 
 }
