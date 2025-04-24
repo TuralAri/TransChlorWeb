@@ -2,17 +2,19 @@
 
 namespace App\Controller;
 
+use App\Entity\Exposure;
 use App\Entity\ExposureSeries;
 use App\Entity\WeatherStation;
 use App\Form\ExposureSeriesFormType;
-use App\Form\GenerateExposureFormType;
 use App\Repository\ExposureSeriesRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use ZipArchive;
 
 class ExposureSeriesController extends AbstractController
 {
@@ -27,9 +29,10 @@ class ExposureSeriesController extends AbstractController
         ]);
     }
     #[Route('/weatherstations/{id}/exposure-series/generate', name: 'exposure_series_generate')]
-    public function generate(WeatherStation $weatherStation, ExposureSeriesRepository $exposureSeriesRepository, Request $request) : Response
+    public function generate(WeatherStation $weatherStation, ExposureSeriesRepository $exposureSeriesRepository, Request $request, EntityManagerInterface $entityManager) : Response
     {
         $exposureSeries = new ExposureSeries();
+        $exposureSeries->setLabel('test');
         $exposureSeries->setWeatherStation($weatherStation);
         $exposureSeries->setFileYears($weatherStation->getFileYears());
         $exposureSeries->setMechanicalAnnualSodium($weatherStation->getMechanicalAnnualSodium());
@@ -74,9 +77,29 @@ class ExposureSeriesController extends AbstractController
                 }
 
                 //Envoi du formulaire ainsi que du MeteoFile vers l'API C#
-                //ON ATTENDRA UN FICHIER ZIP EN REPONSE
-
+                //ON ATTENDRA UN FICHIER ZIP
                 $response = $this->generateExpositions($formDataArray, $meteoFileName);
+
+                if($response->getStatusCode() == 200){
+                    $uploadDirectory = $this->getParameter('upload_directory');
+                    $zipContent = $response->getContent();
+
+                    $entityManager->persist($exposureSeries);
+                    $entityManager->flush();
+
+                    $expositionDirectory = $uploadDirectory . '/Ressources/Exposition/' . $exposureSeries->getId();
+                    if (!is_dir($expositionDirectory)) {
+                        mkdir($expositionDirectory, 0775, true);
+                    }
+
+                    $zipTempPath = $expositionDirectory . uniqid() . 'temp.zip';
+                    file_put_contents($zipTempPath, $zipContent);
+
+                    $this->extractZip($zipTempPath,$expositionDirectory);
+                    $this->processExposureFiles($expositionDirectory, $exposureSeries, $entityManager);
+                    $this->addFlash('success','Les expositions ont bien été générées');
+                    return $this->redirectToRoute('exposure_series', ['id' => $weatherStation->getId()]);
+                }
 
             }
 
@@ -92,10 +115,15 @@ class ExposureSeriesController extends AbstractController
     {
 //        $filePath1 = $this->getParameter('kernel.project_dir') . '/public/meteoFiles/' . $meteoFileName;
         $uploadDirectory = $this->getParameter('upload_directory') . '/Ressources';
-        $filePath1 = $uploadDirectory . '/MeteoFiles/' . $meteoFileName;
-        $file1 = fopen($filePath1, 'r');
 
-//        $filePath2 = $this->getParameter('kernel.project_dir') . '/public/out/' . $fileName;
+        //COPIE DU FICHIER METEO POUR L ENVOYER SOUS UN NOM UNIQUE (ENTRE UTILISATEURS)
+        $originalMeteoFilePath = $uploadDirectory . '/MeteoFiles/' . $meteoFileName;
+        $tempMeteoFileName = uniqid('temp_') . '_' . $meteoFileName;
+        $tempMeteoFilePath = $uploadDirectory . '/MeteoFiles/' . $tempMeteoFileName;
+        copy($originalMeteoFilePath, $tempMeteoFilePath);
+
+        $file1 = fopen($tempMeteoFilePath, 'r'); //on ouvre le fichier meteo
+
         $filePath2 = $uploadDirectory . '/out/' . $fileName;
         $file2 = fopen($filePath2, 'r');
         $client = HttpClient::create();
@@ -108,6 +136,10 @@ class ExposureSeriesController extends AbstractController
                 'file2' => $file2
             ]
         ]);
+
+        //NETTOYAGE
+        unlink($tempMeteoFilePath);
+
         return new Response($response->getContent(), $response->getStatusCode());
     }
 
@@ -234,7 +266,7 @@ class ExposureSeriesController extends AbstractController
         }
     }
 
-    public function generateExpositions(array $data, String $meteoFileName) : Response{
+    public function generateExpositions(array $data, String $meteoFileName): Response {
         $uploadDirectory = $this->getParameter('upload_directory') . '/Ressources/';
         $uniqueId = uniqid();
 
@@ -249,28 +281,54 @@ class ExposureSeriesController extends AbstractController
         file_put_contents($outputFilePath, $dataString);
 
         $response = $this->sendFileForCalc($meteoFileName, $outputFileName, 'export');
-        if ($response->getStatusCode() === 200) {
-            $responseContent = $response->getContent();
-            $zipOutputFileName = 'zip_expos' . $uniqueId . '.zip';
-            $zipOutputFilePath = $uploadDirectory . 'out/' . $zipOutputFileName;
-            file_put_contents($zipOutputFilePath, $responseContent);
 
-            unlink($outputFilePath); //SUPPRESSION DU FICHIER FORMULAIRE
+        unlink($outputFilePath);
 
-            if ($response->getStatusCode() === 200) {
-                // ✅ Retourne les données déjà en tableau
-                return $response;
-            } else {
-                return new JsonResponse([
-                    'error' => 'Erreur lors de l\'initialisation après calcul: ' . $response->getContent()
-                ], 500);
-            }
+        return $response;
+    }
 
-        } else {
-            return new JsonResponse([
-                'error' => 'Erreur lors de l\'envoi du fichier: ' . $response->getContent()
-            ], 500);
+    public function extractZip($zipTempPath, $directory)
+    {
+        $zip = new ZipArchive();
+        if($zip->open($zipTempPath)){
+          $zip->extractTo($directory);
+          $zip->close();
+          unlink($zipTempPath);
+          return true;
         }
+        return false;
+    }
+
+    /**
+     * @param string $folderPath Le dossier contenant les fichiers d'exposition
+     * @param ExposureSeries $exposureSeries L'entité série d'expositions à laquelle lier les fichiers
+     * @param EntityManagerInterface $entityManager Pour persister les entités
+     */
+    function processExposureFiles(string $folderPath, ExposureSeries $exposureSeries, EntityManagerInterface $entityManager): void
+    {
+        $files = scandir($folderPath);
+
+        foreach ($files as $file) {
+            if (is_file($folderPath . '/' . $file) && preg_match('/EXPO_([A-Z_]+)_temp.*\.txt/', $file, $matches)) {
+                $type = $matches[1];
+                $originalPath = $folderPath . '/' . $file;
+                $newFilename = "EXPO_{$type}.txt";
+                $newPath = $folderPath . '/' . $newFilename;
+
+                rename($originalPath, $newPath);
+
+                $exposure = new Exposure();
+                $exposure->setExposureSerie($exposureSeries);
+                $exposure->setType($type);
+                $exposure->setFilename($newFilename);
+                $exposure->setLocalname($file);
+
+                $entityManager->persist($exposure);
+            }
+        }
+
+        // Flush les exposures créées
+        $entityManager->flush();
     }
 
 
