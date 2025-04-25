@@ -17,19 +17,49 @@
             </div>
         {% endfor %}
         <h1 class="text-2xl font-bold mb-6">Vos stations méteos</h1>
-        <div class="flex justify-between items-center p-6 bg-gray-50 border border-gray-200 rounded-lg shadow-sm">
-            <p class="text-xl">Ajouter une nouvelle station</p>
-            <a href="{{ path('weather_station_add') }}" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 focus:outline-none cursor-pointer">Ajouter</a>
-        </div>
+        <a href="{{ path('index') }}"
+           class="inline-block mb-4 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">← Revenir en arrière
+        </a>
+        <a href="{{ path('weather_station_add')}}" class="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none cursor-pointer">
+            Ajouter une station
+        </a>
+        <section class="space-y-4 mt-4">
+            <div class="overflow-x-auto bg-white shadow-md rounded-lg">
+                <table class="min-w-full table-auto">
+                    <thead class="bg-gray-100">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Nom de la Station</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Date d'ajout</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Date début</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Date fin</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Nombre d'années</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for weatherStation in weatherStations %}
+                        <tr class="border-t hover:bg-gray-200">
+                            <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ weatherStation.getLocalFileName() }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-500">{{ weatherStation.uploadedAt|date('Y-m-d H:i:s') }}</td>
+                            <td class="px-6 py-4 text-sm"></td>
+                            <td class="px-6 py-4 text-sm"></td>
+                            <td class="px-6 py-4 text-sm">{{ weatherStation.fileYears }}</td>
+                            <td class="px-6 py-4 text-sm">
+                                {#                                {{ path('exposure_series_show', { 'id': series.id }) }}#}
+                                {#                                {{ path('exposure_series_edit', { 'id': series.id }) }}#}
+{#                                    <a href="" class="text-indigo-600 hover:text-indigo-900">Voir les paramètres</a>#}
+                                <a href="{{ path('exposure_series',{'id':weatherStation.id}) }}" class="ml-2 text-blue-600 hover:text-blue-900">Voir les expositions</a>
+                            </td>
 
-        <section class="space-y-4">
-            {% for meteoFile in meteoFiles %}
-            <div class="flex justify-between items-center p-6 bg-gray-50 border border-gray-200 rounded-lg shadow-sm mt-4">
-                <p class="text-lg font-medium text-gray-700">{{ meteoFile.getLocalFileName() }}</p>
-                <a href="{{ path('exposure_series', {'id': meteoFile.id}) }}" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none transition-all">Expositions</a>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="3" class="px-6 py-4 text-sm text-center text-gray-500">Aucune série d'exposition trouvée.</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
-            {% endfor %}
-            {# Ajouter d'autres fichiers ici si nécessaire #}
         </section>
     </div>
 {% endblock %}

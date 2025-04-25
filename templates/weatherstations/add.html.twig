@@ -6,10 +6,12 @@
 {% block body %}
     {% form_theme form 'tailwind_2_layout.html.twig' %}
     <div class="mx-[10%] px-4 py-8 ">
-        <h1 class="text-2xl font-bold mb-6">Ajouter un nouveau fichier météo</h1>
+        <h1 class="text-2xl font-bold mb-6">Ajouter une nouvelle station météo</h1>
+        <a href="{{ path('weather_stations') }}"
+           class="inline-block mb-4 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">← Revenir en arrière
+        </a>
         {{ form_start(form) }}
         {{ form_widget(form) }}
-        <button class="btn">Submit</button>
         {{ form_end(form) }}
     </div>
 {% endblock %}
