@@ -26,10 +26,10 @@ class WeatherStationController extends AbstractController
             return $this->redirectToRoute('index');
         }
 
-        $meteoFiles = $this->getUser()->getMeteoFiles();
+        $weatherStations = $this->getUser()->getMeteoFiles();
 
         return $this->render('weatherstations/index.html.twig', [
-            'meteoFiles' => $meteoFiles,
+            'weatherStations' => $weatherStations,
         ]);
     }
 
