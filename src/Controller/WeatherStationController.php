@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\WeatherStation;
 use App\Form\WeatherStationFormType;
 use App\Repository\WeatherStationRepository;
+use DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -56,12 +57,13 @@ class WeatherStationController extends AbstractController
             $uploadDirectory = $this->getParameter('upload_directory') . '/Ressources/MeteoFiles';
 
             try{
-//                $uploadMeteoFile->move($uploadDirectory, $newFileName);
-//                $values = json_decode($this->uploadAndPrecalculate($uploadMeteoFile, $newFileName));
                 $jsonResponse = $this->uploadAndPrecalculate($uploadMeteoFile, $newFileName);
                 if($jsonResponse->getStatusCode() === 200){
                     $responseContent = $jsonResponse->getContent();
                     $values = json_decode($responseContent, true);
+
+                    $meteoFileVars = $this->readMeteoFileVars($uploadDirectory . '/' . $newFileName);
+                    $weatherStation->setMeteoFileVars($meteoFileVars);
 
                     if (isset($values[0]) && is_string($values[0])) {
                         $values = json_decode($values[0], true);
@@ -71,6 +73,7 @@ class WeatherStationController extends AbstractController
                     $weatherStation->setFileYears($values['fileYears']);
                     $weatherStation->setMechanicalAnnualSodium($values['mechanicalAnnualSodium']);
                     $weatherStation->setAutomaticAnnualSodium($values['automaticAnnualSodium']);
+
 
                     $em->persist($weatherStation);
                     $em->flush();
@@ -138,6 +141,65 @@ class WeatherStationController extends AbstractController
         ];
 
         return new JsonResponse($data);
+    }
+
+
+    /**
+     * @param string $filePath
+     * @return array
+     * reads the first 2 lines from MeteoFile in order to extract
+     * and return the following values [stationNumber, stationName, startDate, endDate]
+     */
+    public function readMeteoFileVars(string $filePath): array
+    {
+        $handle = fopen($filePath, 'r');
+        if($handle){
+            $lines = [];
+            for($i = 0; $i < 2; $i++){
+                if(($line = fgets($handle)) !== false){
+                    $lines[] = trim($line); //Appends next line to the $lines array
+                }
+            }
+        }
+
+        fclose($handle);
+
+        if(count($lines) >=1){
+            preg_match('/(\d+)\s*-\s*(.+)/', $lines[0], $matchesStation);
+            $number = $matchesStation[1] ?? null;
+            $name = $matchesStation[2] ?? null;
+        }
+
+        if(count($lines) >=2){
+            preg_match('/(\d{1,2}\.\d{4})\s+au\s+(\d{1,2}\.\d{4})/', $lines[1], $matchesDates);
+            $startDate = $matchesDates[1] ?? null;
+            $endDate = $matchesDates[2] ?? null;
+        }
+
+        if($startDate){
+            $startDate = $this->convertToDateTime($startDate);
+        }
+
+        if($endDate){
+            $endDate = $this->convertToDateTime($endDate);
+        }
+
+        $values = [
+            'stationNumber' => $number ?? null,
+            'stationName' => $name ?? null,
+            'startDate' => $startDate ?? null,
+            'endDate' => $endDate ?? null,
+        ];
+
+        return $values;
+    }
+
+    private function convertToDateTime($dateString) {
+        $dateParts = explode('.', $dateString);
+        $month = $dateParts[0];  // Mois
+        $year = $dateParts[1];   // Année
+
+        return new DateTime("{$year}-{$month}-01");
     }
 
     public function uploadAndPrecalculate(UploadedFile $file, string $newFileName): JsonResponse

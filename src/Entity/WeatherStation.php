@@ -76,6 +76,14 @@ class WeatherStation
         return $this;
     }
 
+    public function setMeteoFileVars($meteoFileVars)
+    {
+        $this->setStationNumber($meteoFileVars['stationNumber']);
+        $this->setLocalFileName($meteoFileVars['stationName']);
+        $this->setStartDate($meteoFileVars['startDate']);
+        $this->setEndDate($meteoFileVars['endDate']);
+    }
+
     public function getUploadedAt(): ?\DateTimeImmutable
     {
         return $this->uploadedAt;
