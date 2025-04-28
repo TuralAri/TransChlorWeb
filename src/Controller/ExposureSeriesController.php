@@ -21,6 +21,11 @@ class ExposureSeriesController extends AbstractController
     #[Route('/weatherstations/{id}/exposure-series', name: 'exposure_series')]
     public function index(WeatherStation $weatherStation): Response
     {
+
+        if(!$this->getUser()){
+            return $this->redirectToRoute('index');
+        }
+
         $exposureSeries = $weatherStation->getExposureSeries();
 
         return $this->render('exposure_series/index.html.twig', [
@@ -31,6 +36,10 @@ class ExposureSeriesController extends AbstractController
     #[Route('/weatherstations/{id}/exposure-series/generate', name: 'exposure_series_generate')]
     public function generate(WeatherStation $weatherStation, ExposureSeriesRepository $exposureSeriesRepository, Request $request, EntityManagerInterface $entityManager) : Response
     {
+        if(!$this->getUser()){
+            return $this->redirectToRoute('index');
+        }
+
         $exposureSeries = new ExposureSeries();
         $exposureSeries->setLabel('test');
         $exposureSeries->setWeatherStation($weatherStation);
