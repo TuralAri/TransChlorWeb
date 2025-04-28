@@ -6,7 +6,6 @@ use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ApiService
 {
@@ -16,8 +15,8 @@ class ApiService
     private $outputDirectory;
 //    private $apiKey; //Inutile pour l'instant mais sera ajoutée plus tard pour plus de sécurité (si besoin)
 
-    public function __construct(HttpClientInterface $httpClient, $apiUrl, string $uploadDir){
-        $this->httpClient = $httpClient;
+    public function __construct($apiUrl, string $uploadDir){
+        $this->httpClient = HttpClient::create();
         $this->apiUrl = $apiUrl;
         $this->meteoFilesDirectory = $uploadDir . '/Ressources/MeteoFiles';
         $this->outputDirectory = $uploadDir . '/Ressources/out';
@@ -25,14 +24,19 @@ class ApiService
 
     public function sendFile(string $filePath, string $route): Response
     {
-        $file = fopen($filePath, 'r');
-
-        $response = $this->httpClient->request('POST', $this->apiUrl . $route, [
-            'body' => ['file' => $file]
+        $response = $this->httpClient->request('POST', $this->apiUrl . '/' . $route, [
+            'multipart' => [
+                [
+                    'name' => 'file',
+                    'contents' => fopen($filePath, 'r'),
+                    'filename' => basename($filePath),
+                ],
+            ],
         ]);
 
         return new Response($response->getContent(), $response->getStatusCode());
     }
+
 
     public function runTroubleshoots(string $filePath): array
     {

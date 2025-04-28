@@ -23,10 +23,7 @@ class WeatherStationController extends AbstractController
 {
     private $apiService;
     public function __construct(ApiService $apiService){
-//        $apiUrl = $this->getParameter('api_url');
-//        $uploadDir = $this->getParameter('upload_directory');
         $this->apiService = $apiService;
-        dd($this->apiService);
     }
 
     #[Route('/weatherstations', name: 'weather_stations')]
@@ -68,6 +65,7 @@ class WeatherStationController extends AbstractController
 
             try{
                 $jsonResponse = $this->apiService->uploadAndPrecalculate($uploadMeteoFile, $newFileName);
+//                dd($jsonResponse);
                 if($jsonResponse->getStatusCode() === 200){
                     $responseContent = $jsonResponse->getContent();
                     $values = json_decode($responseContent, true);
