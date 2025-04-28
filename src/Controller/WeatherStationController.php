@@ -112,13 +112,13 @@ class WeatherStationController extends AbstractController
 
     public function troubleshoot(String $fileName) : Response{
 
-        $response = $this->sendFile($fileName,'troubleshoot1');
+        $response = $this->sendFile($fileName,'api/troubleshoot/troubleshoot1');
 
         if($response->getStatusCode() === 200) {
             $this->addFlash('success', $response->getContent());
         }
 
-        $response = $this->sendFile($fileName,'troubleshoot2');
+        $response = $this->sendFile($fileName,'api/troubleshoot/troubleshoot2');
         if($response->getStatusCode() === 200) {
             $this->addFlash('success', $response->getContent());
         }
@@ -209,7 +209,7 @@ class WeatherStationController extends AbstractController
         try {
             $file->move($destination, $newFileName);
             $this->troubleshoot($newFileName);
-            $response = $this->sendFile($newFileName, 'precalcul');
+            $response = $this->sendFile($newFileName, 'api/data/precalcul');
             if ($response->getStatusCode() === 200) {
                 $responseContent = $response->getContent();
                 $outputFileName = 'form_meteo_output_' . $newFileName;

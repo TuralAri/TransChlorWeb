@@ -247,7 +247,7 @@ class ExposureSeriesController extends AbstractController
         $dataString = implode("\n", $data);
         file_put_contents($outputFilePath, $dataString);
 
-        $response = $this->sendFileForCalc($meteoFileName, $outputFileName, 'calcul');
+        $response = $this->sendFileForCalc($meteoFileName, $outputFileName, 'api/data/calcul');
         if ($response->getStatusCode() === 200) {
             $responseContent = $response->getContent();
             $calcOutputFileName = 'calc_form_meteo_output_' . $uniqueId . '.txt';
@@ -289,7 +289,7 @@ class ExposureSeriesController extends AbstractController
         $dataString = implode("\n", $data);
         file_put_contents($outputFilePath, $dataString);
 
-        $response = $this->sendFileForCalc($meteoFileName, $outputFileName, 'export');
+        $response = $this->sendFileForCalc($meteoFileName, $outputFileName, 'api/exposure/export');
 
         unlink($outputFilePath);
 
