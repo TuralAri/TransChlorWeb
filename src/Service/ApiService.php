@@ -16,11 +16,11 @@ class ApiService
     private $outputDirectory;
 //    private $apiKey; //Inutile pour l'instant mais sera ajoutée plus tard pour plus de sécurité (si besoin)
 
-    public function __construct(HttpClientInterface $httpClient, string $apiUrl, string $uploadDir){
+    public function __construct(HttpClientInterface $httpClient, $apiUrl, string $uploadDir){
         $this->httpClient = $httpClient;
         $this->apiUrl = $apiUrl;
         $this->meteoFilesDirectory = $uploadDir . '/Ressources/MeteoFiles';
-        $this->outputDir = $uploadDir . '/Ressources/out';
+        $this->outputDirectory = $uploadDir . '/Ressources/out';
     }
 
     public function sendFile(string $filePath, string $route): Response

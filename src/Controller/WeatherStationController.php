@@ -23,7 +23,10 @@ class WeatherStationController extends AbstractController
 {
     private $apiService;
     public function __construct(ApiService $apiService){
+//        $apiUrl = $this->getParameter('api_url');
+//        $uploadDir = $this->getParameter('upload_directory');
         $this->apiService = $apiService;
+        dd($this->apiService);
     }
 
     #[Route('/weatherstations', name: 'weather_stations')]
