@@ -9,6 +9,7 @@ use App\Service\ApiService;
 use DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -27,16 +28,22 @@ class WeatherStationController extends AbstractController
     }
 
     #[Route('/weatherstations', name: 'weather_stations')]
-    public function index(WeatherStationRepository $repository)
+    public function index(WeatherStationRepository $repository, Request $request, PaginatorInterface $paginator): Response
     {
         if(!$this->getUser()){
             return $this->redirectToRoute('index');
         }
 
-        $weatherStations = $this->getUser()->getMeteoFiles();
+        $query = $this->getUser()->getMeteoFiles();
+
+        $pagination = $paginator->paginate(
+          $query,
+          $request->query->getInt('page', 1),
+          10
+        );
 
         return $this->render('weatherstations/index.html.twig', [
-            'weatherStations' => $weatherStations,
+            'weatherStations' => $pagination,
         ]);
     }
 

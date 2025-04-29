@@ -63,5 +63,8 @@
                 </table>
             </div>
         </section>
+        <div class="pagination mt-auto pt-4">
+            {{ knp_pagination_render(weatherStations, 'bundles/KnpPaginatorBundle/Pagination/tailwind.html.twig') }}
+        </div>
     </div>
 {% endblock %}
