@@ -6,6 +6,7 @@
 parameters:
     kernel.k: '%kernel.project_dir%'
     upload_directory: '%kernel.project_dir%/var/uploads'
+    api_url: 'http://localhost:5000' #LIEN API VERS QUI TOUS LES APPELS SE FERONT
 
 services:
     # default configuration for services in *this* file
@@ -21,6 +22,16 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+
+#    App\Controller\WeatherStationController:
+#        arguments:
+#            $apiUrl: '%api_url%'           # Injection du paramètre api_url
+#            $uploadDir: '%upload_directory%'
+
+    App\Service\ApiService:
+        arguments:
+            $apiUrl: '%api_url%'         # Injection du paramètre api_url (string)
+            $uploadDir: '%upload_directory%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

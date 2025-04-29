@@ -7,6 +7,7 @@ use App\Entity\ExposureSeries;
 use App\Entity\WeatherStation;
 use App\Form\ExposureSeriesFormType;
 use App\Repository\ExposureSeriesRepository;
+use App\Service\ApiService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpClient\HttpClient;
@@ -18,6 +19,11 @@ use ZipArchive;
 
 class ExposureSeriesController extends AbstractController
 {
+    private $apiService;
+    public function __construct(ApiService $apiService){
+        $this->apiService = $apiService;
+    }
+
     #[Route('/weatherstations/{id}/exposure-series', name: 'exposure_series')]
     public function index(WeatherStation $weatherStation): Response
     {
@@ -59,7 +65,7 @@ class ExposureSeriesController extends AbstractController
                 $meteoFileName = $weatherStation->getFilename();
 
                 //CALCUL DES 4 VALEURS MANQUANTES
-                $response = $this->calculate($formDataArray,$meteoFileName);
+                $response = $this->apiService->calculate($formDataArray,$meteoFileName);
                 if($response->getStatusCode() == 200){
                     $responseContent = json_decode(trim($response->getContent()), true);
 
@@ -85,9 +91,9 @@ class ExposureSeriesController extends AbstractController
                     $this->addFlash('error', 'Des champs ne sont pas remplis, avez vous essayé de calculer les valeurs manquantes ?');
                 }
 
-                //Envoi du formulaire ainsi que du MeteoFile vers l'API C#
-                //ON ATTENDRA UN FICHIER ZIP
-                $response = $this->generateExpositions($formDataArray, $meteoFileName);
+                //Sending form and meteofile to C# API
+                //We'll wait for a zip file
+                $response = $this->apiService->generateExpositions($formDataArray, $meteoFileName);
 
                 if($response->getStatusCode() == 200){
                     $uploadDirectory = $this->getParameter('upload_directory');
@@ -118,54 +124,6 @@ class ExposureSeriesController extends AbstractController
             'weatherStation' => $weatherStation,
             'exposureSeriesForm' => $exposureSeriesForm->createView(),
         ]);
-    }
-
-    public function sendFileForCalc(String $meteoFileName ,String $fileName, String $route): Response
-    {
-//        $filePath1 = $this->getParameter('kernel.project_dir') . '/public/meteoFiles/' . $meteoFileName;
-        $uploadDirectory = $this->getParameter('upload_directory') . '/Ressources';
-
-        //COPIE DU FICHIER METEO POUR L ENVOYER SOUS UN NOM UNIQUE (ENTRE UTILISATEURS)
-        $originalMeteoFilePath = $uploadDirectory . '/MeteoFiles/' . $meteoFileName;
-        $tempMeteoFileName = uniqid('temp_') . '_' . $meteoFileName;
-        $tempMeteoFilePath = $uploadDirectory . '/MeteoFiles/' . $tempMeteoFileName;
-        copy($originalMeteoFilePath, $tempMeteoFilePath);
-
-        $file1 = fopen($tempMeteoFilePath, 'r'); //on ouvre le fichier meteo
-
-        $filePath2 = $uploadDirectory . '/out/' . $fileName;
-        $file2 = fopen($filePath2, 'r');
-        $client = HttpClient::create();
-        $response = $client->request('POST', 'http://localhost:5000/' . $route, [
-            'headers' => [
-                'Content-Type' => 'multipart/form-data'
-            ],
-            'body' => [
-                'file1' => $file1,
-                'file2' => $file2
-            ]
-        ]);
-
-        //NETTOYAGE
-        unlink($tempMeteoFilePath);
-
-        return new Response($response->getContent(), $response->getStatusCode());
-    }
-
-    public function extractCalcValues(string $filePath): array
-    {
-        $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-
-        if (count($lines) < 32) {
-            throw new \Exception('Le fichier précalcul est incomplet.');
-        }
-
-        return [
-            'mechanicalInterventions' => floatval(str_replace(',', '.', $lines[6])),
-            'automaticSprays' => floatval(str_replace(',', '.', $lines[12])),
-            'mechanicalThresholdTemperature' => floatval(str_replace(',', '.', $lines[9])),
-            'automaticThresholdTemperature' => floatval(str_replace(',', '.', $lines[15])),
-        ];
     }
 
     public function getFormData($formData, int $case): array
@@ -218,82 +176,6 @@ class ExposureSeriesController extends AbstractController
             return array_merge($this->getFormData($formData,0),$this->getFormData($formData,1));
         }
         return [];
-    }
-
-    public function initAfterCalc(String $filePath): JsonResponse
-    {
-        if (!file_exists($filePath)) {
-            return new JsonResponse(['error' => 'Fichier non trouvé'], Response::HTTP_NOT_FOUND);
-        }
-
-        $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-        if (count($lines) < 36) {
-            return new JsonResponse(['error' => 'Fichier incomplet'], Response::HTTP_BAD_REQUEST);
-        }
-
-        $data = $this->extractCalcValues($filePath);
-
-        return new JsonResponse($data);
-    }
-
-    public function calculate(array $data , String $meteoFileName ): JsonResponse
-    {
-        $uploadDirectory = $this->getParameter('upload_directory') . '/Ressources/';
-        $uniqueId = uniqid();
-
-        $outputFileName = 'form_meteo_input_' . $uniqueId . '.txt';
-        $outputFilePath = $uploadDirectory . 'out/' . $outputFileName;
-
-        $dataString = implode("\n", $data);
-        file_put_contents($outputFilePath, $dataString);
-
-        $response = $this->sendFileForCalc($meteoFileName, $outputFileName, 'api/data/calcul');
-        if ($response->getStatusCode() === 200) {
-            $responseContent = $response->getContent();
-            $calcOutputFileName = 'calc_form_meteo_output_' . $uniqueId . '.txt';
-            $calcOutputFilePath = $uploadDirectory . 'out/' . $calcOutputFileName;
-            file_put_contents($calcOutputFilePath, $responseContent);
-
-            $response = $this->initAfterCalc($calcOutputFilePath);
-
-            unlink($outputFilePath);
-            unlink($calcOutputFilePath);
-
-            if ($response->getStatusCode() === 200) {
-                // ✅ Retourne les données déjà en tableau
-                return $response;
-            } else {
-                return new JsonResponse([
-                    'error' => 'Erreur lors de l\'initialisation après calcul: ' . $response->getContent()
-                ], 500);
-            }
-
-        } else {
-            return new JsonResponse([
-                'error' => 'Erreur lors de l\'envoi du fichier: ' . $response->getContent()
-            ], 500);
-        }
-    }
-
-    public function generateExpositions(array $data, String $meteoFileName): Response {
-        $uploadDirectory = $this->getParameter('upload_directory') . '/Ressources/';
-        $uniqueId = uniqid();
-
-        $outputFileName = 'form_meteo_input_' . $uniqueId . '.txt';
-        $outputFilePath = $uploadDirectory . 'out/' . $outputFileName;
-
-        $data = array_map(function($value) {
-            return is_float($value) || is_numeric($value) ? str_replace('.', ',', (string)$value) : $value;
-        }, $data);
-
-        $dataString = implode("\n", $data);
-        file_put_contents($outputFilePath, $dataString);
-
-        $response = $this->sendFileForCalc($meteoFileName, $outputFileName, 'api/exposure/export');
-
-        unlink($outputFilePath);
-
-        return $response;
     }
 
     public function extractZip($zipTempPath, $directory)
