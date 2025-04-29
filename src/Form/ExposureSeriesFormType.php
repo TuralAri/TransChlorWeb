@@ -18,24 +18,24 @@ class ExposureSeriesFormType extends AbstractType
         $builder
 //            ->add('label')
 //            ->add('comment')
-            ->add('fileYears', NumberType::class, ['label' => 'Nombre d\'années (fichier)'])
+            ->add('fileYears', NumberType::class, ['label' => 'Nombre d\'années (fichier)', 'disabled' => true]) //DISABLED
             ->add('sodiumChlorideConcentration', NumberType::class, ['label' => 'Concentration de chlorure de sodium au temps'])
             ->add('waterFilmThickness', NumberType::class, ['label' => 'Épaisseur du film d\'eau sur la chaussée'])
             ->add('humidityThreshold', NumberType::class, ['label' => 'Humidité relative seuil d\'intervention en cas de basses températures'])
 
-            ->add('mechanicalAnnualSodium', NumberType::class, ['label' => 'Concentration annuelle en chlorure de sodium'])
+            ->add('mechanicalAnnualSodium', NumberType::class, ['label' => 'Concentration annuelle en chlorure de sodium', 'disabled'=>true])
             ->add('mechanicalMeanSodium', NumberType::class, ['label' => 'Quantité moyenne de chlorure de sodium'])
-            ->add('mechanicalInterventions', NumberType::class, ['label' => 'Nombre d\'interventions d\'épandage de chlorure de sodium', 'required' => false])
+            ->add('mechanicalInterventions', NumberType::class, ['label' => 'Nombre d\'interventions d\'épandage de chlorure de sodium', 'required' => false, 'disabled'=>true])
             ->add('mechanicalInterval', NumberType::class, ['label' => 'Intervalle minimal entre épandages'])
             ->add('mechanicalSodiumWater', NumberType::class, ['label' => 'Concentration de chlorure de sodium dans l\'eau'])
-            ->add('mechanicalThresholdTemperature', NumberType::class, ['label' => 'Température seuil d\'intervention', 'required' => false])
+            ->add('mechanicalThresholdTemperature', NumberType::class, ['label' => 'Température seuil d\'intervention', 'required' => false, 'disabled'=>true])
 
-            ->add('automaticAnnualSodium', NumberType::class, ['label' => 'Concentration annuelle en chlorure de sodium'])
+            ->add('automaticAnnualSodium', NumberType::class, ['label' => 'Concentration annuelle en chlorure de sodium', 'disabled'=>true])
             ->add('automaticMeanSodium', NumberType::class, ['label' => 'Quantité moyenne de chlorure de sodium'])
-            ->add('automaticSprays', NumberType::class, ['label' => 'Nombre de giclages annuels', 'required' => false])
+            ->add('automaticSprays', NumberType::class, ['label' => 'Nombre de giclages annuels', 'required' => false, 'disabled'=>true])
             ->add('automaticSprayInterval', NumberType::class, ['label' => 'Nombre de giclages sur un intervalle de temps'])
             ->add('automaticSodiumWater', NumberType::class, ['label' => 'Concentration de chlorure de sodium dans l\'eau (épandage) Si épandage solide (100%)'])
-            ->add('automaticThresholdTemperature', NumberType::class, ['label' => 'Température seuil d\'intervention', 'required' => false])
+            ->add('automaticThresholdTemperature', NumberType::class, ['label' => 'Température seuil d\'intervention', 'required' => false , 'disabled'=>true])
 
             ->add('extTemperaturePosition', NumberType::class, ['label' => 'Position de la moyenne au'])
             ->add('extTemperaturePosition2', NumberType::class, ['label' => '/'])
