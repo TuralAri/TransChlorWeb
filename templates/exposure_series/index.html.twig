@@ -3,7 +3,7 @@
 {% block title %}Exposure Series{% endblock %}
 
 {% block body %}
-    <div class="mx-[10%] px-4 py-8 ">
+    <div class="mx-[10%] px-4 py-8 flex flex-col">
         {% for message in app.flashes('success') %}
             <div class="bg-green-100 p-4 mb-4 rounded-lg">
                 {{ message }}
@@ -16,13 +16,16 @@
             </div>
         {% endfor %}
         <h1 class="text-2xl font-bold mb-6">Station météo : {{ weatherStation.getLocalFileName() }}</h1>
-        <a href="{{ path('weather_stations') }}"
-           class="inline-block mb-4 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
-            ← Revenir en arrière
-        </a>
-        <a href="{{ path('exposure_series_generate', {'id': weatherStation.id}) }}" class="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none cursor-pointer">
-            Générer une série
-        </a>
+        <div>
+            <a href="{{ path('weather_stations') }}"
+               class="inline-block mb-4 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
+                ← Revenir en arrière
+            </a>
+            <a href="{{ path('exposure_series_generate', {'id': weatherStation.id}) }}" class="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none cursor-pointer">
+                Générer une série
+            </a>
+        </div>
+
         <section class="space-y-4 mt-4">
             <div class="overflow-x-auto bg-white shadow-md rounded-lg">
                 <table class="min-w-full table-auto">
@@ -54,5 +57,8 @@
                 </table>
             </div>
         </section>
+        <div class="pagination mt-auto pt-4">
+            {{ knp_pagination_render(exposureSeries, 'bundles/KnpPaginatorBundle/Pagination/tailwind.html.twig') }}
+        </div>
     </div>
 {% endblock %}

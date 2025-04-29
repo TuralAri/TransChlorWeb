@@ -9,6 +9,7 @@ use App\Form\ExposureSeriesFormType;
 use App\Repository\ExposureSeriesRepository;
 use App\Service\ApiService;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,18 +26,24 @@ class ExposureSeriesController extends AbstractController
     }
 
     #[Route('/weatherstations/{id}/exposure-series', name: 'exposure_series')]
-    public function index(WeatherStation $weatherStation): Response
+    public function index(WeatherStation $weatherStation, Request $request, PaginatorInterface $paginator): Response
     {
 
         if(!$this->getUser()){
             return $this->redirectToRoute('index');
         }
 
-        $exposureSeries = $weatherStation->getExposureSeries();
+        $query = $weatherStation->getExposureSeries();
+
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            10
+        );
 
         return $this->render('exposure_series/index.html.twig', [
             'weatherStation' => $weatherStation,
-            'exposureSeries' => $exposureSeries,
+            'exposureSeries' => $pagination,
         ]);
     }
     #[Route('/weatherstations/{id}/exposure-series/generate', name: 'exposure_series_generate')]
@@ -47,6 +54,7 @@ class ExposureSeriesController extends AbstractController
         }
 
         $exposureSeries = new ExposureSeries();
+        $exposureSeries->setLabel($weatherStation->getLocalFileName());
         $exposureSeries->setWeatherStation($weatherStation);
         $exposureSeries->setFileYears($weatherStation->getFileYears());
         $exposureSeries->setMechanicalAnnualSodium($weatherStation->getMechanicalAnnualSodium());
