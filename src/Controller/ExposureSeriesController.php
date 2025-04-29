@@ -89,6 +89,7 @@ class ExposureSeriesController extends AbstractController
                 if($exposureSeries->getMechanicalInterventions() === null || $exposureSeries->getMechanicalThresholdTemperature() == null
                     || $exposureSeries->getAutomaticThresholdTemperature() == null || $exposureSeries->getAutomaticSprays() == null){
                     $this->addFlash('error', 'Des champs ne sont pas remplis, avez vous essayé de calculer les valeurs manquantes ?');
+                    return $this->redirectToRoute('exposure_series_generate', ['id' => $weatherStation->getId()]);
                 }
 
                 //Sending form and meteofile to C# API
