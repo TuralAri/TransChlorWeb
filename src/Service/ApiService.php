@@ -139,7 +139,7 @@ class ApiService
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function precalculate(String $filePath, String $newFileName): Response
+    public function precalculate(String $filePath, String $newFileName): JsonResponse
     {
         try {
             $response = $this->sendFile($filePath, 'api/data/precalcul');
@@ -155,9 +155,9 @@ class ApiService
 
             unlink($outputPath); // Nettoyage
 
-            return new Response($data);
+            return new JsonResponse($data);
         } catch (\Exception $e) {
-            return new Response('Erreur lors de l\'upload: ' . $e->getMessage(), 500);
+            return new JsonResponse('Erreur lors de l\'upload: ' . $e->getMessage(), 500);
         }
     }
 
