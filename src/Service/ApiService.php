@@ -161,4 +161,108 @@ class ApiService
         }
     }
 
+    //FROM HERE FUNCTIONS USED IN EXPOSURE SERIES CONTROLLER
+
+    public function sendFilesForCalculation(string $meteoFilePath, string $dataFilePath, string $route): Response
+    {
+        $tempMeteoFileName = uniqid('temp_') . '_' . basename($meteoFilePath);
+        $tempMeteoFilePath = $this->meteoFilesDirectory . '/' . $tempMeteoFileName;
+
+        //COPIE DU FICHIER METEO POUR L ENVOYER SOUS UN NOM UNIQUE (ENTRE UTILISATEURS)
+
+        copy($meteoFilePath, $tempMeteoFilePath);
+
+        $file1 = fopen($tempMeteoFilePath, 'r');
+        $file2 = fopen($dataFilePath, 'r');
+
+        $response = $this->httpClient->request('POST', $this->apiUrl . '/' . $route, [
+            'headers' => ['Content-Type' => 'multipart/form-data'],
+            'body' => [
+                'file1' => $file1,
+                'file2' => $file2
+            ]
+        ]);
+
+        unlink($tempMeteoFilePath);
+
+        return new Response($response->getContent(), $response->getStatusCode());
+    }
+
+
+    public function extractCalcValues(string $filePath): array
+    {
+        $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+        if (count($lines) < 32) {
+            throw new \Exception('Le fichier précalcul est incomplet.');
+        }
+
+        return [
+            'mechanicalInterventions' => floatval(str_replace(',', '.', $lines[6])),
+            'automaticSprays' => floatval(str_replace(',', '.', $lines[12])),
+            'mechanicalThresholdTemperature' => floatval(str_replace(',', '.', $lines[9])),
+            'automaticThresholdTemperature' => floatval(str_replace(',', '.', $lines[15])),
+        ];
+    }
+
+    public function initAfterCalc(string $filePath): JsonResponse
+    {
+        if (!file_exists($filePath)) {
+            return new JsonResponse(['error' => 'Fichier non trouvé'], Response::HTTP_NOT_FOUND);
+        }
+
+        $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        if (count($lines) < 36) {
+            return new JsonResponse(['error' => 'Fichier incomplet'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $data = $this->extractCalcValues($filePath);
+        return new JsonResponse($data);
+    }
+
+    public function calculate(array $data, string $meteoFileName): JsonResponse
+    {
+        $uniqueId = uniqid();
+        $inputFile = $this->outputDirectory . '/form_meteo_input_' . $uniqueId . '.txt';
+        $outputFile = $this->outputDirectory . '/calc_form_meteo_output_' . $uniqueId . '.txt';
+        $meteoFilePath = $this->meteoFilesDirectory . '/' . $meteoFileName;
+
+        $dataString = implode("\n", $data);
+        file_put_contents($inputFile, $dataString);
+
+        $response = $this->sendFilesForCalculation($meteoFilePath, $inputFile, 'api/data/calcul');
+
+        if ($response->getStatusCode() !== 200) {
+            return new JsonResponse(['error' => 'Erreur API: ' . $response->getContent()], 500);
+        }
+
+        file_put_contents($outputFile, $response->getContent());
+
+        $jsonResponse = $this->initAfterCalc($outputFile);
+
+        unlink($inputFile);
+        unlink($outputFile);
+
+        return $jsonResponse;
+    }
+
+    public function generateExpositions(array $data, string $meteoFileName): Response
+    {
+        $uniqueId = uniqid();
+        $inputFile = $this->outputDirectory . '/form_meteo_input_' . $uniqueId . '.txt';
+        $meteoFilePath = $this->meteoFilesDirectory . '/' . $meteoFileName;
+
+        $data = array_map(function ($value) {
+            return is_float($value) || is_numeric($value) ? str_replace('.', ',', (string)$value) : $value;
+        }, $data);
+
+        file_put_contents($inputFile, implode("\n", $data));
+
+        $response = $this->sendFilesForCalculation($meteoFilePath, $inputFile, 'api/exposure/export');
+        unlink($inputFile);
+
+        return $response;
+    }
+
+
 }
