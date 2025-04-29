@@ -32,6 +32,16 @@
 
 
         {{ form_start(exposureSeriesForm, {'attr': {'class': 'space-y-6'}}) }}
+        <div class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+            <h2 class="text-xl font-semibold mb-4">Infos générales</h2>
+            <div class="w-full">
+                {{ form_row(exposureSeriesForm.label, {'attr': {'class': 'w-full p-2 border rounded-lg'}}) }}
+            </div>
+            <div class="w-full">
+                {{ form_row(exposureSeriesForm.comment, {'attr': {'class': 'w-full p-2 border rounded-lg', 'rows': '3'}}) }}
+            </div>
+
+        </div>
 
 
         <div class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">

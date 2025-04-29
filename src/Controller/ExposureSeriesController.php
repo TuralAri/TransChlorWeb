@@ -47,7 +47,6 @@ class ExposureSeriesController extends AbstractController
         }
 
         $exposureSeries = new ExposureSeries();
-        $exposureSeries->setLabel('test');
         $exposureSeries->setWeatherStation($weatherStation);
         $exposureSeries->setFileYears($weatherStation->getFileYears());
         $exposureSeries->setMechanicalAnnualSodium($weatherStation->getMechanicalAnnualSodium());
