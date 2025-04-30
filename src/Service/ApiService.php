@@ -264,5 +264,15 @@ class ApiService
         return $response;
     }
 
+    public function startRandomComputing(string $computationId) :void
+    {
+        $this->httpClient->request('GET', $this->apiUrl . '/api/computing/run', [
+            'query' => [
+                'mode' => 'random',
+                'computationId' => $computationId
+            ]
+        ]);
+    }
+
 
 }
