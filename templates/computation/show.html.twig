@@ -1,24 +1,43 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Exposure Series
+{% block title %}Computation Results
 {% endblock %}
 {% block body %}
 <main>
-{#    <section class="mx-[10%] px-4 py-8">#}
-{#        <h1 class="text-2xl font-bold mb-6">Affichage calcul</h1>#}
-            <div class="mx-[10%] px-4 py-8">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {% for data in datasets %}
-                        <div class="bg-white p-4 rounded-lg shadow">
-                            <h3 class="text-center text-lg font-semibold mb-2">
-                                {{ data.type|replace({'_':' '})|capitalize }}
-                            </h3>
-                            <canvas id="chart-{{ loop.index }}" class="w-full h-64"></canvas>
-                        </div>
-                    {% endfor %}
+    <section class="mx-[10%] px-4 py-8">
+        <div class="flex flex-col sm:flex-row items-center justify-between">
+            <h1 class="text-3xl font-bold text-center mb-4">Résultats du Calcul – {{ computation.id }}</h1>
+            {% if computation.status == 'progress' %}
+                <span class="mt-2 sm:mt-0 inline-block px-3 py-1 text-sm font-semibold text-yellow-800 bg-yellow-200 rounded-full">
+                    En cours
+                </span>
+            {% elseif computation.status == 'finished' %}
+                <span class="mt-2 sm:mt-0 inline-block px-3 py-1 text-sm font-semibold text-green-800 bg-green-200 rounded-full">
+                Terminé
+                </span>
+            {% else %}
+                <span class="mt-2 sm:mt-0 inline-block px-3 py-1 text-sm font-semibold text-gray-800 bg-gray-200 rounded-full">
+                Inconnu
+                </span>
+            {% endif %}
+        </div>
+
+        <p class="text text-gray-600 sm:text-center md:text-left lg:text-left">
+            Visualisation des courbes selon le type de données et la profondeur du béton.
+        </p>
+    </section>
+    <section class="mx-[10%] px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {% for data in datasets %}
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <h3 class="text-center text-lg font-semibold mb-2">
+                        {{ data.type|replace({'_':' '})|capitalize }}
+                    </h3>
+                    <canvas id="chart-{{ loop.index }}" class="w-full h-64"></canvas>
                 </div>
-            </div>
-{#    </section>#}
+            {% endfor %}
+        </div>
+    </section>
 </main>
 {% endblock %}
 {% block javascripts %}
