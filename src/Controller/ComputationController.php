@@ -86,13 +86,18 @@ class ComputationController extends AbstractController
             $result = $computationResultRepository->findOneBy(['computation' => $computation, 'type' => $type], ['id' => 'DESC']);
             if (!$result) continue;
 
-            $graphData[] = [
+            $dataset =  [
                 'type' => $type,
+                'label' => $this->getGraphLabel($type),
                 'data' => array_map(fn($depth, $val) => ['x' => $depth, 'y' => $val], $result->getDepths(), $result->getComputedValues()),
                 'borderColor' => $this->getGraphColor($type),
                 'fill' => false,
-                'tension' => 0.3
+                'tension' => 0.3,
+                'time' => $this->getTimeString($type, $result->getTime()),
             ];
+
+            $graphData[] = $dataset;
+
         }
 
         return $this->render('computation/show.html.twig', [
@@ -119,6 +124,34 @@ class ComputationController extends AbstractController
             "ph" => "#00A6CB",
             default => "#ccc",
         };
+    }
+
+    public function getGraphLabel($type): string
+    {
+        return match ($type) {
+            "temperature_potential" => "Température Potential [°C]",
+            "moisture_potential" => "Moisture Potential [P/Ps]",
+            "moisture_content" => "Moisture Content [kg/m3]",
+            "total_chloride" => "Total Chloride Ion Content [kg/m3]",
+            "free_chloride" => "Free Chloride Ion Content [kg/m3]",
+            "ph" => "PH",
+            default => "unrecognized type",
+        };
+    }
+
+    public function getTimeString($type, $time): string
+    {
+        $timeString = match ($type) {
+            "temperature_potential" => "Température Potential Distribution at",
+            "moisture_potential" => "Moisture Potential Distribution at",
+            "moisture_content" => "Moisture Content Distribution at",
+            "total_chloride" => "Total Chloride Ion Distribution at",
+            "free_chloride" => "Free Chloride Ion Distribution at",
+            "ph" => "PH Distribution at",
+            default => "unrecognized type at",
+        };
+
+        return $timeString . " " . $time . " Days";
     }
 
 }

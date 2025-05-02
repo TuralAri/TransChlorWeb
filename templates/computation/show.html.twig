@@ -31,7 +31,7 @@
             {% for data in datasets %}
                 <div class="bg-white p-4 rounded-lg shadow">
                     <h3 class="text-center text-lg font-semibold mb-2">
-                        {{ data.type|replace({'_':' '})|capitalize }}
+                        {{ data.time }}
                     </h3>
                     <canvas id="chart-{{ loop.index }}" class="w-full h-64"></canvas>
                 </div>
@@ -52,7 +52,7 @@
                     type: 'line',
                     data: {
                         datasets: [{
-                            label: '{{ data.type }}',
+                            label: '{{ data.label }}',
                             data: rawData,
                             borderColor: '{{ data.borderColor }}',
                             fill: {{ data.fill ? 'true' : 'false' }},
@@ -61,6 +61,16 @@
                     },
                     options: {
                         parsing: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                align: 'start',
+                                labels: {
+                                    boxWidth: 12
+                                }
+                            }
+                        },
                         scales: {
                             x: {
                                 type: 'linear',
@@ -72,7 +82,7 @@
                             },
                             y: {
                                 title: {
-                                    display: true,
+                                    display: false,
                                     text: 'Valeur calculée'
                                 }
                             }
