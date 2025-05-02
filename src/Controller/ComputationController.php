@@ -89,7 +89,7 @@ class ComputationController extends AbstractController
             $graphData[] = [
                 'type' => $type,
                 'data' => array_map(fn($depth, $val) => ['x' => $depth, 'y' => $val], $result->getDepths(), $result->getComputedValues()),
-                'borderColor' => '#0000ff',
+                'borderColor' => $this->getGraphColor($type),
                 'fill' => false,
                 'tension' => 0.3
             ];
@@ -101,5 +101,24 @@ class ComputationController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @param $type
+     * @return string
+     * Method that returns a specified color for each types
+     * default color #ccc (for unrecognized types)
+     */
+    public function getGraphColor($type): string
+    {
+        return match ($type) {
+            "temperature_potential" => "#FF0000",
+            "moisture_potential" => "#800080",
+            "moisture_content" => "#0000FF",
+            "total_chloride" => "#78f542",
+            "free_chloride" => "#358014",
+            "ph" => "#00A6CB",
+            default => "#ccc",
+        };
+    }
 
 }
