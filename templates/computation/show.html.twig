@@ -11,7 +11,7 @@
                 <span class="mt-2 sm:mt-0 inline-block px-3 py-1 text-sm font-semibold text-yellow-800 bg-yellow-200 rounded-full">
                     En cours
                 </span>
-            {% elseif computation.status == 'finished' %}
+            {% elseif computation.status == 'completed' %}
                 <span class="mt-2 sm:mt-0 inline-block px-3 py-1 text-sm font-semibold text-green-800 bg-green-200 rounded-full">
                 Terminé
                 </span>
@@ -30,9 +30,9 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {% for data in datasets %}
                 <div class="bg-white p-4 rounded-lg shadow">
-                    <h3 class="text-center text-lg font-semibold mb-2">
-                        {{ data.time }}
-                    </h3>
+{#                    <h3 class="text-center text-lg font-semibold mb-2">#}
+{#                        {{ data.time }}#}
+{#                    </h3>#}
                     <canvas id="chart-{{ loop.index }}" class="w-full h-64"></canvas>
                 </div>
             {% endfor %}
@@ -42,55 +42,83 @@
 {% endblock %}
 {% block javascripts %}
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            {% for data in datasets %}
-            (function() {
-                const rawData = {{ data.data|json_encode(constant('JSON_UNESCAPED_SLASHES'))|raw }};
-                const ctx = document.getElementById('chart-{{ loop.index }}').getContext('2d');
+        let charts = [];
 
-                new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        datasets: [{
-                            label: '{{ data.label }}',
-                            data: rawData,
-                            borderColor: '{{ data.borderColor }}',
-                            fill: {{ data.fill ? 'true' : 'false' }},
-                            tension: {{ data.tension }}
-                        }]
-                    },
-                    options: {
-                        parsing: false,
-                        plugins: {
-                            legend: {
-                                display: true,
-                                position: 'top',
-                                align: 'start',
-                                labels: {
-                                    boxWidth: 12
-                                }
-                            }
+        function createOrUpdateCharts(datasets) {
+            datasets.forEach((dataset, index) => {
+                const ctx = document.getElementById('chart-' + (index + 1)).getContext('2d');
+
+                if (charts[index]) {
+                    charts[index].data.datasets[0].data = dataset.data;
+                    charts[index].data.datasets[0].label = dataset.label;
+                    charts[index].data.datasets[0].borderColor = dataset.borderColor;
+                    charts[index].update();
+
+                    charts[index].options.plugins.title.text = dataset.time; // Titre dynamique
+                    charts[index].update();
+                } else {
+                    charts[index] = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            datasets: [{
+                                label: dataset.label,
+                                data: dataset.data,
+                                borderColor: dataset.borderColor,
+                                fill: dataset.fill,
+                                tension: dataset.tension
+                            }]
                         },
-                        scales: {
-                            x: {
-                                type: 'linear',
-                                position: 'bottom',
+                        options: {
+                            parsing: false,
+                            plugins: {
+                                legend: {
+                                    display: true,
+                                    position: 'top',
+                                    align: 'start',
+                                    labels: {
+                                        boxWidth: 12
+                                    }
+                                },
                                 title: {
                                     display: true,
-                                    text: 'Profondeur'
+                                    text: dataset.time
                                 }
                             },
-                            y: {
-                                title: {
-                                    display: false,
-                                    text: 'Valeur calculée'
+                            scales: {
+                                x: {
+                                    type: 'linear',
+                                    position: 'bottom',
+                                    title: {
+                                        display: true,
+                                        text: 'Depth [mm]'
+                                    }
+                                },
+                                y: {
+                                    title: {
+                                        display: false,
+                                    }
                                 }
                             }
                         }
+                    });
+                }
+            });
+        }
+
+
+        function pollForUpdates() {
+            fetch('{{ path("latest_results", { id: computation.id }) }}')
+                    .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'completed') {
+                        clearInterval(pollingInterval);
                     }
+                    createOrUpdateCharts(data.datasets);
                 });
-            })();
-            {% endfor %}
-        });
+        }
+
+        const pollingInterval = setInterval(pollForUpdates, 5000);
+        pollForUpdates();
+
     </script>
 {% endblock %}

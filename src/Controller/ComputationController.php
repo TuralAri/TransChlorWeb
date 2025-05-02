@@ -59,9 +59,9 @@ class ComputationController extends AbstractController
 
         $entityManager->persist($result);
 
-        //Condition to change computation state
-        // if(completed)....
-        //
+        if($data['computationOver'] === true){
+            $computation->setStatus("completed");
+        }
 
         $entityManager->flush();
 
@@ -106,6 +106,48 @@ class ComputationController extends AbstractController
         ]);
     }
 
+    #[Route('/api/computation/{id}/latest-results', name: 'latest_results', methods: ['GET'])]
+    public function latestResults(
+        Computation $computation,
+        ComputationResultRepository $computationResultRepository
+    ): JsonResponse
+    {
+        //all different types of data
+        $types = [
+            "temperature_potential",
+            "moisture_potential",
+            "moisture_content",
+            "total_chloride",
+            "free_chloride",
+            "ph"
+        ];
+
+        $graphData = [];
+
+        //fetching and processing the different graphs
+        foreach ($types as $type) {
+            $result = $computationResultRepository->findOneBy(['computation' => $computation, 'type' => $type], ['id' => 'DESC']);
+            if (!$result) continue;
+
+            $dataset =  [
+                'type' => $type,
+                'label' => $this->getGraphLabel($type),
+                'data' => array_map(fn($depth, $val) => ['x' => $depth, 'y' => $val], $result->getDepths(), $result->getComputedValues()),
+                'borderColor' => $this->getGraphColor($type),
+                'fill' => false,
+                'tension' => 0.3,
+                'time' => $this->getTimeString($type, $result->getTime()),
+            ];
+
+            $graphData[] = $dataset;
+        }
+
+        return $this->json([
+            'status' => $computation->getStatus(),
+            'datasets' => $graphData,
+        ]);
+    }
+
 
     /**
      * @param $type
@@ -129,7 +171,7 @@ class ComputationController extends AbstractController
     public function getGraphLabel($type): string
     {
         return match ($type) {
-            "temperature_potential" => "Température Potential [°C]",
+            "temperature_potential" => "Temperature Potential [°C]",
             "moisture_potential" => "Moisture Potential [P/Ps]",
             "moisture_content" => "Moisture Content [kg/m3]",
             "total_chloride" => "Total Chloride Ion Content [kg/m3]",
@@ -142,7 +184,7 @@ class ComputationController extends AbstractController
     public function getTimeString($type, $time): string
     {
         $timeString = match ($type) {
-            "temperature_potential" => "Température Potential Distribution at",
+            "temperature_potential" => "Temperature Potential Distribution at",
             "moisture_potential" => "Moisture Potential Distribution at",
             "moisture_content" => "Moisture Content Distribution at",
             "total_chloride" => "Total Chloride Ion Distribution at",
