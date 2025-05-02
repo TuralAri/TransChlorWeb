@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Exposure Series
+{% endblock %}
+{% block body %}
+<main>
+{#    <section class="mx-[10%] px-4 py-8">#}
+{#        <h1 class="text-2xl font-bold mb-6">Affichage calcul</h1>#}
+            <div class="mx-[10%] px-4 py-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {% for data in datasets %}
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h3 class="text-center text-lg font-semibold mb-2">
+                                {{ data.type|replace({'_':' '})|capitalize }}
+                            </h3>
+                            <canvas id="chart-{{ loop.index }}" class="w-full h-64"></canvas>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+{#    </section>#}
+</main>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            {% for data in datasets %}
+            (function() {
+                const rawData = {{ data.data|json_encode(constant('JSON_UNESCAPED_SLASHES'))|raw }};
+                const ctx = document.getElementById('chart-{{ loop.index }}').getContext('2d');
+
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        datasets: [{
+                            label: '{{ data.type }}',
+                            data: rawData,
+                            borderColor: '{{ data.borderColor }}',
+                            fill: {{ data.fill ? 'true' : 'false' }},
+                            tension: {{ data.tension }}
+                        }]
+                    },
+                    options: {
+                        parsing: false,
+                        scales: {
+                            x: {
+                                type: 'linear',
+                                position: 'bottom',
+                                title: {
+                                    display: true,
+                                    text: 'Profondeur'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Valeur calculée'
+                                }
+                            }
+                        }
+                    }
+                });
+            })();
+            {% endfor %}
+        });
+    </script>
+{% endblock %}
