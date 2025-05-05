@@ -47,7 +47,7 @@
         <div class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
             <h2 class="text-xl font-semibold mb-4">Hypothèses sur l'épandage des chlorures de sodium</h2>
             <div class="flex gap-2 items-center justify-left">
-                {{ form_row(exposureSeriesForm.fileYears, {'attr':{'class':'ml-2 p-2 border rounded-lg text-center', 'type': 'number', 'step': '0.000001'}}) }}
+                {{ form_row(exposureSeriesForm.fileYears, {'attr':{'class':'ml-2 p-2 border rounded-lg text-center bg-gray-100', 'type': 'number', 'step': '0.000001'}}) }}
                 <p>[ans]</p>
             </div>
             <div class="flex gap-2 items-center justify-left">
@@ -71,7 +71,7 @@
                     </button>
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
-                    {{ form_row(exposureSeriesForm.mechanicalAnnualSodium, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    {{ form_row(exposureSeriesForm.mechanicalAnnualSodium, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center '}}) }}
                     <p>[g/m2]</p>
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
@@ -79,7 +79,7 @@
                     <p>[g/m2]</p>
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
-                    {{ form_row(exposureSeriesForm.mechanicalInterventions, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    {{ form_row(exposureSeriesForm.mechanicalInterventions, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center bg-gray-100'}}) }}
                     <p>(Sera déterminé après le calcul)</p>
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
@@ -91,7 +91,7 @@
                     <p>[%]</p>
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
-                    {{form_row(exposureSeriesForm.mechanicalThresholdTemperature,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
+                    {{form_row(exposureSeriesForm.mechanicalThresholdTemperature,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center bg-gray-100'}})}}
                     <p>[°C]</p>
                     <p>(Sera déterminé après le calcul)</p>
                 </div>
@@ -114,7 +114,7 @@
                     <p>[g/m2]</p>
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
-                    {{form_row(exposureSeriesForm.automaticSprays,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
+                    {{form_row(exposureSeriesForm.automaticSprays,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center bg-gray-100'}})}}
                     <p>(Sera déterminé après le calcul)</p>
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
@@ -125,7 +125,7 @@
                     <p>[%]</p>
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
-                    {{ form_row(exposureSeriesForm.automaticThresholdTemperature, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    {{ form_row(exposureSeriesForm.automaticThresholdTemperature, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center bg-gray-100'}}) }}
                     <p>[°C]</p>
                     <p>(Sera déterminé après le calcul)</p>
                 </div>
