@@ -149,6 +149,8 @@ class ApiService
                 return new JsonResponse(['error' => 'Erreur API: ' . $response->getContent()], 500);
             }
 
+            $this->generateOutFolderIfNotExists();
+
             $outputPath = $this->outputDirectory . '/form_meteo_output_' . $newFileName;
             file_put_contents($outputPath, $response->getContent());
 
@@ -223,6 +225,8 @@ class ApiService
 
     public function calculate(array $data, string $meteoFileName): JsonResponse
     {
+        $this->generateOutFolderIfNotExists();
+
         $uniqueId = uniqid();
         $inputFile = $this->outputDirectory . '/form_meteo_input_' . $uniqueId . '.txt';
         $outputFile = $this->outputDirectory . '/calc_form_meteo_output_' . $uniqueId . '.txt';
@@ -249,6 +253,8 @@ class ApiService
 
     public function generateExpositions(array $data, string $meteoFileName): Response
     {
+        $this->generateOutFolderIfNotExists();
+
         $uniqueId = uniqid();
         $inputFile = $this->outputDirectory . '/form_meteo_input_' . $uniqueId . '.txt';
         $meteoFilePath = $this->meteoFilesDirectory . '/' . $meteoFileName;
@@ -284,5 +290,16 @@ class ApiService
         return $response;
     }
 
+    /**
+     * Checks if the out folder in var/uploads/Ressources/out exists or not
+     * if not, creates the folder
+     * @return void
+     */
+    public function generateOutFolderIfNotExists()
+    {
+        if(!file_exists($this->outputDirectory)) {
+            mkdir($this->outputDirectory, 0777, true);
+        }
+    }
 
 }
