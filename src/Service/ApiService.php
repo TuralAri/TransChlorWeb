@@ -295,7 +295,7 @@ class ApiService
      * if not, creates the folder
      * @return void
      */
-    public function generateOutFolderIfNotExists()
+    public function generateOutFolderIfNotExists() : void
     {
         if(!file_exists($this->outputDirectory)) {
             mkdir($this->outputDirectory, 0777, true);
