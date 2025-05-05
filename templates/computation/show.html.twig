@@ -15,6 +15,10 @@
                 <span class="mt-2 sm:mt-0 inline-block px-3 py-1 text-sm font-semibold text-green-800 bg-green-200 rounded-full">
                 Terminé
                 </span>
+            {% elseif computation.status == 'stopped' %}
+                <span class="mt-2 sm:mt-0 inline-block px-3 py-1 text-sm font-semibold text-red-800 bg-red-200 rounded-full">
+                Stoppé
+                </span>
             {% else %}
                 <span class="mt-2 sm:mt-0 inline-block px-3 py-1 text-sm font-semibold text-gray-800 bg-gray-200 rounded-full">
                 Inconnu

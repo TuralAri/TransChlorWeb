@@ -6,6 +6,7 @@ use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 /**
  *
@@ -272,6 +273,15 @@ class ApiService
                 'computationId' => $computationId
             ]
         ]);
+    }
+
+    public function stopComputing($computationId) : ResponseInterface
+    {
+        $response = $this->httpClient->request('POST', $this->apiUrl . '/api/computing/cancel', [
+            'query' => ['computationId' => $computationId]
+        ]);
+
+        return $response;
     }
 
 

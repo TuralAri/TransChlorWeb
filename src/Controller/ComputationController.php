@@ -148,6 +148,28 @@ class ComputationController extends AbstractController
         ]);
     }
 
+    //for test usages method will for now be usable with get, for more security we will use POST
+    #[Route('computation/{id}/stop', name: 'stop_computation')]
+    public function delete(Computation $computation, EntityManagerInterface $em)
+    {
+        if($computation->getStatus() !== "completed" && $computation->getStatus()!=="stopped" ){
+            //call to API route /api/computing/cancel, computationId set via post
+            $result = $this->apiService->stopComputing($computation->getId());
+            if($result->getStatusCode() === 200){
+                $computation->setStatus("stopped");
+                $em->persist($computation);
+                $em->flush();
+                return $this->json(['success' => true],201);
+            }
+        }
+
+        return $this->json([
+            'success' => false,
+            'status'=> $computation->getStatus()
+        ]);
+    }
+
+
 
     /**
      * @param $type
