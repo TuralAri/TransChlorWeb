@@ -5,6 +5,17 @@
 {% block body %}
 <main>
     <section class="mx-[10%] px-4 py-8">
+        {% for message in app.flashes('success') %}
+            <div class="bg-green-100 p-4 mb-4 rounded-lg">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        {% for message in app.flashes('error') %}
+            <div class="bg-red-100 p-4 mb-4 rounded-lg">
+                {{ message }}
+            </div>
+        {% endfor %}
         <div class="flex flex-col sm:flex-row items-center justify-between">
             <h1 class="text-3xl font-bold text-center mb-4">Résultats du Calcul – {{ computation.id }}</h1>
             {% if computation.status == 'progress' %}
@@ -31,7 +42,7 @@
         </p>
     </section>
     <section class="mx-[10%] px-4 py-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-4">
             {% for data in datasets %}
                 <div class="bg-white p-4 rounded-lg shadow">
 {#                    <h3 class="text-center text-lg font-semibold mb-2">#}
@@ -41,6 +52,11 @@
                 </div>
             {% endfor %}
         </div>
+        {% if computation.status == 'progress'%}
+            <a href="{{ path('stop_computation', {'id':computation.id})}}" class="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 focus:outline-none cursor-pointer">
+                Arrêter le calcul
+            </a>
+        {% endif %}
     </section>
 </main>
 {% endblock %}

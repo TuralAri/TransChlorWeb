@@ -43,6 +43,8 @@ class ComputationController extends AbstractController
     #[Route('/api/computations-results', name: 'receive_results', methods: ['POST'])]
     public function receiveResult(Request $request, EntityManagerInterface $entityManager, ComputationRepository $computationRepository): JsonResponse
     {
+        //Manage user permissions
+
         $data = json_decode($request->getContent(), true);
 
         $computation = $computationRepository->findOneBy(['id' => $data['computationId']]);
@@ -71,6 +73,8 @@ class ComputationController extends AbstractController
     #[Route('computation/{id}/show', name: 'show_computation')]
     public function show(Computation $computation, EntityManagerInterface $entityManager, ComputationResultRepository $computationResultRepository)
     {
+        //Manage user permissions
+
         $types = [
             "temperature_potential",
             "moisture_potential",
@@ -112,6 +116,8 @@ class ComputationController extends AbstractController
         ComputationResultRepository $computationResultRepository
     ): JsonResponse
     {
+        //Manage user permissions
+
         //all different types of data
         $types = [
             "temperature_potential",
@@ -148,10 +154,11 @@ class ComputationController extends AbstractController
         ]);
     }
 
-    //for test usages method will for now be usable with get, for more security we will use POST
     #[Route('computation/{id}/stop', name: 'stop_computation')]
     public function delete(Computation $computation, EntityManagerInterface $em)
     {
+        //Manage user permissions
+
         if($computation->getStatus() !== "completed" && $computation->getStatus()!=="stopped" ){
             //call to API route /api/computing/cancel, computationId set via post
             $result = $this->apiService->stopComputing($computation->getId());
@@ -159,14 +166,13 @@ class ComputationController extends AbstractController
                 $computation->setStatus("stopped");
                 $em->persist($computation);
                 $em->flush();
-                return $this->json(['success' => true],201);
+                $this->addFlash('success', 'Computation was stopped successfully');
+                return $this->redirectToRoute('show_computation', ['id' => $computation->getId()]);
             }
         }
 
-        return $this->json([
-            'success' => false,
-            'status'=> $computation->getStatus()
-        ]);
+        $this->addFlash('error', 'Computation could not be stopped');
+        return $this->redirectToRoute('show_computation', ['id' => $computation->getId()]);
     }
 
 
