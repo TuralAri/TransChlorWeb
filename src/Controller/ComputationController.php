@@ -11,6 +11,7 @@ use App\Repository\ComputationResultRepository;
 use App\Service\ApiService;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -98,10 +99,6 @@ class ComputationController extends AbstractController
 
         $entityManager->persist($result);
 
-        if($data['computationOver'] === true){
-            $computation->setStatus("completed");
-        }
-
         $entityManager->flush();
 
         return $this->json(['success' => true],201);
@@ -136,12 +133,35 @@ class ComputationController extends AbstractController
             ->setComputedValues($data['values'])
             ->setTime($data['time']);
 
-        if($data['computationOver'] === true){
-            $computation->setStatus("completed");
-        }
-
         $entityManager->persist($computation);
         $entityManager->persist($result);
+        $entityManager->flush();
+
+        return $this->json([
+            'success' => true,
+        ]);
+    }
+
+    #[Route('api/computations-over', name: 'over_computation', methods: ['POST'])]
+    public function computationOver(Request $request, EntityManagerInterface $entityManager, ComputationRepository $computationRepository, LoggerInterface $logger): JsonResponse
+    {
+        error_log("entrée computation over");
+        $computationId = json_decode($request->getContent(), true);
+
+        if (!$computationId) {
+            return $this->json(['error' => 'Invalid data'], 400);
+        }
+
+        $computation = $computationRepository->findOneBy(['id' => $computationId]);
+
+        if(!$computation){
+            return $this->json(['error' => 'Computation not found'], 404);
+        }
+
+        error_log("Erreur perso : " . $computationId);
+
+        $computation->setStatus("completed");
+        $entityManager->persist($computation);
         $entityManager->flush();
 
         return $this->json([
