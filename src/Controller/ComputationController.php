@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Computation;
+use App\Entity\ComputationActualResult;
 use App\Entity\ComputationResult;
+use App\Repository\ComputationActualResultRepository;
 use App\Repository\ComputationRepository;
 use App\Repository\ComputationResultRepository;
 use App\Service\ApiService;
@@ -49,8 +51,21 @@ class ComputationController extends AbstractController
         $computation = new Computation();
         $computation->setStartDate(new \DateTime());
         $computation->setEndDate(new \DateTime());
-        $computation->setStatus("progress"); //staus is whether in progess or ended
+        $computation->setStatus("progress"); //status is whether in progess or stopped
+
+        $types = $this->getTypes();
+        $computationsActualResults = [];
+
         $entityManager->persist($computation);
+        $entityManager->flush();
+
+        foreach($types as $type){
+            $computationsActualResults[$type] = new ComputationActualResult();
+            $computationsActualResults[$type]->setType($type);
+            $computationsActualResults[$type]->setComputation($computation);
+            $entityManager->persist($computationsActualResults[$type]);
+        }
+
         $entityManager->flush();
 
         //call api to start computation
@@ -92,19 +107,54 @@ class ComputationController extends AbstractController
         return $this->json(['success' => true],201);
     }
 
+    #[Route('/api/computations-actual-results', name: 'receive_actual_results', methods: ['POST'])]
+    public function receiveActualResult(Request $request, EntityManagerInterface $entityManager, ComputationRepository $computationRepository): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $computation = $computationRepository->findOneBy(['id' => $data['computationId']]);
+        if(!$computation){
+            return $this->json(['error' => 'Computation not found'], 404);
+        }
+
+        $type = $data['type'];
+
+        $computationActualResults = $computation->getComputationActualResults();
+        $result = null;
+
+        foreach($computationActualResults as $computationActualResult){
+            if($computationActualResult->getType() === $type){
+                $result = $computationActualResult;
+                break;
+            }
+        }
+
+        if(!$result){
+            return $this->json(['error' => 'Computation result not found'], 404);
+        }
+
+        $result->setDepths($data['depths'])
+            ->setComputedValues($data['values'])
+            ->setTime($data['time']);
+
+        if($data['computationOver'] === true){
+            $computation->setStatus("completed");
+        }
+
+        $entityManager->persist($computation);
+        $entityManager->persist($result);
+        $entityManager->flush();
+
+        return $this->json([
+            'success' => true,
+        ]);
+    }
+
     #[Route('computation/{id}/show', name: 'show_computation')]
-    public function show(Computation $computation, EntityManagerInterface $entityManager, ComputationResultRepository $computationResultRepository)
+    public function show(Computation $computation, EntityManagerInterface $entityManager, ComputationActualResultRepository $computationResultRepository)
     {
         //Manage user permissions
 
-        $types = [
-            "temperature_potential",
-            "moisture_potential",
-            "moisture_content",
-            "total_chloride",
-            "free_chloride",
-            "ph"
-        ];
+        $types = $this->getTypes();
 
         $graphData = [];
 
@@ -135,20 +185,13 @@ class ComputationController extends AbstractController
     #[Route('/api/computation/{id}/latest-results', name: 'latest_results', methods: ['GET'])]
     public function latestResults(
         Computation $computation,
-        ComputationResultRepository $computationResultRepository
+        ComputationActualResultRepository $computationResultRepository
     ): JsonResponse
     {
         //Manage user permissions
 
         //all different types of data
-        $types = [
-            "temperature_potential",
-            "moisture_potential",
-            "moisture_content",
-            "total_chloride",
-            "free_chloride",
-            "ph"
-        ];
+        $types = $this->getTypes();
 
         $graphData = [];
 
@@ -244,6 +287,18 @@ class ComputationController extends AbstractController
         };
 
         return $timeString . " " . $time . " Days";
+    }
+
+    public function getTypes() : array
+    {
+        return [
+            "temperature_potential",
+            "moisture_potential",
+            "moisture_content",
+            "total_chloride",
+            "free_chloride",
+            "ph"
+        ];
     }
 
 }

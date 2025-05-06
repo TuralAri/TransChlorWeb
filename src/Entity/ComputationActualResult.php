@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ComputationActualResultRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -21,14 +22,21 @@ class ComputationActualResult
     #[ORM\Column]
     private ?float $time = null;
 
-    #[ORM\Column(type: Types::ARRAY)]
+    #[ORM\Column(type: 'json')]
     private array $depths = [];
 
-    #[ORM\Column(type: Types::ARRAY)]
+    #[ORM\Column(type:'json')]
     private array $computedValues = [];
 
     #[ORM\Column(length: 255)]
     private ?string $type = null;
+
+    public function __construct()
+    {
+        $this->depths = [];
+        $this->computedValues = [];
+        $this->time = 0;
+    }
 
     public function getId(): ?int
     {
