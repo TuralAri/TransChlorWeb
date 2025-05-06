@@ -31,9 +31,16 @@ class Computation
     #[ORM\OneToMany(targetEntity: ComputationResult::class, mappedBy: 'computation', orphanRemoval: true)]
     private Collection $computationResults;
 
+    /**
+     * @var Collection<int, ComputationActualResult>
+     */
+    #[ORM\OneToMany(targetEntity: ComputationActualResult::class, mappedBy: 'computation', orphanRemoval: true)]
+    private Collection $computationActualResults;
+
     public function __construct()
     {
         $this->computationResults = new ArrayCollection();
+        $this->computationActualResults = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -101,6 +108,36 @@ class Computation
             // set the owning side to null (unless already changed)
             if ($computationResult->getComputation() === $this) {
                 $computationResult->setComputation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ComputationActualResult>
+     */
+    public function getComputationActualResults(): Collection
+    {
+        return $this->computationActualResults;
+    }
+
+    public function addComputationActualResult(ComputationActualResult $computationActualResult): static
+    {
+        if (!$this->computationActualResults->contains($computationActualResult)) {
+            $this->computationActualResults->add($computationActualResult);
+            $computationActualResult->setComputation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComputationActualResult(ComputationActualResult $computationActualResult): static
+    {
+        if ($this->computationActualResults->removeElement($computationActualResult)) {
+            // set the owning side to null (unless already changed)
+            if ($computationActualResult->getComputation() === $this) {
+                $computationActualResult->setComputation(null);
             }
         }
 
