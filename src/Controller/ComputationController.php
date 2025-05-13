@@ -78,6 +78,37 @@ class ComputationController extends AbstractController
         ],201);
     }
 
+    #[Route('/api/computations/1d', name: 'start_1d', methods: ['GET'])]
+    public function start1D(EntityManagerInterface $entityManager) : JsonResponse{
+        $computation = new Computation();
+        $computation->setStartDate(new \DateTime());
+        $computation->setEndDate(new \DateTime());
+        $computation->setStatus("progress"); //status is whether in progess or stopped
+
+        $types = $this->getTypes();
+        $computationsActualResults = [];
+
+        $entityManager->persist($computation);
+        $entityManager->flush();
+
+        foreach($types as $type){
+            $computationsActualResults[$type] = new ComputationActualResult();
+            $computationsActualResults[$type]->setType($type);
+            $computationsActualResults[$type]->setComputation($computation);
+            $entityManager->persist($computationsActualResults[$type]);
+        }
+
+        $entityManager->flush();
+
+        //call api to start computation
+        $this->apiService->start1DComputing($computation->getId());
+
+        return $this->json([
+            'computationId' => $computation->getId(),
+            'status' => $computation->getStatus(),
+        ],201);
+    }
+
     #[Route('/api/computations-results', name: 'receive_results', methods: ['POST'])]
     public function receiveResult(Request $request, EntityManagerInterface $entityManager, ComputationRepository $computationRepository): JsonResponse
     {
@@ -223,7 +254,11 @@ class ComputationController extends AbstractController
             $dataset =  [
                 'type' => $type,
                 'label' => $this->getGraphLabel($type),
-                'data' => array_map(fn($depth, $val) => ['x' => $depth, 'y' => $val], $result->getDepths(), $result->getComputedValues()),
+                'data' => array_map(
+                    fn($depth, $val) => ['x' => $depth, 'y' => $val],
+                    range(0, 100),
+                    $result->getComputedValues()
+                ),
                 'borderColor' => $this->getGraphColor($type),
                 'fill' => false,
                 'tension' => 0.3,

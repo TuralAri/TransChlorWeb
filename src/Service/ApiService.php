@@ -332,6 +332,24 @@ class ApiService
     }
 
     /**
+     * Will start a new computation on the API with the specified id, will cause issues if an already instantiated
+     * computing was run with the same id (you'll get more data for an already existing computation)
+     * CAUTION ! ONLY USE NEW COMPUTATIONS ID TO NOT MIX TWO COMPUTATIONS DATA
+     * @param string $computationId
+     * @return void
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
+    public function start1DComputing(string $computationId) :void
+    {
+        $this->httpClient->request('GET', $this->apiUrl . '/api/computing/run', [
+            'query' => [
+                'mode' => '1D',
+                'computationId' => $computationId
+            ]
+        ]);
+    }
+
+    /**
      * sends a request that will result in the stopping of the specified computation running
      * in the back
      * @param $computationId
