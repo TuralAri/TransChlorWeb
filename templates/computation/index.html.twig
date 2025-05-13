@@ -34,7 +34,7 @@
                             <td class="px-6 py-4 text-sm text-gray-500">{{ computation.startDate|date('Y-m-d H:i:s') }}</td>
                             <td class="px-6 py-4 text-sm text-gray-500">{{ computation.endDate|date('Y-m-d H:i:s') }}</td>
                             <td class="px-6 py-4 text-sm">
-                                <a href="{{ path('show_computation', {'id':computation.id}) }}" class="p-2 bg-blue-500 hover:bg-blue-800 text-white rounded">Voir les graphiques</a>
+                                <a href="{{ path('show_computation', {'id':computation.id}) }}" style="white-space: nowrap;" class="p-2 bg-blue-500 hover:bg-blue-800 text-white rounded">Voir les graphiques</a>
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-500">
                                 {% if computation.status == 'progress' %}
