@@ -43,6 +43,7 @@ exposureSeriesForm:
   waterFilmThickness: "Épaisseur du film d'eau sur la chaussée"
   humidityThreshold: "Humidité relative seuil d'intervention en cas de basses températures"
   #mechanical spreading
+  mechanicalSpreadingTitle: "Épandage Mécanique"
   mechanicalAnnualSodium: "Concentration annuelle en chlorure de sodium"
   mechanicalMeanSodium: "Quantité moyenne de chlorure de sodium"
   mechanicalInterventions: "Nombre d'interventions d'épandage de chlorure de sodium"
@@ -50,6 +51,7 @@ exposureSeriesForm:
   mechanicalSodiumWater: "Concentration de chlorure de sodium dans l'eau"
   mechanicalThresholdTemperature: "Température seuil d'intervention"
   #automatic spreading
+  automaticSpreadingTitle : "Épandage Automatique"
   automaticAnnualSodium: "Concentration annuelle en chlorure de sodium"
   automaticMeanSodium: "Quantité moyenne de chlorure de sodium"
   automaticSprays: "Nombre de giclages annuels"
@@ -57,6 +59,8 @@ exposureSeriesForm:
   automaticSodiumWater: "Concentration de chlorure de sodium dans l'eau (épandage) Si épandage solide (100%)"
   automaticThresholdTemperature: "Température seuil d'intervention"
   #Signal attenuation
+  extAttenuationSignalTitle: "Atténuation du signal (extérieur caisson)"
+  internAttenuationSignalTitle : "Atténuation du signal (intérieur caisson)"
   TemperaturePosition: "Position de la moyenne au"
   TemperaturePosition2: '/'
   TemperatureAttenuation: "Atténuation de"
@@ -69,8 +73,11 @@ exposureSeriesForm:
   HumidityAttenuation2: '/'
   HumidityDifference: "Différence Humidité relative limite"
 
+  temperature: "Température"
+  humidityRelative: "Humidité Relative"
   extremums: "des 2 extremums"
-  #signalAttenuation : outside the box
+  #other things
+  years: "[ans]"
+  afterComputing: "(Sera déterminé après le calcul)"
   differencesHumidity: "des la différence de HR"
   differencesTemp: "des la différence de T"
-  #Signal attenuation (inside the box)
