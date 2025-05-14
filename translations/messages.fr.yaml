@@ -1,2 +1,76 @@
-weatherStation.addFile: 'Importer un fichier'
-weatherStation.submit: Importer
+#variables that could be used anywhere like back buttons
+goBack : "Revenir en arrière"
+actions : "Actions"
+
+
+#Every translation related to weather stations
+weatherStation:
+#  add weather station form
+  addTitle : "Ajouter une nouvelle station météo"
+  addFile: 'Importer un fichier'
+  submit: Importer
+# weather station index page
+  title: "Vos stations météos"
+  addStationBtn: "Ajouter une station"
+  stationNumber: "Numéro"
+  stationName: "Nom de la station"
+  uploadedDate: "Date d'ajout"
+  startDate: "Date début"
+  endDate: "Date fin"
+  yearNumber: "Nombre d'années"
+  seeExposures: "Voir les expositions"
+
+exposures:
+  title: "Station météo :"
+  generateBtn: "Générer une série"
+  seriesName: "Nom de la série"
+  date: "Date de création"
+  comment: "Commentaire"
+  noComment: "Pas de commentaire"
+  parameters: "Voir les paramètres"
+  download: "Télécharger les expositions"
+  delete: "Supprimer les expositions"
+
+exposureSeriesForm:
+  title: "Formulaire Météo"
+  globalInfo: "Infos générales"
+  seriesLabel : "Nom de la série"
+  comment: "Commentaire *"
+  #spreading part
+  spreadingTitle: "Hypothèses sur l'épandage des chlorures de sodium"
+  yearNumber: "Nombre d'années (fichier)"
+  sodiumChlorideConcentration: "Concentration de chlorure de sodium au temps"
+  waterFilmThickness: "Épaisseur du film d'eau sur la chaussée"
+  humidityThreshold: "Humidité relative seuil d'intervention en cas de basses températures"
+  #mechanical spreading
+  mechanicalAnnualSodium: "Concentration annuelle en chlorure de sodium"
+  mechanicalMeanSodium: "Quantité moyenne de chlorure de sodium"
+  mechanicalInterventions: "Nombre d'interventions d'épandage de chlorure de sodium"
+  mechanicalInterval: "Intervalle minimal entre épandages"
+  mechanicalSodiumWater: "Concentration de chlorure de sodium dans l'eau"
+  mechanicalThresholdTemperature: "Température seuil d'intervention"
+  #automatic spreading
+  automaticAnnualSodium: "Concentration annuelle en chlorure de sodium"
+  automaticMeanSodium: "Quantité moyenne de chlorure de sodium"
+  automaticSprays: "Nombre de giclages annuels"
+  automaticSprayInterval: "Nombre de giclages sur un intervalle de temps"
+  automaticSodiumWater: "Concentration de chlorure de sodium dans l'eau (épandage) Si épandage solide (100%)"
+  automaticThresholdTemperature: "Température seuil d'intervention"
+  #Signal attenuation
+  TemperaturePosition: "Position de la moyenne au"
+  TemperaturePosition2: '/'
+  TemperatureAttenuation: "Atténuation de"
+  TemperatureAttenuation2: '/'
+  TemperatureDifference: "Différence de température limite"
+
+  HumidityPosition: "Position de la moyenne au"
+  HumidityPosition2: '/'
+  HumidityAttenuation: "Atténuation de"
+  HumidityAttenuation2: '/'
+  HumidityDifference: "Différence Humidité relative limite"
+
+  extremums: "des 2 extremums"
+  #signalAttenuation : outside the box
+  differencesHumidity: "des la différence de HR"
+  differencesTemp: "des la différence de T"
+  #Signal attenuation (inside the box)

@@ -16,26 +16,26 @@
                 {{ message }}
             </div>
         {% endfor %}
-        <h1 class="text-2xl font-bold mb-6">Vos stations méteos</h1>
+        <h1 class="text-2xl font-bold mb-6">{% trans %}weatherStation.title{% endtrans %}</h1>
         <a href="{{ path('index') }}"
            class="inline-block mb-4 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
-            <i class="fa-solid fa-arrow-left mr-1"></i> Revenir en arrière
+            <i class="fa-solid fa-arrow-left mr-1"></i> {% trans %}goBack{% endtrans %}
         </a>
         <a href="{{ path('weather_station_add')}}" class="inline-block mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none cursor-pointer">
-            <i class="fa-solid fa-plus mr-1"></i> Ajouter une station
+            <i class="fa-solid fa-plus mr-1"></i> {% trans %}weatherStation.addStationBtn{% endtrans %}
         </a>
         <section class="space-y-4 mt-4">
             <div class="overflow-x-auto bg-white shadow-md rounded-lg">
                 <table class="min-w-full table-auto">
                     <thead class="bg-gray-100">
                     <tr>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Numéro</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Nom de la Station</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Date d'ajout</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Date début</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Date fin</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Nombre d'années</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Actions</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">{% trans %}weatherStation.stationNumber{% endtrans %}</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">{% trans %}weatherStation.stationName{% endtrans %}</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">{% trans %}weatherStation.uploadedDate{% endtrans %}</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">{% trans %}weatherStation.startDate{% endtrans %}</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">{% trans %}weatherStation.endDate{% endtrans %}</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">{% trans %}weatherStation.yearNumber{% endtrans %}</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">{% trans %}actions{% endtrans %}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -50,7 +50,7 @@
                             <td class="px-6 py-4 text-sm">
                                 <a href="{{ path('exposure_series',{'id':weatherStation.id}) }}"
                                    class="inline-block px-4 py-2 bg-blue-500 hover:bg-blue-800 rounded text-white"
-                                   title="Voir les expositions">
+                                   title="{% trans %}weatherStation.seeExposures{% endtrans %}">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
                             </td>
