@@ -22,9 +22,6 @@ class ComputationActualResult
     #[ORM\Column]
     private ?float $time = null;
 
-    #[ORM\Column(type: 'json')]
-    private array $depths = [];
-
     #[ORM\Column(type:'json')]
     private array $computedValues = [];
 
@@ -63,18 +60,6 @@ class ComputationActualResult
     public function setTime(float $time): static
     {
         $this->time = $time;
-
-        return $this;
-    }
-
-    public function getDepths(): array
-    {
-        return $this->depths;
-    }
-
-    public function setDepths(array $depths): static
-    {
-        $this->depths = $depths;
 
         return $this;
     }

@@ -17,9 +17,6 @@ class ComputationResult
     private ?int $time = null;
 
     #[ORM\Column]
-    private array $depths = [];
-
-    #[ORM\Column]
     private array $computedValues = [];
 
     #[ORM\Column(length: 255)]
@@ -42,18 +39,6 @@ class ComputationResult
     public function setTime(int $time): static
     {
         $this->time = $time;
-
-        return $this;
-    }
-
-    public function getDepths(): array
-    {
-        return $this->depths;
-    }
-
-    public function setDepths(array $depths): static
-    {
-        $this->depths = $depths;
 
         return $this;
     }

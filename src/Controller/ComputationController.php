@@ -123,7 +123,6 @@ class ComputationController extends AbstractController
 
         $result = new ComputationResult();
         $result->setTime((int) $data['time'])
-               ->setDepths($data['depths'])
                ->setComputedValues($data['values'])
                ->setType($data['type'])
                ->setComputation($computation);
@@ -160,8 +159,7 @@ class ComputationController extends AbstractController
             return $this->json(['error' => 'Computation result not found'], 404);
         }
 
-        $result->setDepths($data['depths'])
-            ->setComputedValues($data['values'])
+        $result->setComputedValues($data['values'])
             ->setTime($data['time']);
 
         $entityManager->persist($computation);
@@ -216,7 +214,11 @@ class ComputationController extends AbstractController
             $dataset =  [
                 'type' => $type,
                 'label' => $this->getGraphLabel($type),
-                'data' => array_map(fn($depth, $val) => ['x' => $depth, 'y' => $val], $result->getDepths(), $result->getComputedValues()),
+                'data' => array_map(
+                    fn($depth, $val) => ['x' => $depth, 'y' => $val],
+                    range(0, 100),
+                    $result->getComputedValues()
+                ),
                 'borderColor' => $this->getGraphColor($type),
                 'fill' => false,
                 'tension' => 0.3,
