@@ -34,7 +34,26 @@
                             <td class="px-6 py-4 text-sm text-gray-500">{{ computation.startDate|date('Y-m-d H:i:s') }}</td>
                             <td class="px-6 py-4 text-sm text-gray-500">{{ computation.endDate|date('Y-m-d H:i:s') }}</td>
                             <td class="px-6 py-4 text-sm">
-                                <a href="{{ path('show_computation', {'id':computation.id}) }}" style="white-space: nowrap;" class="p-2 bg-blue-500 hover:bg-blue-800 text-white rounded">Voir les graphiques</a>
+                                <a href="{{ path('show_computation', {'id':computation.id}) }}"
+                                   style="white-space: nowrap;" class="px-4 py-2 mr-2 bg-blue-500 hover:bg-blue-800 text-white rounded"
+                                   title="Voir le graphique">
+                                    <i class="fa-solid fa-eye"></i>
+                                </a>
+                                {% if computation.status == "progress" %}
+{#                                    Stop button if the computation is still in progress#}
+                                    <a href="{{ path('show_computation', {'id':computation.id}) }}" style="white-space: nowrap;"
+                                       class="px-4 py-2 bg-red-500 hover:bg-red-800 text-white rounded"
+                                       title="Stopper le calcul">
+                                        <i class="fa-solid fa-stop"></i>
+                                    </a>
+                                {% else %}
+{#                                    Delete button if computation is not in progress#}
+                                    <a href="{{ path('show_computation', {'id':computation.id}) }}" style="white-space: nowrap;"
+                                       class="px-4 py-2 bg-red-500 hover:bg-red-800 text-white rounded"
+                                       title="Supprimer le calcul">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                {% endif %}
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-500">
                                 {% if computation.status == 'progress' %}
