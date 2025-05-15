@@ -1,0 +1,25 @@
+<footer class="bg-gray-800 text-gray-300 py-8">
+    <div class="container mx-auto px-4">
+        <div class="grid md:grid-cols-3 gap-8">
+            <div>
+                <h3 class="text-xl font-bold mb-4">Transchlor</h3>
+                <p class="mb-4">Solution de pointe pour la modélisation du transport des ions chlorures dans les infrastructures en béton.</p>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold mb-4">Liens rapides</h3>
+                <ul class="space-y-2">
+                    <li><a href="{{ path('index') }}" class="hover:text-white transition-colors">Accueil</a></li>
+                    <li><a href="{{ path('meteo_form') }}" class="hover:text-white transition-colors {{ not app.user ? 'opacity-50 cursor-not-allowed' : '' }}">Climat</a></li>
+                    <li><a href="{{ path('index') }}" class="hover:text-white transition-colors {{ not app.user ? 'opacity-50 cursor-not-allowed' : '' }}">Transport model</a></li>
+                    <li><a href="{{ path('index') }}" class="hover:text-white transition-colors {{ not app.user ? 'opacity-50 cursor-not-allowed' : '' }}">Probabiliste</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold mb-4">Contact</h3>
+            </div>
+        </div>
+        <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+            <p>&copy; {% if "now"|date("Y") == "2025" %}2025{% else %}2025 - {{ "now"|date("Y") }}{% endif %} Transchlor. Tous droits réservés.</p>
+        </div>
+    </div>
+</footer>
