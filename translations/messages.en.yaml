@@ -2,6 +2,10 @@
 goBack: "Go back"
 actions: "Actions"
 
+languages:
+  french: "French"
+  english: "English"
+
 #Related to header/nav
 header:
   home: "Home"

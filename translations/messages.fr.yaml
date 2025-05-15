@@ -2,6 +2,10 @@
 goBack : "Revenir en arrière"
 actions : "Actions"
 
+languages:
+  french: "Français"
+  english: "Anglais"
+
 #Related to header/nav
 header:
   home: "Accueil"
