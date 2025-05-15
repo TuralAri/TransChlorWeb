@@ -12,6 +12,13 @@ header:
   disconnect: "Déconnexion"
   createAccount: "Créer un compte"
 
+footer:
+  transchlor: "Transchlor"
+  description: "Solution de pointe pour la modélisation du transport des ions chlorures dans les infrastructures en béton."
+  quickLinks: "Liens rapides"
+  contact: "Contact"
+  copyright: "Transchlor. Tous droits réservés."
+
 security:
   createTitle: "Créer un compte"
   connectTitle: "Connexion"
