@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ComputationController extends AbstractController
 {
@@ -199,7 +200,7 @@ class ComputationController extends AbstractController
     }
 
     #[Route('computation/{id}/show', name: 'show_computation')]
-    public function show(Computation $computation, EntityManagerInterface $entityManager, ComputationActualResultRepository $computationResultRepository)
+    public function show(Computation $computation, EntityManagerInterface $entityManager, ComputationActualResultRepository $computationResultRepository, TranslatorInterface $translator)
     {
         //Manage user permissions
 
@@ -213,7 +214,7 @@ class ComputationController extends AbstractController
 
             $dataset =  [
                 'type' => $type,
-                'label' => $this->getGraphLabel($type),
+                'label' => $this->getGraphLabel($type, $translator),
                 'data' => array_map(
                     fn($depth, $val) => ['x' => $depth, 'y' => $val],
                     range(0, 100),
@@ -222,7 +223,7 @@ class ComputationController extends AbstractController
                 'borderColor' => $this->getGraphColor($type),
                 'fill' => false,
                 'tension' => 0.3,
-                'time' => $this->getTimeString($type, $result->getTime()),
+                'time' => $this->getTimeString($type, $result->getTime(), $translator),
             ];
 
             $graphData[] = $dataset;
@@ -238,7 +239,8 @@ class ComputationController extends AbstractController
     #[Route('/api/computation/{id}/latest-results', name: 'latest_results', methods: ['GET'])]
     public function latestResults(
         Computation $computation,
-        ComputationActualResultRepository $computationResultRepository
+        ComputationActualResultRepository $computationResultRepository,
+        TranslatorInterface $translator
     ): JsonResponse
     {
         //Manage user permissions
@@ -255,7 +257,7 @@ class ComputationController extends AbstractController
 
             $dataset =  [
                 'type' => $type,
-                'label' => $this->getGraphLabel($type),
+                'label' => $this->getGraphLabel($type, $translator),
                 'data' => array_map(
                     fn($depth, $val) => ['x' => $depth, 'y' => $val],
                     range(0, 100),
@@ -264,7 +266,7 @@ class ComputationController extends AbstractController
                 'borderColor' => $this->getGraphColor($type),
                 'fill' => false,
                 'tension' => 0.3,
-                'time' => $this->getTimeString($type, $result->getTime()),
+                'time' => $this->getTimeString($type, $result->getTime(), $translator),
             ];
 
             $graphData[] = $dataset;
@@ -318,32 +320,32 @@ class ComputationController extends AbstractController
         };
     }
 
-    public function getGraphLabel($type): string
+    public function getGraphLabel($type, TranslatorInterface $translator): string
     {
         return match ($type) {
-            "temperature_potential" => "Temperature Potential [°C]",
-            "moisture_potential" => "Moisture Potential [P/Ps]",
-            "moisture_content" => "Moisture Content [kg/m3]",
-            "total_chloride" => "Total Chloride Ion Content [kg/m3]",
-            "free_chloride" => "Free Chloride Ion Content [kg/m3]",
-            "ph" => "PH",
+            "temperature_potential" => $translator->trans('computations.temperaturePotential') . " [°C]",
+            "moisture_potential" => $translator->trans('computations.moisturePotential') . " [P/Ps]",
+            "moisture_content" => $translator->trans('computations.moistureContent') . " [kg/m3]",
+            "total_chloride" => $translator->trans('computations.totalChlorideIonContent') . " [kg/m3]",
+            "free_chloride" => $translator->trans('computations.freeChlorideIonContent') . " [kg/m3]",
+            "ph" => $translator->trans('computations.ph'),
             default => "unrecognized type",
         };
     }
 
-    public function getTimeString($type, $time): string
+    public function getTimeString($type, $time, TranslatorInterface $translator): string
     {
         $timeString = match ($type) {
-            "temperature_potential" => "Temperature Potential Distribution at",
-            "moisture_potential" => "Moisture Potential Distribution at",
-            "moisture_content" => "Moisture Content Distribution at",
-            "total_chloride" => "Total Chloride Ion Distribution at",
-            "free_chloride" => "Free Chloride Ion Distribution at",
-            "ph" => "PH Distribution at",
+            "temperature_potential" => $translator->trans('computations.temperaturePotentialTitle'),
+            "moisture_potential" => $translator->trans('computations.moisturePotentialTitle'),
+            "moisture_content" => $translator->trans('computations.moistureContentTitle'),
+            "total_chloride" => $translator->trans('computations.totalChlorideTitle'),
+            "free_chloride" => $translator->trans('computations.freeChlorideTitle'),
+            "ph" => $translator->trans('computations.phTitle'),
             default => "unrecognized type at",
         };
 
-        return $timeString . " " . $time . " Days";
+        return $timeString . " " . $time . " " . $translator->trans('computations.days');
     }
 
     public function getTypes() : array

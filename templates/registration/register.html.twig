@@ -5,26 +5,26 @@
 {% block body %}
     <div class="flex justify-center items-center min-h-screen bg-gray-100">
         <div class="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
-            <h1 class="text-3xl font-semibold text-center text-gray-800 mb-6">Créer un compte</h1>
+            <h1 class="text-3xl font-semibold text-center text-gray-800 mb-6">{{ 'security.createTitle' | trans }}</h1>
 
             {{ form_errors(registrationForm) }}
 
             {{ form_start(registrationForm) }}
 
             <div class="mb-4">
-                {{ form_label(registrationForm.username, null, {'label': 'Nom d\'utilisateur'}) }}
+                {{ form_label(registrationForm.username) }}
                 {{ form_widget(registrationForm.username, {'attr': {'class': 'w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500'}}) }}
                 {{ form_errors(registrationForm.username) }}
             </div>
 
             <div class="mb-4">
-                {{ form_label(registrationForm.plainPassword, null, {'label': 'Mot de passe'}) }}
+                {{ form_label(registrationForm.plainPassword)}}
                 {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500'}}) }}
                 {{ form_errors(registrationForm.plainPassword) }}
             </div>
 
             <button type="submit" class="w-full py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                S'inscrire
+                {{ 'security.register' | trans }}
             </button>
 
             {{ form_end(registrationForm) }}

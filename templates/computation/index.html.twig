@@ -4,14 +4,14 @@
 
 {% block body %}
     <div class="mx-[10%] px-4 py-8 flex flex-col">
-        <h1 class="text-2xl font-bold mb-6">Vos calculs</h1>
+        <h1 class="text-2xl font-bold mb-6">{{ 'computations.title' | trans }}</h1>
         <div>
             <a href="{{ path('index') }}"
                class="inline-block mb-4 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
-                <i class="fa-solid fa-arrow-left mr-1"></i> Revenir en arrière
+                <i class="fa-solid fa-arrow-left mr-1"></i> {{ 'goBack' | trans }}
             </a>
             <a href="{{ path('start_random') }}" class="inline-block mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none cursor-pointer">
-                <i class="fa-solid fa-plus mr-1"></i>Lancer un calcul
+                <i class="fa-solid fa-plus mr-1"></i>{{ 'computations.launchBtn' | trans }}
             </a>
         </div>
 
@@ -20,11 +20,11 @@
                 <table class="min-w-full table-auto">
                     <thead class="bg-gray-100 ">
                     <tr>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Numéro de calcul</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Date de début</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Date de fin</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Actions</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Statut</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">{{ 'computations.computationNumber' | trans }}</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">{{ 'computations.startDate' | trans }}</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">{{ 'computations.endDate' | trans }}</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">{{ 'actions' | trans }}</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">{{ 'computations.status' | trans }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -36,21 +36,21 @@
                             <td class="px-6 py-4 text-sm">
                                 <a href="{{ path('show_computation', {'id':computation.id}) }}"
                                    style="white-space: nowrap;" class="px-4 py-2 mr-2 bg-blue-500 hover:bg-blue-800 text-white rounded"
-                                   title="Voir le graphique">
+                                   title="{{ 'computations.seeGraphs' | trans }}">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
                                 {% if computation.status == "progress" %}
 {#                                    Stop button if the computation is still in progress#}
                                     <a href="{{ path('show_computation', {'id':computation.id}) }}" style="white-space: nowrap;"
                                        class="px-4 py-2 bg-red-500 hover:bg-red-800 text-white rounded"
-                                       title="Stopper le calcul">
+                                       title="{{ 'computations.stopComputation' | trans }}">
                                         <i class="fa-solid fa-stop"></i>
                                     </a>
                                 {% else %}
 {#                                    Delete button if computation is not in progress#}
                                     <a href="{{ path('show_computation', {'id':computation.id}) }}" style="white-space: nowrap;"
                                        class="px-4 py-2 bg-red-500 hover:bg-red-800 text-white rounded"
-                                       title="Supprimer le calcul">
+                                       title="{{ 'computations.deleteComputation' | trans }}">
                                         <i class="fa-solid fa-trash"></i>
                                     </a>
                                 {% endif %}
@@ -58,26 +58,26 @@
                             <td class="px-6 py-4 text-sm text-gray-500">
                                 {% if computation.status == 'progress' %}
                                     <span class="inline-block px-3 py-1 text-sm font-semibold text-yellow-800 bg-yellow-200 rounded-full">
-                    En cours
-                </span>
+                                        {{ 'computations.statusRunning' | trans }}
+                                    </span>
                                 {% elseif computation.status == 'completed' %}
                                     <span class="inline-block px-3 py-1 text-sm font-semibold text-green-800 bg-green-200 rounded-full">
-                Terminé
-                </span>
+                                        {{ 'computations.statusCompleted' | trans }}
+                                    </span>
                                 {% elseif computation.status == 'stopped' %}
                                     <span class="inline-block px-3 py-1 text-sm font-semibold text-red-800 bg-red-200 rounded-full">
-                Stoppé
-                </span>
+                                        {{ 'computations.statusStopped' | trans }}
+                                    </span>
                                 {% else %}
                                     <span class="inline-block px-3 py-1 text-sm font-semibold text-gray-800 bg-gray-200 rounded-full">
-                Inconnu
-                </span>
+                                        {{ 'computations.statusUnknown' | trans }}
+                                    </span>
                                 {% endif %}
                             </td>
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="5" class="inline-block px-6 py-4 text-sm text-center text-gray-500">Aucun calcul trouvé.</td>
+                            <td colspan="5" class="inline-block px-6 py-4 text-sm text-center text-gray-500">{{ 'computations.computationsNotFound' | trans }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>

@@ -2,6 +2,24 @@
 goBack : "Revenir en arrière"
 actions : "Actions"
 
+#Related to header/nav
+header:
+  home: "Accueil"
+  climate: "Climat"
+  transportModel: "Transport model"
+  probabilistic: "Probabiliste"
+  connexion: "Connexion"
+  disconnect: "Déconnexion"
+  createAccount: "Créer un compte"
+
+security:
+  createTitle: "Créer un compte"
+  connectTitle: "Connexion"
+  username: "Nom d'utilisateur"
+  password: "Mot de passe"
+  register: "S'inscrire"
+  connect: "Se connecter"
+  alreadyConnected: "Vous êtes connecté en tant que "
 
 #Every translation related to weather stations
 weatherStation:
@@ -20,6 +38,7 @@ weatherStation:
   yearNumber: "Nombre d'années"
   seeExposures: "Voir les expositions"
 
+#exposure pages related
 exposures:
   title: "Station météo :"
   generateBtn: "Générer une série"
@@ -31,6 +50,7 @@ exposures:
   download: "Télécharger les expositions"
   delete: "Supprimer les expositions"
 
+#entity exposureSeriesFormType
 exposureSeriesForm:
   title: "Formulaire Météo"
   globalInfo: "Infos générales"
@@ -81,3 +101,36 @@ exposureSeriesForm:
   afterComputing: "(Sera déterminé après le calcul)"
   differencesHumidity: "des la différence de HR"
   differencesTemp: "des la différence de T"
+
+#All translations related to the computations
+computations:
+  title: "Vos calculs"
+  launchBtn: "Lancer un calcul"
+  seeGraphs: "Voir les graphiques"
+  stopComputation: "Arrêter le calcul"
+  deleteComputation: "Supprimer le calcul"
+  computationsNotFound: "Aucun calcul trouvé."
+  computationNumber : "Numéro de calcul"
+  startDate : "Date de début"
+  endDate : "Date de fin"
+  status: "Statut"
+  statusUnknown: "Inconnu"
+  statusRunning: "En cours"
+  statusStopped: "Stoppé"
+  statusCompleted: "Terminé"
+  showTitle: "Résultats du Calcul - "
+  showDescription: "Visualisation des courbes selon le type de données et la profondeur du béton. "
+  depth: "Profondeur"
+  temperaturePotential: "Potentiel de Température"
+  moisturePotential: "Potentiel d'Humidité"
+  moistureContent: "Teneur en Humidité"
+  totalChlorideIonContent: "Teneur totale en Ions Chlorure"
+  freeChlorideIonContent : "Teneur en Ions Chlorure libres"
+  ph: "pH"
+  temperaturePotentialTitle: "Répartition du potentiel thermique après"
+  moisturePotentialTitle: "Répartition du potentiel d'humidité après"
+  moistureContentTitle: "Répartition de la teneur en humidité après"
+  totalChlorideTitle: "Répartition de la teneur totale en ions chlorure après"
+  freeChlorideTitle: "Répartition de la teneur en ions chlorure libres après"
+  phTitle: "Répartition du pH après"
+  days: "Jours"

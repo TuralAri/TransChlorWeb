@@ -17,28 +17,28 @@
             </div>
         {% endfor %}
         <div class="flex flex-col sm:flex-row items-center justify-between">
-            <h1 class="text-3xl font-bold text-center mb-4">Résultats du Calcul – {{ computation.id }}</h1>
+            <h1 class="text-3xl font-bold text-center mb-4">{{ 'computations.showTitle' | trans }}{{ computation.id }}</h1>
             {% if computation.status == 'progress' %}
                 <span class="mt-2 sm:mt-0 inline-block px-3 py-1 text-sm font-semibold text-yellow-800 bg-yellow-200 rounded-full">
-                    En cours
+                    {{ 'computations.statusRunning' | trans }}
                 </span>
             {% elseif computation.status == 'completed' %}
                 <span class="mt-2 sm:mt-0 inline-block px-3 py-1 text-sm font-semibold text-green-800 bg-green-200 rounded-full">
-                Terminé
+                    {{ 'computations.statusCompleted' | trans }}
                 </span>
             {% elseif computation.status == 'stopped' %}
                 <span class="mt-2 sm:mt-0 inline-block px-3 py-1 text-sm font-semibold text-red-800 bg-red-200 rounded-full">
-                Stoppé
+                    {{ 'computations.statusStopped' | trans }}
                 </span>
             {% else %}
                 <span class="mt-2 sm:mt-0 inline-block px-3 py-1 text-sm font-semibold text-gray-800 bg-gray-200 rounded-full">
-                Inconnu
+                    {{ 'computations.statusUnknown' | trans }}
                 </span>
             {% endif %}
         </div>
 
         <p class="text text-gray-600 sm:text-center md:text-left lg:text-left">
-            Visualisation des courbes selon le type de données et la profondeur du béton.
+            {{ 'computations.showDescription' | trans }}
         </p>
     </section>
     <section class="mx-[10%] px-4 py-8">
@@ -54,7 +54,7 @@
         </div>
         {% if computation.status == 'progress'%}
             <a href="{{ path('stop_computation', {'id':computation.id})}}" class="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 focus:outline-none cursor-pointer">
-                <i class="fa-solid fa-stop mr-1"></i> Arrêter le calcul
+                <i class="fa-solid fa-stop mr-1"></i> {{ 'computations.stopComputation' | trans }}
             </a>
         {% endif %}
     </section>
@@ -110,7 +110,7 @@
                                     position: 'bottom',
                                     title: {
                                         display: true,
-                                        text: 'Depth [mm]'
+                                        text: '{{ 'computations.depth' | trans }} [mm]'
                                     }
                                 },
                                 y: {
