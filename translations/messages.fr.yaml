@@ -12,6 +12,7 @@ header:
   disconnect: "Déconnexion"
   createAccount: "Créer un compte"
 
+#footer on all pages
 footer:
   transchlor: "Transchlor"
   description: "Solution de pointe pour la modélisation du transport des ions chlorures dans les infrastructures en béton."
@@ -19,6 +20,24 @@ footer:
   contact: "Contact"
   copyright: "Transchlor. Tous droits réservés."
 
+#related to the index home page
+home:
+  title: "Fonctionnalités principales"
+  climaticModelTitle: "Modèle Climatique"
+  climaticModelDescription : "Intégration des données climatiques pour une modélisation précise de l'influence des conditions environnementales sur la pénétration des chlorures."
+  transportModelTitle: "Transport Model"
+  transportModelDescription: "Simulation du transport ionique à travers différentes structures en béton, tenant compte des caractéristiques spécifiques des matériaux."
+  probabilisticTitle: "Analyse Probabiliste"
+  probabilisticDescription: "Évaluation des risques et prédiction de la durée de vie des structures avec quantification des incertitudes."
+  howWorkTitle: "Comment ça fonctionne"
+  dataCollect: "Collecte des données"
+  dataCollectDesc: "Importez les paramètres structurels du pont et les données environnementales pour initialiser le modèle."
+  simulationTitle: "Simulation du transport ionique"
+  simulationDesc: "Notre algorithme calcule la pénétration des ions chlorures en fonction du temps et des conditions spécifiques."
+  resultAnalysis: "Analyse des résultats"
+  resultAnalysisDesc: "Visualisez les résultats sous forme de graphiques interactifs et de rapports détaillés pour prendre des décisions éclairées."
+
+#Related to user management
 security:
   createTitle: "Créer un compte"
   connectTitle: "Connexion"
