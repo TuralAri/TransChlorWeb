@@ -5,14 +5,16 @@
 
 {% block body %}
     {% form_theme form 'tailwind_2_layout.html.twig' %}
-    <div class="mx-[10%] px-4 py-8 ">
-        <h1 class="text-2xl font-bold mb-6">{% trans %} weatherStation.addTitle {% endtrans %}</h1>
-        <a href="{{ path('weather_stations') }}"
-           class="inline-block mb-4 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
-            <i class="fa-solid fa-arrow-left mr-1"></i> {% trans %}goBack{% endtrans %}
-        </a>
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-        {{ form_end(form) }}
-    </div>
+    <main class="flex-1">
+        <div class="mx-[10%] px-4 py-8 ">
+            <h1 class="text-2xl font-bold mb-6">{% trans %} weatherStation.addTitle {% endtrans %}</h1>
+            <a href="{{ path('weather_stations') }}"
+               class="inline-block mb-4 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
+                <i class="fa-solid fa-arrow-left mr-1"></i> {% trans %}goBack{% endtrans %}
+            </a>
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+    </main>
 {% endblock %}

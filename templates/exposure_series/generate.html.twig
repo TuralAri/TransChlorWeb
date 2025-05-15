@@ -4,238 +4,240 @@
 {% endblock %}
 
 {% block body %}
-    <div class=" mx-[10%] px-4 py-8 ">
+    <main class="flex-1">
+        <div class=" mx-[10%] px-4 py-8 ">
 
-        {% for message in app.flashes('success') %}
-            <div class="bg-green-100 p-4 mb-4 rounded-lg">
-                {{ message }}
-            </div>
-        {% endfor %}
+            {% for message in app.flashes('success') %}
+                <div class="bg-green-100 p-4 mb-4 rounded-lg">
+                    {{ message }}
+                </div>
+            {% endfor %}
 
-        {% for message in app.flashes('error') %}
-            <div class="bg-red-100 p-4 mb-4 rounded-lg">
-                {{ message }}
-            </div>
-        {% endfor %}
-
-
-        <div class="flex justify-between items-center">
-
-            <h1 class="text-2xl font-bold mb-6">{{'exposureSeriesForm.title' | trans}}</h1>
-            <a href="{{ path('exposure_series', {'id' : weatherStation.id})}}"
-               class="inline-block mb-4 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
-                <i class="fa-solid fa-arrow-left mr-1"></i> {{'goBack' | trans}}
-            </a>
-
-        </div>
+            {% for message in app.flashes('error') %}
+                <div class="bg-red-100 p-4 mb-4 rounded-lg">
+                    {{ message }}
+                </div>
+            {% endfor %}
 
 
+            <div class="flex justify-between items-center">
 
-        {{ form_start(exposureSeriesForm, {'attr': {'class': 'space-y-6'}}) }}
-        <div class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
-            <h2 class="text-xl font-semibold mb-4">{{ 'exposureSeriesForm.globalInfo' | trans}}</h2>
-            <div class="w-full">
-                {{ form_row(exposureSeriesForm.label, {'attr': {'class': 'w-full p-2 border rounded-lg'}}) }}
-            </div>
-            <div class="w-full">
-                {{ form_row(exposureSeriesForm.comment, {'attr': {'class': 'w-full p-2 border rounded-lg', 'rows': '3'}}) }}
+                <h1 class="text-2xl font-bold mb-6">{{'exposureSeriesForm.title' | trans}}</h1>
+                <a href="{{ path('exposure_series', {'id' : weatherStation.id})}}"
+                   class="inline-block mb-4 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> {{'goBack' | trans}}
+                </a>
+
             </div>
 
-        </div>
 
 
-        <div class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
-            <h2 class="text-xl font-semibold mb-4">{{ 'exposureSeriesForm.spreadingTitle' | trans }}</h2>
-            <div class="flex gap-2 items-center justify-left">
-                {{ form_row(exposureSeriesForm.fileYears, {'attr':{'class':'ml-2 p-2 border rounded-lg text-center bg-gray-100', 'type': 'number', 'step': '0.000001'}}) }}
-                <p>{{ 'exposureSeriesForm.years' | trans }}</p>
-            </div>
-            <div class="flex gap-2 items-center justify-left">
-                {{ form_row(exposureSeriesForm.sodiumChlorideConcentration, {'attr':{'class':'ml-2 p-2 border rounded-lg text-center', 'type': 'number', 'step': '0.001'}}) }}
-                <p>[%]</p>
-            </div>
-            <div class="flex gap-2 items-center justify-left">
-                {{form_row(exposureSeriesForm.waterFilmThickness,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center','type':'number','step':'1'}})}}
-                <p>[mm]</p>
-            </div>
-            <div class="flex gap-2 items-center justify-left">
-                {{form_row(exposureSeriesForm.humidityThreshold,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center','type':'number','step':'1'}})}}
-                <p>[%]</p>
+            {{ form_start(exposureSeriesForm, {'attr': {'class': 'space-y-6'}}) }}
+            <div class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                <h2 class="text-xl font-semibold mb-4">{{ 'exposureSeriesForm.globalInfo' | trans}}</h2>
+                <div class="w-full">
+                    {{ form_row(exposureSeriesForm.label, {'attr': {'class': 'w-full p-2 border rounded-lg'}}) }}
+                </div>
+                <div class="w-full">
+                    {{ form_row(exposureSeriesForm.comment, {'attr': {'class': 'w-full p-2 border rounded-lg', 'rows': '3'}}) }}
+                </div>
+
             </div>
 
-            <section id="part1" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+
+            <div class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                <h2 class="text-xl font-semibold mb-4">{{ 'exposureSeriesForm.spreadingTitle' | trans }}</h2>
+                <div class="flex gap-2 items-center justify-left">
+                    {{ form_row(exposureSeriesForm.fileYears, {'attr':{'class':'ml-2 p-2 border rounded-lg text-center bg-gray-100', 'type': 'number', 'step': '0.000001'}}) }}
+                    <p>{{ 'exposureSeriesForm.years' | trans }}</p>
+                </div>
+                <div class="flex gap-2 items-center justify-left">
+                    {{ form_row(exposureSeriesForm.sodiumChlorideConcentration, {'attr':{'class':'ml-2 p-2 border rounded-lg text-center', 'type': 'number', 'step': '0.001'}}) }}
+                    <p>[%]</p>
+                </div>
+                <div class="flex gap-2 items-center justify-left">
+                    {{form_row(exposureSeriesForm.waterFilmThickness,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center','type':'number','step':'1'}})}}
+                    <p>[mm]</p>
+                </div>
+                <div class="flex gap-2 items-center justify-left">
+                    {{form_row(exposureSeriesForm.humidityThreshold,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center','type':'number','step':'1'}})}}
+                    <p>[%]</p>
+                </div>
+
+                <section id="part1" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-xl font-semibold">{{ 'exposureSeriesForm.mechanicalSpreadingTitle' | trans }}</h2>
+                        <button id="part1Button" class="text-xl font-bold  border-black p-4">
+                            +
+                        </button>
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(exposureSeriesForm.mechanicalAnnualSodium, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center '}}) }}
+                        <p>[g/m2]</p>
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(exposureSeriesForm.mechanicalMeanSodium, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        <p>[g/m2]</p>
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(exposureSeriesForm.mechanicalInterventions, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center bg-gray-100'}}) }}
+                        <p>{{ 'exposureSeriesForm.afterComputing' | trans }}</p>
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(exposureSeriesForm.mechanicalInterval, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        <p>[h]</p>
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(exposureSeriesForm.mechanicalSodiumWater, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        <p>[%]</p>
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{form_row(exposureSeriesForm.mechanicalThresholdTemperature,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center bg-gray-100'}})}}
+                        <p>[°C]</p>
+                        <p>{{ 'exposureSeriesForm.afterComputing' | trans }}</p>
+                    </div>
+                </section>
+
+                <section id="part2" class="bg-white p-6 rounded-lg border-2 border-black flex flex-col space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-xl font-semibold">{{ 'exposureSeriesForm.automaticSpreadingTitle' | trans }}</h2>
+                        <button id="part2Button" class="text-xl font-bold  border-black p-4">
+                            +
+                        </button>
+                    </div>
+
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{form_row(exposureSeriesForm.automaticAnnualSodium,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
+                        <p>[g/m2]</p>
+                    </div>
+                    <div class="hidden gap-2 items-cente rw-fit justify-left">
+                        {{form_row(exposureSeriesForm.automaticMeanSodium,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
+                        <p>[g/m2]</p>
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{form_row(exposureSeriesForm.automaticSprays,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center bg-gray-100'}})}}
+                        <p>{{ 'exposureSeriesForm.afterComputing' | trans }}</p>
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{form_row(exposureSeriesForm.automaticSprayInterval,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{form_row(exposureSeriesForm.automaticSodiumWater,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
+                        <p>[%]</p>
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(exposureSeriesForm.automaticThresholdTemperature, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center bg-gray-100'}}) }}
+                        <p>[°C]</p>
+                        <p>{{ 'exposureSeriesForm.afterComputing' | trans }}</p>
+                    </div>
+
+
+                </section>
+            </div>
+
+            <section id="part3" class="p-6 rounded-lg border-2 border-black flex flex-col space-y-4">
                 <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-semibold">{{ 'exposureSeriesForm.mechanicalSpreadingTitle' | trans }}</h2>
-                    <button id="part1Button" class="text-xl font-bold  border-black p-4">
+                    <h2 class="text-xl font-semibold">{{'exposureSeriesForm.extAttenuationSignalTitle' | trans}}</h2>
+                    <button id="part3Button" class="text-xl font-bold  border-black p-4">
                         +
                     </button>
                 </div>
-                <div class="hidden gap-2 items-center w-fit justify-left">
-                    {{ form_row(exposureSeriesForm.mechanicalAnnualSodium, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center '}}) }}
-                    <p>[g/m2]</p>
-                </div>
-                <div class="hidden gap-2 items-center w-fit justify-left">
-                    {{ form_row(exposureSeriesForm.mechanicalMeanSodium, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    <p>[g/m2]</p>
-                </div>
-                <div class="hidden gap-2 items-center w-fit justify-left">
-                    {{ form_row(exposureSeriesForm.mechanicalInterventions, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center bg-gray-100'}}) }}
-                    <p>{{ 'exposureSeriesForm.afterComputing' | trans }}</p>
-                </div>
-                <div class="hidden gap-2 items-center w-fit justify-left">
-                    {{ form_row(exposureSeriesForm.mechanicalInterval, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    <p>[h]</p>
-                </div>
-                <div class="hidden gap-2 items-center w-fit justify-left">
-                    {{ form_row(exposureSeriesForm.mechanicalSodiumWater, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    <p>[%]</p>
-                </div>
-                <div class="hidden gap-2 items-center w-fit justify-left">
-                    {{form_row(exposureSeriesForm.mechanicalThresholdTemperature,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center bg-gray-100'}})}}
-                    <p>[°C]</p>
-                    <p>{{ 'exposureSeriesForm.afterComputing' | trans }}</p>
-                </div>
+
+                <section class="hidden flex-col space-y-4 shadow-lg p-4 rounded-lg">
+                    <h3 class="text-lg font-bold">{{'exposureSeriesForm.temperature' | trans}}</h3>
+                    <div class="flex gap-2 items-center justify-left w-full">
+                        {{ form_row(exposureSeriesForm.extTemperaturePosition, {'attr': {'class':'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        {{ form_row(exposureSeriesForm.extTemperaturePosition2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        <p>{{ 'exposureSeriesForm.extremums' | trans }}</p>
+                    </div>
+                    <div class="flex gap-2 items-center justify-left w-full">
+                        {{ form_row(exposureSeriesForm.extTemperatureAttenuation, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        {{ form_row(exposureSeriesForm.extTemperatureAttenuation2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        <p>{{ 'exposureSeriesForm.differencesTemp' | trans }}</p>
+                    </div>
+                    <div class="flex gap-2 items-center w-fit justify-left">
+                        {{ form_row(exposureSeriesForm.extTemperatureDifference, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        <p>[1/°C]</p>
+                    </div>
+                </section>
+                <section class="hidden flex-col space-y-4 shadow-lg p-4 rounded-lg">
+                    <h3 class="text-lg font-bold">{{'exposureSeriesForm.humidityRelative' | trans}}</h3>
+                    <div class="flex gap-2 items-center justify-left w-full">
+                        {{ form_row(exposureSeriesForm.extHumidityPosition, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        {{ form_row(exposureSeriesForm.extHumidityPosition2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        <p>{{ 'exposureSeriesForm.extremums' | trans }}</p>
+                    </div>
+                    <div class="flex gap-2 items-center justify-left w-full">
+                        {{ form_row(exposureSeriesForm.extHumidityAttenuation, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        {{ form_row(exposureSeriesForm.extHumidityAttenuation2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        <p>{{ 'exposureSeriesForm.differencesHumidity' | trans }}</p>
+                    </div>
+                    <div class="flex gap-2 items-center w-fit justify-left">
+                        {{ form_row(exposureSeriesForm.extHumidityDifference, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        <p>[1/%]</p>
+                    </div>
+                </section>
             </section>
 
-            <section id="part2" class="bg-white p-6 rounded-lg border-2 border-black flex flex-col space-y-4">
+            <section id="part4" class="p-6 rounded-lg border-2 border-black flex flex-col space-y-4">
                 <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-semibold">{{ 'exposureSeriesForm.automaticSpreadingTitle' | trans }}</h2>
-                    <button id="part2Button" class="text-xl font-bold  border-black p-4">
+                    <h2 class="text-xl font-semibold">{{'exposureSeriesForm.internAttenuationSignalTitle' | trans}}</h2>
+                    <button id="part4Button" class="text-xl font-bold  border-black p-4">
                         +
                     </button>
                 </div>
 
-                <div class="hidden gap-2 items-center w-fit justify-left">
-                    {{form_row(exposureSeriesForm.automaticAnnualSodium,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
-                    <p>[g/m2]</p>
-                </div>
-                <div class="hidden gap-2 items-cente rw-fit justify-left">
-                    {{form_row(exposureSeriesForm.automaticMeanSodium,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
-                    <p>[g/m2]</p>
-                </div>
-                <div class="hidden gap-2 items-center w-fit justify-left">
-                    {{form_row(exposureSeriesForm.automaticSprays,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center bg-gray-100'}})}}
-                    <p>{{ 'exposureSeriesForm.afterComputing' | trans }}</p>
-                </div>
-                <div class="hidden gap-2 items-center w-fit justify-left">
-                    {{form_row(exposureSeriesForm.automaticSprayInterval,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
-                </div>
-                <div class="hidden gap-2 items-center w-fit justify-left">
-                    {{form_row(exposureSeriesForm.automaticSodiumWater,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
-                    <p>[%]</p>
-                </div>
-                <div class="hidden gap-2 items-center w-fit justify-left">
-                    {{ form_row(exposureSeriesForm.automaticThresholdTemperature, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center bg-gray-100'}}) }}
-                    <p>[°C]</p>
-                    <p>{{ 'exposureSeriesForm.afterComputing' | trans }}</p>
-                </div>
-
-
+                <section class="hidden flex-col space-y-4 shadow-lg p-4 rounded-lg">
+                    <h3 class="text-lg font-bold">{{'exposureSeriesForm.temperature' | trans}}</h3>
+                    <div class="flex gap-2 items-center justify-left w-full">
+                        {{ form_row(exposureSeriesForm.intTemperaturePosition, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        {{ form_row(exposureSeriesForm.intTemperaturePosition2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        <p>{{ 'exposureSeriesForm.extremums' | trans }}</p>
+                    </div>
+                    <div class="flex gap-2 items-center justify-left w-full">
+                        {{ form_row(exposureSeriesForm.intTemperatureAttenuation, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        {{ form_row(exposureSeriesForm.intTemperatureAttenuation2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        <p>{{ 'exposureSeriesForm.differencesTemp' | trans }}</p>
+                    </div>
+                    <div class="flex gap-2 items-center w-fit justify-left">
+                        {{ form_row(exposureSeriesForm.intTemperatureDifference, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        <p>[1/°C]</p>
+                    </div>
+                </section>
+                <section class="hidden flex-col space-y-4 shadow-lg p-4 rounded-lg">
+                    <h3 class="text-lg font-bold">{{'exposureSeriesForm.humidityRelative' | trans}}</h3>
+                    <div class="flex gap-2 items-center justify-left w-full">
+                        {{ form_row(exposureSeriesForm.intHumidityPosition, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        {{ form_row(exposureSeriesForm.intHumidityPosition2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        <p>{{ 'exposureSeriesForm.extremums' | trans }}</p>
+                    </div>
+                    <div class="flex gap-2 items-center justify-left w-full">
+                        {{ form_row(exposureSeriesForm.intHumidityAttenuation, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        {{ form_row(exposureSeriesForm.intHumidityAttenuation2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        <p>{{ 'exposureSeriesForm.differencesHumidity' | trans }}</p>
+                    </div>
+                    <div class="flex gap-2 items-center w-fit justify-left">
+                        {{ form_row(exposureSeriesForm.intHumidityDifference, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        <p>[1/%]</p>
+                    </div>
+                </section>
             </section>
-        </div>
 
-        <section id="part3" class="p-6 rounded-lg border-2 border-black flex flex-col space-y-4">
-            <div class="flex justify-between items-center">
-                <h2 class="text-xl font-semibold">{{'exposureSeriesForm.extAttenuationSignalTitle' | trans}}</h2>
-                <button id="part3Button" class="text-xl font-bold  border-black p-4">
-                    +
-                </button>
+            <div class="mt-6">
+                {{ form_row(exposureSeriesForm.submit) }}
             </div>
 
-            <section class="hidden flex-col space-y-4 shadow-lg p-4 rounded-lg">
-                <h3 class="text-lg font-bold">{{'exposureSeriesForm.temperature' | trans}}</h3>
-                <div class="flex gap-2 items-center justify-left w-full">
-                    {{ form_row(exposureSeriesForm.extTemperaturePosition, {'attr': {'class':'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    {{ form_row(exposureSeriesForm.extTemperaturePosition2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    <p>{{ 'exposureSeriesForm.extremums' | trans }}</p>
-                </div>
-                <div class="flex gap-2 items-center justify-left w-full">
-                    {{ form_row(exposureSeriesForm.extTemperatureAttenuation, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    {{ form_row(exposureSeriesForm.extTemperatureAttenuation2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    <p>{{ 'exposureSeriesForm.differencesTemp' | trans }}</p>
-                </div>
-                <div class="flex gap-2 items-center w-fit justify-left">
-                    {{ form_row(exposureSeriesForm.extTemperatureDifference, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    <p>[1/°C]</p>
-                </div>
-            </section>
-            <section class="hidden flex-col space-y-4 shadow-lg p-4 rounded-lg">
-                <h3 class="text-lg font-bold">{{'exposureSeriesForm.humidityRelative' | trans}}</h3>
-                <div class="flex gap-2 items-center justify-left w-full">
-                    {{ form_row(exposureSeriesForm.extHumidityPosition, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    {{ form_row(exposureSeriesForm.extHumidityPosition2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    <p>{{ 'exposureSeriesForm.extremums' | trans }}</p>
-                </div>
-                <div class="flex gap-2 items-center justify-left w-full">
-                    {{ form_row(exposureSeriesForm.extHumidityAttenuation, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    {{ form_row(exposureSeriesForm.extHumidityAttenuation2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    <p>{{ 'exposureSeriesForm.differencesHumidity' | trans }}</p>
-                </div>
-                <div class="flex gap-2 items-center w-fit justify-left">
-                    {{ form_row(exposureSeriesForm.extHumidityDifference, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    <p>[1/%]</p>
-                </div>
-            </section>
-        </section>
+            {{ form_end(exposureSeriesForm) }}
+            {#    ICI FORMULAIRE POUR GENERER LES EXPOS    #}
 
-        <section id="part4" class="p-6 rounded-lg border-2 border-black flex flex-col space-y-4">
-            <div class="flex justify-between items-center">
-                <h2 class="text-xl font-semibold">{{'exposureSeriesForm.internAttenuationSignalTitle' | trans}}</h2>
-                <button id="part4Button" class="text-xl font-bold  border-black p-4">
-                    +
-                </button>
-            </div>
 
-            <section class="hidden flex-col space-y-4 shadow-lg p-4 rounded-lg">
-                <h3 class="text-lg font-bold">{{'exposureSeriesForm.temperature' | trans}}</h3>
-                <div class="flex gap-2 items-center justify-left w-full">
-                    {{ form_row(exposureSeriesForm.intTemperaturePosition, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    {{ form_row(exposureSeriesForm.intTemperaturePosition2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    <p>{{ 'exposureSeriesForm.extremums' | trans }}</p>
-                </div>
-                <div class="flex gap-2 items-center justify-left w-full">
-                    {{ form_row(exposureSeriesForm.intTemperatureAttenuation, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    {{ form_row(exposureSeriesForm.intTemperatureAttenuation2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    <p>{{ 'exposureSeriesForm.differencesTemp' | trans }}</p>
-                </div>
-                <div class="flex gap-2 items-center w-fit justify-left">
-                    {{ form_row(exposureSeriesForm.intTemperatureDifference, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    <p>[1/°C]</p>
-                </div>
-            </section>
-            <section class="hidden flex-col space-y-4 shadow-lg p-4 rounded-lg">
-                <h3 class="text-lg font-bold">{{'exposureSeriesForm.humidityRelative' | trans}}</h3>
-                <div class="flex gap-2 items-center justify-left w-full">
-                    {{ form_row(exposureSeriesForm.intHumidityPosition, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    {{ form_row(exposureSeriesForm.intHumidityPosition2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    <p>{{ 'exposureSeriesForm.extremums' | trans }}</p>
-                </div>
-                <div class="flex gap-2 items-center justify-left w-full">
-                    {{ form_row(exposureSeriesForm.intHumidityAttenuation, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    {{ form_row(exposureSeriesForm.intHumidityAttenuation2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    <p>{{ 'exposureSeriesForm.differencesHumidity' | trans }}</p>
-                </div>
-                <div class="flex gap-2 items-center w-fit justify-left">
-                    {{ form_row(exposureSeriesForm.intHumidityDifference, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    <p>[1/%]</p>
-                </div>
-            </section>
-        </section>
 
-        <div class="mt-6">
-            {{ form_row(exposureSeriesForm.submit) }}
+            {#        {{ form_start(exportForm, {'action': path('meteo_form'), 'attr': {'class': 'mt-4 space-y-6','method': 'POST', 'enctype': 'multipart/form-data'}}) }}#}
+    {#        {{ form_row(exportForm.exportFile, {'attr': {'class': 'px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'}}) }}#}
+    {#        {{ form_end(exportForm) }}#}
+
+
+
         </div>
-
-        {{ form_end(exposureSeriesForm) }}
-        {#    ICI FORMULAIRE POUR GENERER LES EXPOS    #}
-
-
-
-        {#        {{ form_start(exportForm, {'action': path('meteo_form'), 'attr': {'class': 'mt-4 space-y-6','method': 'POST', 'enctype': 'multipart/form-data'}}) }}#}
-{#        {{ form_row(exportForm.exportFile, {'attr': {'class': 'px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'}}) }}#}
-{#        {{ form_end(exportForm) }}#}
-
-
-
-    </div>
+    </main>
 {% endblock %}
