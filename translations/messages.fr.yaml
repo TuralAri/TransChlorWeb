@@ -127,6 +127,8 @@ exposureSeriesForm:
   afterComputing: "(Sera déterminé après le calcul)"
   differencesHumidity: "des la différence de HR"
   differencesTemp: "des la différence de T"
+  calculateBtn: "Calculer"
+  generateBtn: "Générer les expositions"
 
 #All translations related to the computations
 computations:

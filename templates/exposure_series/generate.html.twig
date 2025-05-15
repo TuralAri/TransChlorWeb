@@ -213,7 +213,7 @@
                 <div class="flex gap-2 items-center justify-left w-full">
                     {{ form_row(exposureSeriesForm.intHumidityAttenuation, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
                     {{ form_row(exposureSeriesForm.intHumidityAttenuation2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    <p>des la différence de HR</p>
+                    <p>{{ 'exposureSeriesForm.differencesHumidity' | trans }}</p>
                 </div>
                 <div class="flex gap-2 items-center w-fit justify-left">
                     {{ form_row(exposureSeriesForm.intHumidityDifference, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}

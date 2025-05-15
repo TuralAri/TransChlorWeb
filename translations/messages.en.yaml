@@ -1,0 +1,164 @@
+#variables that could be used anywhere like back buttons
+goBack: "Go back"
+actions: "Actions"
+
+#Related to header/nav
+header:
+  home: "Home"
+  climate: "Climate"
+  transportModel: "Transport model"
+  probabilistic: "Probabilistic"
+  connexion: "Login"
+  disconnect: "Logout"
+  createAccount: "Create an account"
+
+#footer on all pages
+footer:
+  transchlor: "Transchlor"
+  description: "Cutting-edge solution for modeling chloride ion transport in concrete infrastructures."
+  quickLinks: "Quick links"
+  contact: "Contact"
+  copyright: "Transchlor. All rights reserved."
+
+#related to the index home page
+home:
+  title: "Key Features"
+  climaticModelTitle: "Climatic Model"
+  climaticModelDescription: "Integration of climate data for accurate modeling of environmental condition impacts on chloride ingress."
+  transportModelTitle: "Transport Model"
+  transportModelDescription: "Simulation of ionic transport through different concrete structures, considering material-specific characteristics."
+  probabilisticTitle: "Probabilistic Analysis"
+  probabilisticDescription: "Risk assessment and service life prediction of structures with quantified uncertainties."
+  howWorkTitle: "How it works"
+  dataCollect: "Data Collection"
+  dataCollectDesc: "Import bridge structural parameters and environmental data to initialize the model."
+  simulationTitle: "Ionic Transport Simulation"
+  simulationDesc: "Our algorithm computes chloride ion ingress over time under specific conditions."
+  resultAnalysis: "Result Analysis"
+  resultAnalysisDesc: "Visualize results through interactive graphs and detailed reports for informed decision-making."
+
+#Related to user management
+security:
+  createTitle: "Create an Account"
+  connectTitle: "Login"
+  username: "Username"
+  password: "Password"
+  register: "Register"
+  connect: "Login"
+  alreadyConnected: "You are logged in as "
+
+#Every translation related to weather stations
+weatherStation:
+  # add weather station form
+  addTitle: "Add a New Weather Station"
+  addFile: "Upload a File"
+  submit: "Upload"
+  # weather station index page
+  title: "Your Weather Stations"
+  addStationBtn: "Add Station"
+  stationNumber: "Number"
+  stationName: "Station Name"
+  uploadedDate: "Upload Date"
+  startDate: "Start Date"
+  endDate: "End Date"
+  yearNumber: "Number of Years"
+  seeExposures: "View Exposures"
+
+#exposure pages related
+exposures:
+  title: "Weather Station:"
+  generateBtn: "Generate a Series"
+  seriesName: "Series Name"
+  date: "Creation Date"
+  comment: "Comment"
+  noComment: "No comment"
+  parameters: "View Parameters"
+  download: "Download Exposures"
+  delete: "Delete Exposures"
+
+#entity exposureSeriesFormType
+exposureSeriesForm:
+  title: "Weather Form"
+  globalInfo: "General Information"
+  seriesLabel: "Series Name"
+  comment: "Comment *"
+  #spreading part
+  spreadingTitle: "Assumptions on Sodium Chloride Spreading"
+  yearNumber: "Number of Years (file)"
+  sodiumChlorideConcentration: "Sodium Chloride Concentration Over Time"
+  waterFilmThickness: "Water Film Thickness on Road Surface"
+  humidityThreshold: "Relative Humidity Threshold for Intervention in Cold Weather"
+  #mechanical spreading
+  mechanicalSpreadingTitle: "Mechanical Spreading"
+  mechanicalAnnualSodium: "Annual Sodium Chloride Concentration"
+  mechanicalMeanSodium: "Average Amount of Sodium Chloride"
+  mechanicalInterventions: "Number of Spreading Interventions"
+  mechanicalInterval: "Minimum Interval Between Spreadings"
+  mechanicalSodiumWater: "Sodium Chloride Concentration in Water"
+  mechanicalThresholdTemperature: "Intervention Threshold Temperature"
+  #automatic spreading
+  automaticSpreadingTitle: "Automatic Spreading"
+  automaticAnnualSodium: "Annual Sodium Chloride Concentration"
+  automaticMeanSodium: "Average Amount of Sodium Chloride"
+  automaticSprays: "Number of Annual Sprays"
+  automaticSprayInterval: "Number of Sprays Over a Time Interval"
+  automaticSodiumWater: "Sodium Chloride Concentration in Water (spreading). If solid spreading (100%)"
+  automaticThresholdTemperature: "Intervention Threshold Temperature"
+  #Signal attenuation
+  extAttenuationSignalTitle: "Signal Attenuation (outside box)"
+  internAttenuationSignalTitle: "Signal Attenuation (inside box)"
+  TemperaturePosition: "Average Position at"
+  TemperaturePosition2: '/'
+  TemperatureAttenuation: "Attenuation of"
+  TemperatureAttenuation2: '/'
+  TemperatureDifference: "Temperature Difference Limit"
+
+  HumidityPosition: "Average Position at"
+  HumidityPosition2: '/'
+  HumidityAttenuation: "Attenuation of"
+  HumidityAttenuation2: '/'
+  HumidityDifference: "Relative Humidity Difference Limit"
+
+  temperature: "Temperature"
+  humidityRelative: "Relative Humidity"
+  extremums: "of the 2 extremums"
+  #other things
+  years: "[years]"
+  afterComputing: "(Will be determined after calculation)"
+  differencesHumidity: "in HR difference"
+  differencesTemp: "in T difference"
+  calculateBtn: "Calculate"
+  generateBtn: "Generate exposures"
+
+#All translations related to the computations
+computations:
+  title: "Your Computations"
+  launchBtn: "Start Computation"
+  seeGraphs: "View Graphs"
+  stopComputation: "Stop Computation"
+  deleteComputation: "Delete Computation"
+  computationsNotFound: "No computations found."
+  computationNumber: "Computation Number"
+  startDate: "Start Date"
+  endDate: "End Date"
+  status: "Status"
+  statusUnknown: "Unknown"
+  statusRunning: "Running"
+  statusStopped: "Stopped"
+  statusCompleted: "Completed"
+  showTitle: "Computation Results - "
+  showDescription: "Visualization of curves based on data type and concrete depth."
+  depth: "Depth"
+  temperaturePotential: "Temperature Potential"
+  moisturePotential: "Moisture Potential"
+  moistureContent: "Moisture Content"
+  totalChlorideIonContent: "Total Chloride Ion Content"
+  freeChlorideIonContent: "Free Chloride Ion Content"
+  ph: "pH"
+  temperaturePotentialTitle: "Distribution of Thermal Potential after"
+  moisturePotentialTitle: "Distribution of Moisture Potential after"
+  moistureContentTitle: "Distribution of Moisture Content after"
+  totalChlorideTitle: "Distribution of Total Chloride Ion Content after"
+  freeChlorideTitle: "Distribution of Free Chloride Ion Content after"
+  phTitle: "Distribution of pH after"
+  days: "Days"
