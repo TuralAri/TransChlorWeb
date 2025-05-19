@@ -52,7 +52,7 @@
                     {{ form_row(form.airContent, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
-                    {{ form_row(form.ec, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    {{ form_row(form.ec, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center gap-2'}}) }}
                     <button class="inline-block py-2 px-4 bg-gray-200 hover:bg-gray-400 rounded" type="button">KT -> E/C</button>
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
@@ -64,6 +64,9 @@
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
                     {{ form_row(form.cementType, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.permeability, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center inline-flex gap-2'}}) }}
                 </div>
             </section>
 

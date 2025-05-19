@@ -106,6 +106,10 @@ class Material
     #[ORM\Column]
     private ?float $aggregateDensity = null;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Permeability $permeability = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -479,6 +483,18 @@ class Material
     public function setAggregateDensity(float $aggregateDensity): static
     {
         $this->aggregateDensity = $aggregateDensity;
+
+        return $this;
+    }
+
+    public function getPermeability(): ?Permeability
+    {
+        return $this->permeability;
+    }
+
+    public function setPermeability(?Permeability $permeability): static
+    {
+        $this->permeability = $permeability;
 
         return $this;
     }

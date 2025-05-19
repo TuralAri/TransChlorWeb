@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\AggregateType;
 use App\Entity\Material;
+use App\Entity\Permeability;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -32,6 +33,12 @@ class MaterialFormType extends AbstractType
                     'Type III' => '3',
                     'Type IV' => '4',
                 ],
+            ])
+            ->add('permeability', EntityType::class, [
+                'class' => Permeability::class,
+                'choice_label' => 'name',
+                'expanded' => true,
+                'multiple' => false,
             ])
             ->add('heatCapacity', NumberType::class, ['attr' => ['value' => 0.7]])
             ->add('surfaceHeatTransfer', NumberType::class, ['attr' => ['value' => 1]])
