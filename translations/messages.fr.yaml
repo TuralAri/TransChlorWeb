@@ -10,6 +10,7 @@ languages:
 header:
   home: "Accueil"
   climate: "Climat"
+  materials: "Matériaux"
   transportModel: "Transport model"
   probabilistic: "Probabiliste"
   connexion: "Connexion"
@@ -166,3 +167,16 @@ computations:
   freeChlorideTitle: "Répartition de la teneur en ions chlorure libres après"
   phTitle: "Répartition du pH après"
   days: "Jours"
+
+materialForm:
+  concreteTitle: "Béton"
+  concreteComponentTitle: "Composants du béton"
+  waterTransport: "Transport Hydrique"
+  waterDiffusion: "Diffusion Hydrique"
+  surfaceTransfer: "Transfert à la surface"
+  capillarity: "Capillarité"
+  ionicTransportChlorides: "Transport Ionique des chlorures"
+  diffusionInWater: "Diffusion dans l'eau"
+  waterConvection: "Convection par l'eau"
+  freeBoundChlorideIonsRelation: "Relation entre ions chlorures libres et liées :"
+  submit: "Sauvegarder"

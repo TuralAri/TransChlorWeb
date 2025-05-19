@@ -1,0 +1,252 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Exposure Series
+{% endblock %}
+
+{% block body %}
+    <main class="flex-1">
+        <div class=" mx-[10%] px-4 py-8 ">
+
+            {% for message in app.flashes('success') %}
+                <div class="bg-green-100 p-4 mb-4 rounded-lg">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('error') %}
+                <div class="bg-red-100 p-4 mb-4 rounded-lg">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            <div class="flex justify-between items-center">
+
+                <h1 class="text-2xl font-bold mb-6">{{'header.materials' | trans}}</h1>
+                <a href="{{ path('index')}}"
+                   class="inline-block mb-4 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> {{'goBack' | trans}}
+                </a>
+            </div>
+            {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+
+            <section id="part1" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold">{{ 'materialForm.concreteTitle' | trans }}</h2>
+                    <button id="part1Button" class="text-xl font-bold  border-black p-4">
+                        +
+                    </button>
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.freshConcreteDensity, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center '}}) }}
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.aggregateContent, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center '}}) }}
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.cementContent, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.saturatedWaterContent, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.airContent, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.ec, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    <button class="inline-block py-2 px-4 bg-gray-200 hover:bg-gray-400 rounded" type="button">KT -> E/C</button>
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{form_row(form.concreteAge,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.hydrationRate, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center '}}) }}
+                    <button class="inline-block py-2 px-4 bg-gray-200 hover:bg-gray-400 rounded" type="button">Default</button>
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.cementType, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                </div>
+            </section>
+
+            <section id="part2" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold">{{ 'materialForm.concreteComponentTitle' | trans }}</h2>
+                    <button id="part2Button" class="text-xl font-bold  border-black p-4">
+                        +
+                    </button>
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.aggregateType, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center '}}) }}
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.heatCapacity, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.surfaceHeatTransfer, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.cementDensity, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.aggregateDensity, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                </div>
+            </section>
+            <section id="part" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold">{{ 'materialForm.waterTransport' | trans }}</h2>
+{#                    <button id="part3Button" class="text-xl font-bold  border-black p-4">#}
+{#                        +#}
+{#                    </button>#}
+                </div>
+                {# WaterDiffusion part #}
+                <section id="part3" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-xl font-semibold">{{ 'materialForm.waterDiffusion' | trans }}</h2>
+                        <button id="part3Button" class="text-xl font-bold  border-black p-4">
+                            +
+                        </button>
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.d100Percent, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.aoDiffusion, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.hc, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.ed, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.toDiffusion, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </div>
+                </section>
+                {# SurfaceTransfer part #}
+                <section id="part4" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-xl font-semibold">{{ 'materialForm.surfaceTransfer' | trans }}</h2>
+                        <button id="part4Button" class="text-xl font-bold  border-black p-4">
+                            +
+                        </button>
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.surfaceTransferCoefficient, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </div>
+                </section>
+                {# Capillarity part #}
+                <section id="part5" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-xl font-semibold">{{ 'materialForm.capillarity' | trans }}</h2>
+                        <button id="part5Button" class="text-xl font-bold  border-black p-4">
+                            +
+                        </button>
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.aoCapillarity, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.tc, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </div>
+                </section>
+            </section>
+
+            {# ionicTransportChlorides big section #}
+
+            <section id="part" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold">{{ 'materialForm.ionicTransportChlorides' | trans }}</h2>
+                    {#                    <button id="part3Button" class="text-xl font-bold  border-black p-4">#}
+                    {#                        +#}
+                    {#                    </button>#}
+                </div>
+                {# diffusionInWater part #}
+                <section id="part6" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-xl font-semibold">{{ 'materialForm.diffusionInWater' | trans }}</h2>
+                        <button id="part6Button" class="text-xl font-bold  border-black p-4">
+                            +
+                        </button>
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.dclTo, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        <button class="inline-block py-2 px-4 bg-gray-200 hover:bg-gray-400 rounded" type="button">E/C -> Dcl,To</button>
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.alphaDiffusion, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.toChlorideDiffusion, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </div>
+                </section>
+                {# waterConvection part #}
+                <section id="part7" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-xl font-semibold">{{ 'materialForm.waterConvection' | trans }}</h2>
+                        <button id="part7Button" class="text-xl font-bold  border-black p-4">
+                            +
+                        </button>
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.retardationCoefficient, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.limitWaterContent, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </div>
+                </section>
+                {# freeBoundChlorideIonsRelation part #}
+                <section id="part8" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-xl font-semibold">{{ 'materialForm.freeBoundChlorideIonsRelation' | trans }}</h2>
+                        <button id="part8Button" class="text-xl font-bold  border-black p-4">
+                            +
+                        </button>
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.adsorptionFa, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.alphaOh, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.eb, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.toAdsortion, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </div>
+                </section>
+
+
+            </section>
+
+            {{ form_end(form) }}
+        </div>
+    </main>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        function addFormListener(id){
+            document.addEventListener("DOMContentLoaded", function () {
+                const toggleButton = document.getElementById("part"+id+"Button");
+                const section = document.getElementById("part"+id);
+                const hiddenDivs = section.querySelectorAll(".hidden");
+                toggleButton.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    const isHidden = hiddenDivs[0].classList.contains("hidden");
+                    hiddenDivs.forEach(div => {
+                        if (isHidden) {
+                            div.classList.remove("hidden");
+                            div.classList.add("flex");
+                        } else {
+                            div.classList.add("hidden");
+                            div.classList.remove("flex");
+                        }
+                    });
+                    toggleButton.textContent = isHidden ? "−" : "+";
+                });
+            });
+        }
+        for(let i=0;i<=8;i++){
+            addFormListener(i);
+        }
+    </script>
+{% endblock %}

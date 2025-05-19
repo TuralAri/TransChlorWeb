@@ -10,6 +10,7 @@ languages:
 header:
   home: "Home"
   climate: "Climate"
+  materials: "Materials"
   transportModel: "Transport model"
   probabilistic: "Probabilistic"
   connexion: "Login"
