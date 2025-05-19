@@ -56,7 +56,7 @@ class MaterialFormType extends AbstractType
             ->add('aggregateType', EntityType::class, [
                 'class' => AggregateType::class,
                 'choice_label' => 'name',
-                'choice_value' => 'aggregateDensity',
+                'choice_value' => 'id',
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'materialForm.submit',

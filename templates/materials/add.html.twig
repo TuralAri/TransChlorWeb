@@ -84,10 +84,10 @@
                     {{ form_row(form.surfaceHeatTransfer, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
-                    {{ form_row(form.cementDensity, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    {{ form_row(form.aggregateDensity, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
-                    {{ form_row(form.aggregateDensity, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    {{ form_row(form.cementDensity, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
                 </div>
             </section>
             <section id="part" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
@@ -248,5 +248,39 @@
         for(let i=0;i<=8;i++){
             addFormListener(i);
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const aggregateSelect = document.querySelector('#material_form_aggregateType');
+            const heatCapacityInput = document.querySelector('#material_form_heatCapacity');
+            const aggregateDensityInput = document.querySelector('#material_form_aggregateDensity');
+
+            if (aggregateSelect) {
+                aggregateSelect.addEventListener('change', () => {
+                    const selectedId = aggregateSelect.value;
+                    if (!selectedId) return;
+
+                    fetch(`/aggregate-type/${selectedId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if(data.heatCapacity !== -1 && data.aggregateDensity !== -1){
+                                heatCapacityInput.value = data.heatCapacity ?? '';
+                                heatCapacityInput.readOnly = true; //disables user input (view only)
+                                heatCapacityInput.classList.add('bg-gray-100'); //Adds gray effect to the readonly input
+                                aggregateDensityInput.value = data.aggregateDensity ?? '';
+                                aggregateDensityInput.readOnly = true;//disables user input (view only)
+                                aggregateDensityInput.classList.add('bg-gray-100');//Adds gray effect to the readonly input
+                            }else{
+                                heatCapacityInput.readOnly = false;//enables user input
+                                heatCapacityInput.classList.remove('bg-gray-100')//removes gray effect from input
+                                aggregateDensityInput.readOnly = false;//enables user input
+                                aggregateDensityInput.classList.remove('bg-gray-100')//removes gray effect from input
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error while loading aggregate\'s data :', error);
+                        });
+                });
+            }
+        });
     </script>
 {% endblock %}
