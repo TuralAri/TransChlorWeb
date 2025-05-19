@@ -123,7 +123,7 @@ function calculateSaturatedWaterContent(){
         + (10 * parseFloat(airContent));
 }
 
-function calculateAggregateContent() {
+function calculateAggregateContent(){
     const aggregateContentInput = document.getElementById("material_form_aggregateContent");
     const cementContentInput = document.getElementById("material_form_cementContent");
     const cementDensityInput = document.getElementById("material_form_cementDensity");
@@ -137,24 +137,15 @@ function calculateAggregateContent() {
     const airContent = airContentInput.value;
     const aggregateDensity = aggregateDensityInput.value;
 
-    const cementRatio = parseFloat(cementContent) / parseFloat(cementDensity);
-    console.log("Cement ratio:", cementRatio);
+    aggregateContentInput.value = (1
+        - parseFloat(cementContent) / parseFloat(cementDensity)
+        - parseFloat(ec) * parseFloat(cementContent)/1000
+        - parseFloat(airContent) / 100
+    ) * parseFloat(aggregateDensity);
 
-    const ecLoss = parseFloat(ec) * parseFloat(cementContent) / 1000;
-    console.log("Entrained content loss (ecLoss):", ecLoss);
 
-    const airLoss = parseFloat(airContent) / 100;
-    console.log("Air content loss (airLoss):", airLoss);
 
-    const remainingVolume = 1 - cementRatio - ecLoss - airLoss;
-    console.log("Remaining volume after losses:", remainingVolume);
-
-    const aggregateContent = remainingVolume * parseFloat(aggregateDensity);
-    console.log("Final aggregate content:", aggregateContent);
-
-    aggregateContentInput.value = aggregateContent;
 }
-
 
 function calculateFreshConcreteContent(){
 
