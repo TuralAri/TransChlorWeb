@@ -8,9 +8,9 @@ let aggregateContentInput;//label 92 in vb code
 let ECInput;// textbox 3 in vb
 let cementDensityInput;//Textbox 26 in vb code
 let aggregateDensityInput;// textbox25 in vb code
-let dclToValueBasedOnEcInput; //Checkbox6 in vb code
+let dclToValueBasedOnEc; //checkbox 6 in vb code
 
-//We'll call this our main method to make the code cleaner
+//Here is what we'll call our main after defining all functions
 document.addEventListener("DOMContentLoaded", (event) => {
     saturatedWaterInput = document.getElementById("material_form_saturatedWaterContent"); //text1 in vb code
     hydrationRateInput = document.getElementById("material_form_hydrationRate"); //text44 in vb code
@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     ECInput = document.getElementById("material_form_ec");// textbox 3 in vb
     cementDensityInput = document.getElementById("material_form_cementDensity"); //Textbox 26 in vb code
     aggregateDensityInput = document.getElementById("material_form_aggregateDensity"); // textbox25 in vb code
+    dclToValueBasedOnEc = document.getElementById("material_form_dclToValueBasedOnEc") //Checkbox 6 in vb code
 
     //Loading listeners for inputs that need it
 
@@ -42,12 +43,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
     for(let input of inputsFreshConcrete){
         input.addEventListener("change", calculateFreshConcreteContent)
     }
-
-    //Activates all openable and closable forms part
-    for(let i=0;i<=8;i++){
-        addFormListener(i);
-    }
 });
+
+
+for(let i=0;i<=8;i++){
+    addFormListener(i);
+}
 
 //END INIT OF ALL NEEDED FORM VALUES
 

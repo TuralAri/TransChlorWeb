@@ -111,7 +111,7 @@ class Material
     private ?Permeability $permeability = null;
 
     #[ORM\Column]
-    private ?bool $dclToValueBasedOnEc = null;
+    private ?bool $dclToValueBasedOnEc = true;
 
     public function getId(): ?int
     {
