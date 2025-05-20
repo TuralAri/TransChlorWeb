@@ -10,8 +10,9 @@ let cementDensityInput;//Textbox 26 in vb code
 let aggregateDensityInput;// textbox25 in vb code
 let dclToInput; //text 46 in vb code
 let dclToValueCheckbox; //checkbox 6 in vb code
-let dclToValueBasedOnEcChecked; //value of ce
-let ktEcButton;
+let dclToValueBasedOnEcChecked; //value of checkbox 6
+let ktEcButton; //form button (button10 in vb)
+let defaultButton;// (button1 in vb)
 
 //Here is what we'll call our main after defining all functions
 document.addEventListener("DOMContentLoaded", () => {
@@ -28,6 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     dclToValueCheckbox = document.getElementById("material_form_dclToValueBasedOnEc") //Checkbox 6 in vb code
     dclToValueBasedOnEcChecked = dclToValueCheckbox.checked;
     ktEcButton = document.getElementById("material_form_KT_EC_button");
+    defaultButton = document.getElementById("material_form_default_button");
 
     //Loading listeners for inputs that need it
 
@@ -68,6 +70,10 @@ document.addEventListener("DOMContentLoaded", () => {
     //ktEcButton click detection to generate an EC from a KT parameter
     ktEcButton.addEventListener("click", () => {
         handleKtEcButtonClick();
+    });
+
+    defaultButton.addEventListener("click", () => {
+       handleDefaultButtonClick();
     });
 
 });
@@ -180,8 +186,12 @@ function unlockFields() {
     for (const fieldId of Object.values(fieldMappings)) {
         const input = document.getElementById(fieldId);
         if (input) {
-            input.readOnly = false;
-            input.classList.remove('bg-gray-100');
+            if(input.id === "material_form_freshConcreteDensity"){
+
+            }else{
+                input.readOnly = false;
+                input.classList.remove('bg-gray-100');
+            }
         }
     }
 }
@@ -246,6 +256,13 @@ function handleKtEcButtonClick(){
         ECInput.value = EC;
         ECInput.dispatchEvent(new Event("change")); //notifies the ECInput from a change
     }
+}
+
+function handleDefaultButtonClick(){
+    const ec = ECInput.value;
+    const omegaE = 0.389 - (26.0 * ec) / 15.0 + 4.4 * Math.pow(ec, 2) - (8.0 * Math.pow(ec, 3)) / 3.0;
+    hydrationRateInput.value = (ec - omegaE) / (0.17 + 0.23 * omegaE);
+    hydrationRateInput.dispatchEvent(new Event("change")); //notifies the hydrationRateInput from a change
 }
 
 function fetchPermeabilityData(id) {
