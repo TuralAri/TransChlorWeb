@@ -110,6 +110,9 @@ class Material
     #[ORM\JoinColumn(nullable: false)]
     private ?Permeability $permeability = null;
 
+    #[ORM\Column]
+    private ?bool $dclToValueBasedOnEc = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -495,6 +498,18 @@ class Material
     public function setPermeability(?Permeability $permeability): static
     {
         $this->permeability = $permeability;
+
+        return $this;
+    }
+
+    public function isDclToValueBasedOnEc(): ?bool
+    {
+        return $this->dclToValueBasedOnEc;
+    }
+
+    public function setDclToValueBasedOnEc(bool $dclToValueBasedOnEc): static
+    {
+        $this->dclToValueBasedOnEc = $dclToValueBasedOnEc;
 
         return $this;
     }

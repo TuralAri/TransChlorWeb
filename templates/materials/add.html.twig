@@ -172,7 +172,7 @@
                     </div>
                     <div class="hidden gap-2 items-center w-fit justify-left">
                         {{ form_row(form.dclTo, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                        <button class="inline-block py-2 px-4 bg-gray-200 hover:bg-gray-400 rounded" type="button">E/C -> Dcl,To</button>
+                        {{ form_row(form.dclToValueBasedOnEc, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
                     </div>
                     <div class="hidden gap-2 items-center w-fit justify-left">
                         {{ form_row(form.alphaDiffusion, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}

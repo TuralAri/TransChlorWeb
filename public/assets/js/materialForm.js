@@ -1,3 +1,56 @@
+//INIT OF ALL NEEDED FORM VALUES
+let saturatedWaterInput;//text1 in vb code
+let hydrationRateInput;//text44 in vb code
+let airContentInput;//textbox2 in vb code
+let freshConcreteDensityInput; //textbox1 in VB code
+let cementContentInput;// text2 in vb code
+let aggregateContentInput;//label 92 in vb code
+let ECInput;// textbox 3 in vb
+let cementDensityInput;//Textbox 26 in vb code
+let aggregateDensityInput;// textbox25 in vb code
+let dclToValueBasedOnEcInput; //Checkbox6 in vb code
+
+//We'll call this our main method to make the code cleaner
+document.addEventListener("DOMContentLoaded", (event) => {
+    saturatedWaterInput = document.getElementById("material_form_saturatedWaterContent"); //text1 in vb code
+    hydrationRateInput = document.getElementById("material_form_hydrationRate"); //text44 in vb code
+    airContentInput = document.getElementById("material_form_airContent"); //textbox2 in vb code
+    freshConcreteDensityInput = document.getElementById("material_form_freshConcreteDensity"); //textbox1 in VB code
+    cementContentInput = document.getElementById("material_form_cementContent"); // text2 in vb code
+    aggregateContentInput = document.getElementById("material_form_aggregateContent");//label 92 in vb code
+    ECInput = document.getElementById("material_form_ec");// textbox 3 in vb
+    cementDensityInput = document.getElementById("material_form_cementDensity"); //Textbox 26 in vb code
+    aggregateDensityInput = document.getElementById("material_form_aggregateDensity"); // textbox25 in vb code
+
+    //Loading listeners for inputs that need it
+
+    //List of each inputs to execute functions when they are changed
+    const inputsSaturatedWater = [cementContentInput, ECInput, hydrationRateInput, airContentInput].filter(Boolean);
+    const inputsAggregateContent = [cementContentInput, cementDensityInput, ECInput, airContentInput, aggregateDensityInput].filter(Boolean);
+    const inputsFreshConcrete = [cementContentInput, aggregateContentInput, ECInput].filter(Boolean);
+
+    //If the same input is used in one of the condition it will execute in the order they were registered
+    // (inputsSaturatedWater before inputsAggregateContent and finally inputsFreshConcrete)
+    for (let input of inputsSaturatedWater) {
+        input.addEventListener("change", calculateSaturatedWaterContent);
+    }
+
+    for (let input of inputsAggregateContent) {
+        input.addEventListener("change", calculateAggregateContent);
+    }
+
+    for(let input of inputsFreshConcrete){
+        input.addEventListener("change", calculateFreshConcreteContent)
+    }
+
+    //Activates all openable and closable forms part
+    for(let i=0;i<=8;i++){
+        addFormListener(i);
+    }
+});
+
+//END INIT OF ALL NEEDED FORM VALUES
+
 function addFormListener(id){
     document.addEventListener("DOMContentLoaded", function () {
         const toggleButton = document.getElementById("part"+id+"Button");
@@ -106,12 +159,6 @@ function unlockFields() {
 }
 
 function calculateSaturatedWaterContent(){
-    const saturatedWaterInput = document.getElementById("material_form_saturatedWaterContent");
-    const cementContentInput = document.getElementById("material_form_cementContent");
-    const hydrationRateInput = document.getElementById("material_form_hydrationRate");
-    const ECInput = document.getElementById("material_form_ec");
-    const airContentInput = document.getElementById("material_form_airContent");
-
     const cementContent = cementContentInput.value;
     const ec = ECInput.value;
     const hydrationRate = hydrationRateInput.value;
@@ -124,13 +171,6 @@ function calculateSaturatedWaterContent(){
 }
 
 function calculateAggregateContent(){
-    const aggregateContentInput = document.getElementById("material_form_aggregateContent");
-    const cementContentInput = document.getElementById("material_form_cementContent");
-    const cementDensityInput = document.getElementById("material_form_cementDensity");
-    const ECInput = document.getElementById("material_form_ec");
-    const airContentInput = document.getElementById("material_form_airContent");
-    const aggregateDensityInput = document.getElementById("material_form_aggregateDensity");
-
     const cementContent = cementContentInput.value;
     const cementDensity = cementDensityInput.value;
     const ec = ECInput.value;
@@ -142,13 +182,14 @@ function calculateAggregateContent(){
         - parseFloat(ec) * parseFloat(cementContent)/1000
         - parseFloat(airContent) / 100
     ) * parseFloat(aggregateDensity);
-
-
-
 }
 
 function calculateFreshConcreteContent(){
+    const cementContent = cementContentInput.value;
+    const aggregateContent = aggregateContentInput.value;
+    const ec = ECInput.value;
 
+    freshConcreteDensityInput.value = (parseFloat(cementContent) + parseFloat(aggregateContent) + parseFloat(ec) * cementContent);
 }
 
 function fetchPermeabilityData(id) {
@@ -166,17 +207,9 @@ function fetchPermeabilityData(id) {
             //launch some calculations here
             calculateSaturatedWaterContent();
             calculateAggregateContent();
+            calculateFreshConcreteContent();
         })
         .catch(error => {
             console.error("Couldn't load permeability data:", error);
         });
-}
-
-
-
-//Here is what we'll call our main after defining all functions
-
-//we have 8 formsPart so we're activating each one of them
-for(let i=0;i<=8;i++){
-    addFormListener(i);
 }
