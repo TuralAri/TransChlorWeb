@@ -180,5 +180,5 @@ materialForm:
   ionicTransportChlorides: "Transport Ionique des chlorures"
   diffusionInWater: "Diffusion dans l'eau"
   waterConvection: "Convection par l'eau"
-  freeBoundChlorideIonsRelation: "Relation entre ions chlorures libres et liées :"
+  freeBoundChlorideIonsRelation: "Relation entre ions chlorures libres et liés :"
   submit: "Sauvegarder"

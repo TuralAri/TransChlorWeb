@@ -21,7 +21,7 @@ class MaterialFormType extends AbstractType
             ->add('freshConcreteDensity', NumberType::class, ['attr' => ['readonly' => true, 'value' => 2550]])
             ->add('aggregateContent',NumberType::class, ['attr' => ['readonly' => true, 'value' => 2550]])
             ->add('cementContent', NumberType::class, ['attr' => ['value' => 0]])
-            ->add('saturatedWaterContent', NumberType::class, ['attr' => ['value' => 0]])
+            ->add('saturatedWaterContent', NumberType::class, ['attr' => ['value' => 0, 'readonly' => true]])
             ->add('airContent', NumberType::class, ['attr' => ['value' => 0]])
             ->add('ec', NumberType::class, ['attr' => ['value' => 0]])
             ->add('concreteAge', NumberType::class, ['attr' => ['value' => 0]])
