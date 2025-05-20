@@ -8,7 +8,9 @@ let aggregateContentInput;//label 92 in vb code
 let ECInput;// textbox 3 in vb
 let cementDensityInput;//Textbox 26 in vb code
 let aggregateDensityInput;// textbox25 in vb code
+let dclToInput; //text 46 in vb code
 let dclToValueBasedOnEc; //checkbox 6 in vb code
+let dclToValueBasedOnEcChecked;
 
 //Here is what we'll call our main after defining all functions
 document.addEventListener("DOMContentLoaded", (event) => {
@@ -21,7 +23,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
     ECInput = document.getElementById("material_form_ec");// textbox 3 in vb
     cementDensityInput = document.getElementById("material_form_cementDensity"); //Textbox 26 in vb code
     aggregateDensityInput = document.getElementById("material_form_aggregateDensity"); // textbox25 in vb code
+    dclToInput = document.getElementById("material_form_dclTo"); //text 46 in vb code
     dclToValueBasedOnEc = document.getElementById("material_form_dclToValueBasedOnEc") //Checkbox 6 in vb code
+    dclToValueBasedOnEcChecked = dclToValueBasedOnEc.checked;
 
     //Loading listeners for inputs that need it
 
@@ -43,6 +47,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
     for(let input of inputsFreshConcrete){
         input.addEventListener("change", calculateFreshConcreteContent)
     }
+
+    //Specific event if dclTo checkbox is checked or not
+    dclToValueBasedOnEc.addEventListener("change", () => {
+        dclToValueBasedOnEcChecked = dclToValueBasedOnEc.checked;
+        if(dclToValueBasedOnEcChecked){
+            calculateDclTo();
+        }
+    });
+
 });
 
 
@@ -191,6 +204,11 @@ function calculateFreshConcreteContent(){
     const ec = ECInput.value;
 
     freshConcreteDensityInput.value = (parseFloat(cementContent) + parseFloat(aggregateContent) + parseFloat(ec) * cementContent);
+}
+
+function calculateDclTo(){
+    const ec = ECInput.value;
+    dclToInput.value = 0.0943 * Math.exp(parseFloat(ec) * 7.899) * 0.000001;
 }
 
 function fetchPermeabilityData(id) {
