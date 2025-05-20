@@ -38,6 +38,9 @@
                     </button>
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.permeability, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center inline-flex gap-2'}}) }}
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
                     {{ form_row(form.freshConcreteDensity, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center bg-gray-100 '}}) }}
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
@@ -65,9 +68,6 @@
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
                     {{ form_row(form.cementType, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                </div>
-                <div class="hidden gap-2 items-center w-fit justify-left">
-                    {{ form_row(form.permeability, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center inline-flex gap-2'}}) }}
                 </div>
             </section>
 
