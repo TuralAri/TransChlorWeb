@@ -9,11 +9,11 @@ let ECInput;// textbox 3 in vb
 let cementDensityInput;//Textbox 26 in vb code
 let aggregateDensityInput;// textbox25 in vb code
 let dclToInput; //text 46 in vb code
-let dclToValueBasedOnEc; //checkbox 6 in vb code
-let dclToValueBasedOnEcChecked;
+let dclToValueCheckbox; //checkbox 6 in vb code
+let dclToValueBasedOnEcChecked; //value of ce
 
 //Here is what we'll call our main after defining all functions
-document.addEventListener("DOMContentLoaded", (event) => {
+document.addEventListener("DOMContentLoaded", () => {
     saturatedWaterInput = document.getElementById("material_form_saturatedWaterContent"); //text1 in vb code
     hydrationRateInput = document.getElementById("material_form_hydrationRate"); //text44 in vb code
     airContentInput = document.getElementById("material_form_airContent"); //textbox2 in vb code
@@ -24,8 +24,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     cementDensityInput = document.getElementById("material_form_cementDensity"); //Textbox 26 in vb code
     aggregateDensityInput = document.getElementById("material_form_aggregateDensity"); // textbox25 in vb code
     dclToInput = document.getElementById("material_form_dclTo"); //text 46 in vb code
-    dclToValueBasedOnEc = document.getElementById("material_form_dclToValueBasedOnEc") //Checkbox 6 in vb code
-    dclToValueBasedOnEcChecked = dclToValueBasedOnEc.checked;
+    dclToValueCheckbox = document.getElementById("material_form_dclToValueBasedOnEc") //Checkbox 6 in vb code
+    dclToValueBasedOnEcChecked = dclToValueCheckbox.checked;
 
     //Loading listeners for inputs that need it
 
@@ -49,11 +49,18 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
 
     //Specific event if dclTo checkbox is checked or not
-    dclToValueBasedOnEc.addEventListener("change", () => {
-        dclToValueBasedOnEcChecked = dclToValueBasedOnEc.checked;
+    dclToValueCheckbox.addEventListener("change", () => {
+        dclToValueBasedOnEcChecked = dclToValueCheckbox.checked;
         if(dclToValueBasedOnEcChecked){
             calculateDclTo();
         }
+    });
+
+    //Same here but if dclCheckbox is checked and EC modified
+    ECInput.addEventListener("change", () => {
+       if(dclToValueBasedOnEcChecked){
+           calculateDclTo();
+       }
     });
 
 });
