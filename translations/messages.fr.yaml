@@ -169,6 +169,8 @@ computations:
   days: "Jours"
 
 materialForm:
+  pageTitle: "Matériaux"
+  addPageTitle: "Ajout de matériau"
   concreteTitle: "Béton"
   concreteComponentTitle: "Composants du béton"
   waterTransport: "Transport Hydrique"

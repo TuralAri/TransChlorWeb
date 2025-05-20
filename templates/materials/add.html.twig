@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Exposure Series
+{% block title %}
+    {{ 'materialForm.addPageTitle' | trans }}
 {% endblock %}
 
 {% block body %}
@@ -21,7 +22,7 @@
 
             <div class="flex justify-between items-center">
 
-                <h1 class="text-2xl font-bold mb-6">{{'header.materials' | trans}}</h1>
+                <h1 class="text-2xl font-bold mb-6">{{'materialForm.addPageTitle' | trans}}</h1>
                 <a href="{{ path('index')}}"
                    class="inline-block mb-4 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
                     <i class="fa-solid fa-arrow-left mr-1"></i> {{'goBack' | trans}}
