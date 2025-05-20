@@ -11,6 +11,7 @@ let aggregateDensityInput;// textbox25 in vb code
 let dclToInput; //text 46 in vb code
 let dclToValueCheckbox; //checkbox 6 in vb code
 let dclToValueBasedOnEcChecked; //value of ce
+let ktEcButton;
 
 //Here is what we'll call our main after defining all functions
 document.addEventListener("DOMContentLoaded", () => {
@@ -26,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
     dclToInput = document.getElementById("material_form_dclTo"); //text 46 in vb code
     dclToValueCheckbox = document.getElementById("material_form_dclToValueBasedOnEc") //Checkbox 6 in vb code
     dclToValueBasedOnEcChecked = dclToValueCheckbox.checked;
+    ktEcButton = document.getElementById("material_form_KT_EC_button");
 
     //Loading listeners for inputs that need it
 
@@ -61,6 +63,11 @@ document.addEventListener("DOMContentLoaded", () => {
        if(dclToValueBasedOnEcChecked){
            calculateDclTo();
        }
+    });
+
+    //ktEcButton click detection to generate an EC from a KT parameter
+    ktEcButton.addEventListener("click", () => {
+        handleKtEcButtonClick();
     });
 
 });
@@ -189,6 +196,8 @@ function calculateSaturatedWaterContent(){
         (parseFloat(cementContent) * parseFloat(ec))
         - (0.17 * parseFloat(hydrationRate) * parseFloat(cementContent))
         + (10 * parseFloat(airContent));
+
+    saturatedWaterInput.dispatchEvent(new Event("change")); //notifies the saturatedWaterInput from a change
 }
 
 function calculateAggregateContent(){
@@ -203,6 +212,8 @@ function calculateAggregateContent(){
         - parseFloat(ec) * parseFloat(cementContent)/1000
         - parseFloat(airContent) / 100
     ) * parseFloat(aggregateDensity);
+
+    aggregateContentInput.dispatchEvent(new Event("change")); //notifies the aggregateContentInput from a change
 }
 
 function calculateFreshConcreteContent(){
@@ -211,11 +222,30 @@ function calculateFreshConcreteContent(){
     const ec = ECInput.value;
 
     freshConcreteDensityInput.value = (parseFloat(cementContent) + parseFloat(aggregateContent) + parseFloat(ec) * cementContent);
+    freshConcreteDensityInput.dispatchEvent(new Event("change")); //notifies the freshConcreteDensityInput from a change
 }
 
 function calculateDclTo(){
     const ec = ECInput.value;
     dclToInput.value = 0.0943 * Math.exp(parseFloat(ec) * 7.899) * 0.000001;
+    dclToInput.dispatchEvent(new Event("change")); //notifies the dclToInput from a change
+}
+
+function handleKtEcButtonClick(){
+    let userInput = prompt("kT [10⁻¹⁶ m²] :", "0"); //popup with an input to enter data
+    if(userInput === null || userInput.trim() === ""){
+        alert("No value detected"); //popup to say nothing happened
+        return;
+    }
+
+    const kT = parseFloat(userInput);
+    const EC = 0.0866383424571846 * Math.log(kT) + 0.72509628011073;
+
+    const confirmResult = confirm(`Voulez-vous changer le rapport E/C = ${EC} ?`); //creates a confirmation popup
+    if(confirmResult){
+        ECInput.value = EC;
+        ECInput.dispatchEvent(new Event("change")); //notifies the ECInput from a change
+    }
 }
 
 function fetchPermeabilityData(id) {
