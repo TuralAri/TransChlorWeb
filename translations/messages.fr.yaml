@@ -176,6 +176,10 @@ materials:
   delete: "Supprimer le matériau"
   edit: "Modifier le matériau"
   noComment: "Pas de commentaire"
+  addSuccess: "Votre matériau a bien été ajouté"
+  addError: "Erreur lors de l'ajout du matériau"
+  editSuccess: "Votre matériau a bien été modifié"
+  editError: "Votre matériau n'a pas pu être modifié"
 
 materialForm:
   pageTitle: "Matériaux"
@@ -239,6 +243,7 @@ materialForm:
     eb: "Eb"
     toAdsorption: "To"
     dclToValueBasedOnEc: "Valeur en fonction de E/C"
+  editPageTitle: 'Edition de matériau'
 
 
 

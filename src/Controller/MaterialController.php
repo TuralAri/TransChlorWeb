@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MaterialController extends AbstractController
 {
@@ -39,7 +40,7 @@ class MaterialController extends AbstractController
     }
 
     #[Route('/materials/add', name: 'add_material')]
-    public function add(Request $request, EntityManagerInterface $entityManager) : Response{
+    public function add(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator) : Response{
         $material = new Material();
 
         $form = $this->createForm(MaterialFormType::class, $material);
@@ -49,10 +50,39 @@ class MaterialController extends AbstractController
             $material->setUser($this->getUser());
             $entityManager->persist($material);
             $entityManager->flush();
+            $this->addFlash("success", $translator->trans("materials.addSuccess"));
             return $this->redirectToRoute("materials");
         }
 
+        if($form->isSubmitted() && !$form->isValid()){
+            $this->addFlash("error", $translator->trans("materials.addError"));
+            return $this->redirectToRoute("add_material");
+        }
+
         return $this->render('materials/add.html.twig',[
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/materials/edit/{id}', name: 'edit_material')]
+    public function edit(Material $material, Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator) : Response{
+
+        $form = $this->createForm(MaterialFormType::class, $material);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $material = $form->getData();
+            $material->setUser($this->getUser());
+            $entityManager->persist($material);
+            $entityManager->flush();
+            $this->addFlash("success", $translator->trans("materials.editSuccess"));
+            return $this->redirectToRoute("materials");
+        }
+        if($form->isSubmitted() && !$form->isValid()){
+            $this->addFlash("error", $translator->trans("materials.editError"));
+            return $this->redirectToRoute("edit_material", ["id" => $material->getId()]);
+        }
+
+        return $this->render('materials/edit.html.twig',[
             'form' => $form->createView(),
         ]);
     }

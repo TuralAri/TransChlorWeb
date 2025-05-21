@@ -1,0 +1,262 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'materialForm.editPageTitle' | trans }}
+{% endblock %}
+
+{% block body %}
+    <main class="flex-1">
+        <div class=" mx-[10%] px-4 py-8 ">
+
+            {% for message in app.flashes('success') %}
+                <div class="bg-green-100 p-4 mb-4 rounded-lg">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('error') %}
+                <div class="bg-red-100 p-4 mb-4 rounded-lg">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            <div class="flex justify-between items-center">
+
+                <h1 class="text-2xl font-bold mb-6">{{'materialForm.editPageTitle' | trans}}</h1>
+                <a href="{{ path('materials')}}"
+                   class="inline-block mb-4 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> {{'goBack' | trans}}
+                </a>
+            </div>
+            {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+
+            <section id="part1" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold">{{ 'materialForm.concreteTitle' | trans }}</h2>
+                    <button id="part1Button" class="text-xl font-bold  border-black p-4">
+                        +
+                    </button>
+                </div>
+                <div class="hidden gap-2 w-fit justify-left">
+                    {{ form_row(form.name, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-left inline-flex gap-2'}}) }}
+                </div>
+                <div class="hidden w-full">
+                    {{ form_row(form.comment, {'attr': {'class': 'w-full p-2 border rounded-lg', 'rows': '3'}, 'row_attr': {'class': 'w-full'}}) }}
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.permeability, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center inline-flex gap-2'}}) }}
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.freshConcreteDensity, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center bg-gray-100 '}}) }}
+                    {{ 'materialForm.measures.concreteMeasure' | trans }}
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.aggregateContent, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center bg-gray-100'}}) }}
+                    {{ 'materialForm.measures.concreteMeasure' | trans }}
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.cementContent, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    {{ 'materialForm.measures.concreteMeasure' | trans }}
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.saturatedWaterContent, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center bg-gray-100'}}) }}
+                    {{ 'materialForm.measures.concreteMeasure' | trans }}
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.airContent, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    {{ 'materialForm.measures.concretePercent' | trans }}
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.ec, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center gap-2'}}) }}
+                    <button class="inline-block py-2 px-4 bg-gray-200 hover:bg-gray-400 rounded" type="button" id="material_form_KT_EC_button">KT -> E/C</button>
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{form_row(form.concreteAge,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
+                    {{ 'materialForm.measures.concreteAge' | trans }}
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.hydrationRate, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center '}}) }}
+                    <button class="inline-block py-2 px-4 bg-gray-200 hover:bg-gray-400 rounded" type="button" id="material_form_default_button">Default</button>
+                    {{ 'materialForm.measures.hydrationRate' | trans }}
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.cementType, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                </div>
+            </section>
+
+            <section id="part2" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold">{{ 'materialForm.concreteComponentTitle' | trans }}</h2>
+                    <button id="part2Button" class="text-xl font-bold  border-black p-4">
+                        +
+                    </button>
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.aggregateType, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center '}}) }}
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.heatCapacity, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    {{ 'materialForm.measures.heatCapacity' | trans }}
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.surfaceHeatTransfer, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.aggregateDensity, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    {{ 'materialForm.measures.kgm3Density' | trans }}
+                </div>
+                <div class="hidden gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.cementDensity, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    {{ 'materialForm.measures.kgm3Density' | trans }}
+                </div>
+            </section>
+            <section id="part" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold">{{ 'materialForm.waterTransport' | trans }}</h2>
+                    {#                    <button id="part3Button" class="text-xl font-bold  border-black p-4">#}
+                    {#                        +#}
+                    {#                    </button>#}
+                </div>
+                {# WaterDiffusion part #}
+                <section id="part3" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-xl font-semibold">{{ 'materialForm.waterDiffusion' | trans }}</h2>
+                        <button id="part3Button" class="text-xl font-bold  border-black p-4">
+                            +
+                        </button>
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.d100Percent, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        {{ 'materialForm.measures.mm2s' | trans }}
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.aoDiffusion, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.hc, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.ed, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.toDiffusion, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        {{ 'materialForm.measures.kelvin' | trans }}
+                    </div>
+                </section>
+                {# SurfaceTransfer part #}
+                <section id="part4" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-xl font-semibold">{{ 'materialForm.surfaceTransfer' | trans }}</h2>
+                        <button id="part4Button" class="text-xl font-bold  border-black p-4">
+                            +
+                        </button>
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.surfaceTransferCoefficient, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </div>
+                </section>
+                {# Capillarity part #}
+                <section id="part5" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-xl font-semibold">{{ 'materialForm.capillarity' | trans }}</h2>
+                        <button id="part5Button" class="text-xl font-bold  border-black p-4">
+                            +
+                        </button>
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.aoCapillarity, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.tc, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </div>
+                </section>
+            </section>
+
+            {# ionicTransportChlorides big section #}
+
+            <section id="part" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold">{{ 'materialForm.ionicTransportChlorides' | trans }}</h2>
+                    {#                    <button id="part3Button" class="text-xl font-bold  border-black p-4">#}
+                    {#                        +#}
+                    {#                    </button>#}
+                </div>
+                {# diffusionInWater part #}
+                <section id="part6" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-xl font-semibold">{{ 'materialForm.diffusionInWater' | trans }}</h2>
+                        <button id="part6Button" class="text-xl font-bold  border-black p-4">
+                            +
+                        </button>
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.dclTo, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        {{ 'materialForm.measures.mm2s' | trans }}
+                        <div class="flex items-center gap-2">
+                            {{ form_widget(form.dclToValueBasedOnEc, {
+                                'attr': {
+                                    'class': 'form-checkbox h-5 w-5 text-blue-600'
+                                }
+                            }) }}
+                            <label for="{{ form.dclToValueBasedOnEc.vars.id }}" class="">
+                                {{ form_label(form.dclToValueBasedOnEc) }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.alphaDiffusion, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.toChlorideDiffusion, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        {{ 'materialForm.measures.celsius' | trans }}
+                    </div>
+                </section>
+                {# waterConvection part #}
+                <section id="part7" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-xl font-semibold">{{ 'materialForm.waterConvection' | trans }}</h2>
+                        <button id="part7Button" class="text-xl font-bold  border-black p-4">
+                            +
+                        </button>
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.retardationCoefficient, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.limitWaterContent, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </div>
+                </section>
+                {# freeBoundChlorideIonsRelation part #}
+                <section id="part8" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-xl font-semibold">{{ 'materialForm.freeBoundChlorideIonsRelation' | trans }}</h2>
+                        <button id="part8Button" class="text-xl font-bold  border-black p-4">
+                            +
+                        </button>
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.adsorptionFa, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.alphaOh, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.eb, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        {{ 'materialForm.measures.jmol' | trans }}
+                    </div>
+                    <div class="hidden gap-2 items-center w-fit justify-left">
+                        {{ form_row(form.toAdsorption, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        {{ 'materialForm.measures.kelvin' | trans }}
+                    </div>
+                </section>
+
+
+            </section>
+
+            {{ form_end(form) }}
+        </div>
+    </main>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/js/materialForm.js') }}"></script>
+{% endblock %}

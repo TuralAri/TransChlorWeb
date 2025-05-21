@@ -49,7 +49,7 @@
                                     {{ material.comment ?? 'materials.noComment' | trans }}
                                 </td>
                                 <td class="px-6 py-4 text-sm">
-                                    <a href="" class="inline-block px-4 py-2 bg-yellow-500 hover:bg-yellow-800 rounded text-white"
+                                    <a href="{{ path('edit_material', {'id': material.id}) }}" class="inline-block px-4 py-2 bg-yellow-500 hover:bg-yellow-800 rounded text-white"
                                        title="{{ 'materials.edit' | trans }}">
                                         <i class="fa-solid fa-edit"></i>
                                     </a>
