@@ -7,23 +7,49 @@ use App\Entity\Material;
 use App\Entity\Permeability;
 use App\Form\MaterialFormType;
 use App\Form\WeatherStationFormType;
+use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class MaterialController extends AbstractController
 {
+    #[Route('/materials', name: 'materials')]
+    public function index(Request $request, PaginatorInterface $paginator)
+    {
+        $user = $this->getUser();
+        if(!$user){
+            return $this->redirectToRoute('index');
+        }
+
+        $query = $user->getMaterials();
+
+        $materials = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            10
+        );
+
+        return $this->render('materials/index.html.twig', [
+            'materials' => $materials,
+        ]);
+    }
+
     #[Route('/materials/add', name: 'add_material')]
-    public function add(Request $request){
+    public function add(Request $request, EntityManagerInterface $entityManager) : Response{
         $material = new Material();
 
         $form = $this->createForm(MaterialFormType::class, $material);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $material = $form->getData();
-            dd($material);
-
+            $material->setUser($this->getUser());
+            $entityManager->persist($material);
+            $entityManager->flush();
+            return $this->redirectToRoute("materials");
         }
 
         return $this->render('materials/add.html.twig',[

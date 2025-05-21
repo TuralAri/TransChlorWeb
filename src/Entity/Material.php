@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\MaterialRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MaterialRepository::class)]
@@ -117,6 +118,12 @@ class Material
     #[ORM\ManyToOne(inversedBy: 'materials')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $comment = null;
 
     public function getId(): ?int
     {
@@ -527,6 +534,30 @@ class Material
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(string $comment): static
+    {
+        $this->comment = $comment;
 
         return $this;
     }

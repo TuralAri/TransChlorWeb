@@ -168,6 +168,15 @@ computations:
   phTitle: "Répartition du pH après"
   days: "Jours"
 
+materials:
+  pageTitle: "Vos matériaux"
+  addBtn: "Créer un matériau"
+  name: "Nom du matériau"
+  comment: "Commentaire"
+  delete: "Supprimer le matériau"
+  edit: "Modifier le matériau"
+  noComment: "Pas de commentaire"
+
 materialForm:
   pageTitle: "Matériaux"
   addPageTitle: "Ajout de matériau"
@@ -195,6 +204,8 @@ materialForm:
     percent: "%"
     jmol: "J/mol"
   labels:
+    name: "Nom du matériau"
+    comment: "Commentaire"
     permeability: "Type existant"
     freshConcreteDensity: "Masse volumique du béton frais"
     aggregateContent: "Teneur en granulat"

@@ -19,6 +19,12 @@ class MaterialFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('name', null, [
+                'label' => 'materialForm.labels.name',
+            ])
+            ->add('comment', null, [
+                'label' => 'materialForm.labels.comment',
+            ])
             ->add('freshConcreteDensity', NumberType::class, [
                 'attr' => ['readonly' => true, 'value' => 2550],
                 'label' => 'materialForm.labels.freshConcreteDensity',

@@ -17,7 +17,7 @@
                     </svg>
                     {{ 'header.climate' | trans }}
                 </a>
-                <a href="{{path('computations')}}" class="font-medium flex items-center gap-2 hover:text-blue-400 transition-colors {{ not app.user ? 'disabled-link' : '' }}">
+                <a href="{{path('materials')}}" class="font-medium flex items-center gap-2 hover:text-blue-400 transition-colors {{ not app.user ? 'disabled-link' : '' }}">
                     <i class="fa-solid fa-hammer fa-sm"></i>
                     {{ 'header.materials' | trans }}
                 </a>
@@ -98,7 +98,7 @@
                 {{ 'header.climate' | trans }}
             </a>
 
-            <a href="{{path('computations')}}" class="font-medium flex items-center gap-2 hover:text-blue-400 transition-colors {{ not app.user ? 'disabled-link' : '' }}">
+            <a href="{{path('materials')}}" class="font-medium flex items-center gap-2 hover:text-blue-400 transition-colors {{ not app.user ? 'disabled-link' : '' }}">
                 <i class="fa-solid fa-hammer fa-sm"></i>
                 {{ 'header.materials' | trans }}
             </a>
