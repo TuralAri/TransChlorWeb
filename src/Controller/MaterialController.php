@@ -41,6 +41,11 @@ class MaterialController extends AbstractController
 
     #[Route('/materials/add', name: 'add_material')]
     public function add(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator) : Response{
+        $user = $this->getUser();
+        if(!$user){
+            return $this->redirectToRoute('index');
+        }
+
         $material = new Material();
 
         $form = $this->createForm(MaterialFormType::class, $material);
@@ -66,6 +71,10 @@ class MaterialController extends AbstractController
 
     #[Route('/materials/edit/{id}', name: 'edit_material')]
     public function edit(Material $material, Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator) : Response{
+        $user = $this->getUser();
+        if(!$user || $material->getUser() !== $user){
+            return $this->redirectToRoute('materials');
+        }
 
         $form = $this->createForm(MaterialFormType::class, $material);
         $form->handleRequest($request);
@@ -90,7 +99,12 @@ class MaterialController extends AbstractController
     #[Route('/materials/{id}/delete', name: 'delete_material', methods: ['POST'])]
     public function delete(Request $request, Material $material, EntityManagerInterface $entityManager, TranslatorInterface $translator): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $material->getId(), $request->request->get('_token'))) {
+        $user = $this->getUser();
+        if(!$user){
+            return $this->redirectToRoute('index');
+        }
+
+        if ($this->isCsrfTokenValid('delete' . $material->getId(), $request->request->get('_token')) && $material->getUser() === $user) {
             $entityManager->remove($material);
             $entityManager->flush();
 
