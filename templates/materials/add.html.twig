@@ -42,18 +42,23 @@
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
                     {{ form_row(form.freshConcreteDensity, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center bg-gray-100 '}}) }}
+                    {{ 'materialForm.measures.concreteMeasure' | trans }}
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
                     {{ form_row(form.aggregateContent, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center bg-gray-100'}}) }}
+                    {{ 'materialForm.measures.concreteMeasure' | trans }}
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
                     {{ form_row(form.cementContent, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    {{ 'materialForm.measures.concreteMeasure' | trans }}
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
                     {{ form_row(form.saturatedWaterContent, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center bg-gray-100'}}) }}
+                    {{ 'materialForm.measures.concreteMeasure' | trans }}
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
                     {{ form_row(form.airContent, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    {{ 'materialForm.measures.concretePercent' | trans }}
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
                     {{ form_row(form.ec, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center gap-2'}}) }}
@@ -61,10 +66,12 @@
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
                     {{form_row(form.concreteAge,{'attr':{'class':'ml-2 p-2 border rounded-lg text-center'}})}}
+                    {{ 'materialForm.measures.concreteAge' | trans }}
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
                     {{ form_row(form.hydrationRate, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center '}}) }}
                     <button class="inline-block py-2 px-4 bg-gray-200 hover:bg-gray-400 rounded" type="button" id="material_form_default_button">Default</button>
+                    {{ 'materialForm.measures.hydrationRate' | trans }}
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
                     {{ form_row(form.cementType, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
@@ -83,15 +90,18 @@
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
                     {{ form_row(form.heatCapacity, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    {{ 'materialForm.measures.heatCapacity' | trans }}
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
                     {{ form_row(form.surfaceHeatTransfer, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
                     {{ form_row(form.aggregateDensity, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    {{ 'materialForm.measures.kgm3Density' | trans }}
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
                     {{ form_row(form.cementDensity, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    {{ 'materialForm.measures.kgm3Density' | trans }}
                 </div>
             </section>
             <section id="part" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
@@ -111,6 +121,7 @@
                     </div>
                     <div class="hidden gap-2 items-center w-fit justify-left">
                         {{ form_row(form.d100Percent, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        {{ 'materialForm.measures.mm2s' | trans }}
                     </div>
                     <div class="hidden gap-2 items-center w-fit justify-left">
                         {{ form_row(form.aoDiffusion, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
@@ -123,6 +134,7 @@
                     </div>
                     <div class="hidden gap-2 items-center w-fit justify-left">
                         {{ form_row(form.toDiffusion, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        {{ 'materialForm.measures.kelvin' | trans }}
                     </div>
                 </section>
                 {# SurfaceTransfer part #}
@@ -173,13 +185,24 @@
                     </div>
                     <div class="hidden gap-2 items-center w-fit justify-left">
                         {{ form_row(form.dclTo, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                        {{ form_row(form.dclToValueBasedOnEc, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        {{ 'materialForm.measures.mm2s' | trans }}
+                        <div class="flex items-center gap-2">
+                            {{ form_widget(form.dclToValueBasedOnEc, {
+                                'attr': {
+                                    'class': 'form-checkbox h-5 w-5 text-blue-600'
+                                }
+                            }) }}
+                            <label for="{{ form.dclToValueBasedOnEc.vars.id }}" class="">
+                                {{ form_label(form.dclToValueBasedOnEc) }}
+                            </label>
+                        </div>
                     </div>
                     <div class="hidden gap-2 items-center w-fit justify-left">
                         {{ form_row(form.alphaDiffusion, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
                     </div>
                     <div class="hidden gap-2 items-center w-fit justify-left">
                         {{ form_row(form.toChlorideDiffusion, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        {{ 'materialForm.measures.celsius' | trans }}
                     </div>
                 </section>
                 {# waterConvection part #}
@@ -213,9 +236,11 @@
                     </div>
                     <div class="hidden gap-2 items-center w-fit justify-left">
                         {{ form_row(form.eb, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        {{ 'materialForm.measures.jmol' | trans }}
                     </div>
                     <div class="hidden gap-2 items-center w-fit justify-left">
-                        {{ form_row(form.toAdsortion, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        {{ form_row(form.toAdsorption, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        {{ 'materialForm.measures.kelvin' | trans }}
                     </div>
                 </section>
 

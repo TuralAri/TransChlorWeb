@@ -34,7 +34,8 @@ class Material
     #[ORM\Column]
     private ?float $hydrationRate = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'materials')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?AggregateType $aggregateType = null;
 
     #[ORM\Column]
@@ -95,7 +96,7 @@ class Material
     private ?float $eb = null;
 
     #[ORM\Column]
-    private ?float $toAdsortion = null;
+    private ?float $toAdsorption = null;
 
     #[ORM\Column(length: 255)]
     private ?string $CementType = null;
@@ -112,6 +113,10 @@ class Material
 
     #[ORM\Column]
     private ?bool $dclToValueBasedOnEc = null;
+
+    #[ORM\ManyToOne(inversedBy: 'materials')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -442,14 +447,14 @@ class Material
         return $this;
     }
 
-    public function getToAdsortion(): ?float
+    public function getToAdsorption(): ?float
     {
-        return $this->toAdsortion;
+        return $this->toAdsorption;
     }
 
-    public function setToAdsortion(float $toAdsortion): static
+    public function setToAdsorption(float $toAdsorption): static
     {
-        $this->toAdsortion = $toAdsortion;
+        $this->toAdsorption = $toAdsorption;
 
         return $this;
     }
@@ -510,6 +515,18 @@ class Material
     public function setDclToValueBasedOnEc(bool $dclToValueBasedOnEc): static
     {
         $this->dclToValueBasedOnEc = $dclToValueBasedOnEc;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

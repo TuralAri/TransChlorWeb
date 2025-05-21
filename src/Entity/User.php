@@ -42,9 +42,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: WeatherStation::class, mappedBy: 'uploadedBy')]
     private Collection $meteoFiles;
 
+    /**
+     * @var Collection<int, Material>
+     */
+    #[ORM\OneToMany(targetEntity: Material::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $materials;
+
     public function __construct()
     {
         $this->meteoFiles = new ArrayCollection();
+        $this->materials = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -145,6 +152,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($meteoFile->getUploadedBy() === $this) {
                 $meteoFile->setUploadedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Material>
+     */
+    public function getMaterials(): Collection
+    {
+        return $this->materials;
+    }
+
+    public function addMaterial(Material $material): static
+    {
+        if (!$this->materials->contains($material)) {
+            $this->materials->add($material);
+            $material->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMaterial(Material $material): static
+    {
+        if ($this->materials->removeElement($material)) {
+            // set the owning side to null (unless already changed)
+            if ($material->getUser() === $this) {
+                $material->setUser(null);
             }
         }
 

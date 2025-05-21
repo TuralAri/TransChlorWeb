@@ -21,6 +21,8 @@ class MaterialController extends AbstractController
         $form = $this->createForm(MaterialFormType::class, $material);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
+            $material = $form->getData();
+            dd($material);
 
         }
 
