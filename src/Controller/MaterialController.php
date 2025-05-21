@@ -51,12 +51,15 @@ class MaterialController extends AbstractController
         $form = $this->createForm(MaterialFormType::class, $material);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-            $material = $form->getData();
-            $material->setUser($this->getUser());
-            $entityManager->persist($material);
-            $entityManager->flush();
-            $this->addFlash("success", $translator->trans("materials.addSuccess"));
-            return $this->redirectToRoute("materials");
+            if ($form->get('submit')->isClicked()) {
+                $material = $form->getData();
+//                dd($material);
+                $material->setUser($this->getUser());
+                $entityManager->persist($material);
+                $entityManager->flush();
+                $this->addFlash("success", $translator->trans("materials.addSuccess"));
+                return $this->redirectToRoute("materials");
+            }
         }
 
         if($form->isSubmitted() && !$form->isValid()){
@@ -80,7 +83,6 @@ class MaterialController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $material = $form->getData();
-            $material->setUser($this->getUser());
             $entityManager->persist($material);
             $entityManager->flush();
             $this->addFlash("success", $translator->trans("materials.editSuccess"));

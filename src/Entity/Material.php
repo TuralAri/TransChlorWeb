@@ -125,6 +125,39 @@ class Material
     #[ORM\Column(type: Types::TEXT)]
     private ?string $comment = null;
 
+    public function __construct()
+    {
+        //Valeurs par défaut
+        $this->freshConcreteDensity = 2550;
+        $this->aggregateContent = 2550;
+        $this->cementContent = 0;
+        $this->saturatedWaterContent = 0;
+        $this->airContent = 0;
+        $this->ec = 0;
+        $this->concreteAge = 0;
+        $this->hydrationRate = 0;
+        $this->heatCapacity = 0.7;
+        $this->surfaceHeatTransfer = 1;
+        $this->cementDensity = 3150;
+        $this->aggregateDensity = 2550;
+        $this->d100Percent = 0;
+        $this->aoDiffusion = 0.05;
+        $this->hc = 0.75;
+        $this->ed = 0;
+        $this->toDiffusion = 293.16;
+        $this->surfaceTransferCoefficient = 1;
+        $this->aoCapillarity = 0.09;
+        $this->tc = 0.95;
+        $this->alphaDiffusion = 0.026;
+        $this->toChlorideDiffusion = 20;
+        $this->retardationCoefficient = 0.7;
+        $this->limitWaterContent = 0.8;
+        $this->adsorptionFa = 3.57;
+        $this->alphaOh = 0.56;
+        $this->eb = 0;
+        $this->toAdsorption = 293.16;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

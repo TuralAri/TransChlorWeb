@@ -11,6 +11,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,36 +26,31 @@ class MaterialFormType extends AbstractType
             ->add('comment', null, [
                 'label' => 'materialForm.labels.comment',
             ])
-            ->add('freshConcreteDensity', NumberType::class, [
-                'attr' => ['readonly' => true, 'value' => 2550],
+            ->add('freshConcreteDensity', TextType::class, [
+                'attr' => ['readonly' => true,],
                 'label' => 'materialForm.labels.freshConcreteDensity',
             ])
-            ->add('aggregateContent', NumberType::class, [
-                'attr' => ['readonly' => true, 'value' => 2550],
+            ->add('aggregateContent', TextType::class, [
+                'attr' => ['readonly' => true,],
                 'label' => 'materialForm.labels.aggregateContent',
             ])
-            ->add('cementContent', NumberType::class, [
-                'attr' => ['value' => 0],
+            ->add('cementContent', TextType::class, [
                 'label' => 'materialForm.labels.cementContent',
             ])
-            ->add('saturatedWaterContent', NumberType::class, [
-                'attr' => ['value' => 0, 'readonly' => true],
+            ->add('saturatedWaterContent', TextType::class, [
+                'attr' => ['readonly' => true],
                 'label' => 'materialForm.labels.saturatedWaterContent',
             ])
-            ->add('airContent', NumberType::class, [
-                'attr' => ['value' => 0],
+            ->add('airContent', TextType::class, [
                 'label' => 'materialForm.labels.airContent',
             ])
-            ->add('ec', NumberType::class, [
-                'attr' => ['value' => 0],
+            ->add('ec', TextType::class, [
                 'label' => 'materialForm.labels.ec',
             ])
-            ->add('concreteAge', NumberType::class, [
-                'attr' => ['value' => 0],
+            ->add('concreteAge', TextType::class, [
                 'label' => 'materialForm.labels.concreteAge',
             ])
-            ->add('hydrationRate', NumberType::class, [
-                'attr' => ['value' => 0],
+            ->add('hydrationRate', TextType::class, [
                 'label' => 'materialForm.labels.hydrationRate',
             ])
             ->add('cementType', ChoiceType::class, [
@@ -73,90 +69,70 @@ class MaterialFormType extends AbstractType
                 'multiple' => false,
                 'label' => 'materialForm.labels.permeability',
             ])
-            ->add('heatCapacity', NumberType::class, [
-                'attr' => ['value' => 0.7],
+            ->add('heatCapacity', TextType::class, [
                 'label' => 'materialForm.labels.heatCapacity',
             ])
-            ->add('surfaceHeatTransfer', NumberType::class, [
-                'attr' => ['value' => 1],
+            ->add('surfaceHeatTransfer', TextType::class, [
                 'label' => 'materialForm.labels.surfaceHeatTransfer',
             ])
-            ->add('cementDensity', NumberType::class, [
-                'attr' => ['value' => 3150],
+            ->add('cementDensity', TextType::class, [
                 'label' => 'materialForm.labels.cementDensity',
             ])
-            ->add('aggregateDensity', NumberType::class, [
-                'attr' => ['value' => 2550],
+            ->add('aggregateDensity', TextType::class, [
                 'label' => 'materialForm.labels.aggregateDensity',
             ])
-            ->add('d100Percent', NumberType::class, [
-                'attr' => ['value' => 0],
+            ->add('d100Percent', TextType::class, [
                 'label' => 'materialForm.labels.d100Percent',
             ])
-            ->add('aoDiffusion', NumberType::class, [
-                'attr' => ['value' => 0.05],
+            ->add('aoDiffusion', TextType::class, [
                 'label' => 'materialForm.labels.aoDiffusion',
             ])
-            ->add('hc', NumberType::class, [
-                'attr' => ['value' => 0.75],
+            ->add('hc', TextType::class, [
                 'label' => 'materialForm.labels.hc',
             ])
-            ->add('ed', NumberType::class, [
-                'attr' => ['value' => 0],
+            ->add('ed', TextType::class, [
                 'label' => 'materialForm.labels.ed',
             ])
-            ->add('toDiffusion', NumberType::class, [
-                'attr' => ['value' => 293.16],
+            ->add('toDiffusion', TextType::class, [
                 'label' => 'materialForm.labels.toDiffusion',
             ])
-            ->add('surfaceTransferCoefficient', NumberType::class, [
-                'attr' => ['value' => 1],
+            ->add('surfaceTransferCoefficient', TextType::class, [
                 'label' => 'materialForm.labels.surfaceTransferCoefficient',
             ])
-            ->add('aoCapillarity', NumberType::class, [
-                'attr' => ['value' => 0.09],
+            ->add('aoCapillarity', TextType::class, [
                 'label' => 'materialForm.labels.aoCapillarity',
             ])
-            ->add('tc', NumberType::class, [
-                'attr' => ['value' => 0.95],
+            ->add('tc', TextType::class, [
                 'label' => 'materialForm.labels.tc',
             ])
-            ->add('dclTo', null, [
+            ->add('dclTo', TextType::class, [
                 'label' => 'materialForm.labels.dclTo',
             ])
             ->add('dclToValueBasedOnEc', null, [
                 'label' => 'materialForm.labels.dclToValueBasedOnEc',
             ])
-            ->add('alphaDiffusion', NumberType::class, [
-                'attr' => ['value' => 0.026],
+            ->add('alphaDiffusion', TextType::class, [
                 'label' => 'materialForm.labels.alphaDiffusion',
             ])
-            ->add('toChlorideDiffusion', NumberType::class, [
-                'attr' => ['value' => 20],
+            ->add('toChlorideDiffusion', TextType::class, [
                 'label' => 'materialForm.labels.toChlorideDiffusion',
             ])
-            ->add('retardationCoefficient', NumberType::class, [
-                'attr' => ['value' => 0.7],
+            ->add('retardationCoefficient', TextType::class, [
                 'label' => 'materialForm.labels.retardationCoefficient',
             ])
-            ->add('limitWaterContent', NumberType::class, [
-                'attr' => ['value' => 0.8],
+            ->add('limitWaterContent', TextType::class, [
                 'label' => 'materialForm.labels.limitWaterContent',
             ])
-            ->add('adsorptionFa', NumberType::class, [
-                'attr' => ['value' => 3.57],
+            ->add('adsorptionFa', TextType::class, [
                 'label' => 'materialForm.labels.adsorptionFa',
             ])
-            ->add('alphaOh', NumberType::class, [
-                'attr' => ['value' => 0.56],
+            ->add('alphaOh', TextType::class, [
                 'label' => 'materialForm.labels.alphaOh',
             ])
-            ->add('eb', NumberType::class, [
-                'attr' => ['value' => 0],
+            ->add('eb', TextType::class, [
                 'label' => 'materialForm.labels.eb',
             ])
-            ->add('toAdsorption', NumberType::class, [
-                'attr' => ['value' => 293.16],
+            ->add('toAdsorption', TextType::class, [
                 'label' => 'materialForm.labels.toAdsorption',
             ])
             ->add('aggregateType', EntityType::class, [
