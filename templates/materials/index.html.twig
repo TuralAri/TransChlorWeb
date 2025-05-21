@@ -53,10 +53,13 @@
                                        title="{{ 'materials.edit' | trans }}">
                                         <i class="fa-solid fa-edit"></i>
                                     </a>
-                                    <a href="" class="inline-block px-4 py-2 bg-red-500 hover:bg-red-800 rounded text-white"
-                                       title="{{ 'materials.delete' | trans }}">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </a>
+                                    <form method="post" action="{{ path('delete_material', {'id': material.id}) }}" class="inline-block" onsubmit="return confirm('{{ 'materials.confirmDelete' | trans }}');">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ material.id) }}">
+                                        <button type="submit" class="px-4 py-2 bg-red-500 hover:bg-red-800 rounded text-white" title="{{ 'materials.delete' | trans }}">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+
                                 </td>
                             </tr>
                         {% else %}

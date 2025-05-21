@@ -180,6 +180,9 @@ materials:
   addError: "Erreur lors de l'ajout du matériau"
   editSuccess: "Votre matériau a bien été modifié"
   editError: "Votre matériau n'a pas pu être modifié"
+  deleteSuccess: 'Le matériau a bien été supprimé'
+  deleteError: "Le matériau n'a pas pu être supprimé"
+  confirmDelete: "Êtes vous sur de vouloir supprimer ce matériau ? Cette action est irréversible."
 
 materialForm:
   pageTitle: "Matériaux"

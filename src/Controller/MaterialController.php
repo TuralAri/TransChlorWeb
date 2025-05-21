@@ -87,6 +87,22 @@ class MaterialController extends AbstractController
         ]);
     }
 
+    #[Route('/materials/{id}/delete', name: 'delete_material', methods: ['POST'])]
+    public function delete(Request $request, Material $material, EntityManagerInterface $entityManager, TranslatorInterface $translator): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $material->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($material);
+            $entityManager->flush();
+
+            $this->addFlash('success', $translator->trans('materials.deleteSuccess'));
+        } else {
+            $this->addFlash('error', $translator->trans('materials.deleteError'));
+        }
+
+        return $this->redirectToRoute('materials');
+    }
+
+
     //Route that permits asking for the heatCapacity and aggregateDensity from a an aggregateType
     #[Route('/aggregate-type/{id}', name: 'get_aggregate_type', methods: ['GET'])]
     public function getAggregateType(AggregateType $aggregateType): JsonResponse
