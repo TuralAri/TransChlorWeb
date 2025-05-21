@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Inputs{% endblock %}
+{% block title %}{{ 'inputForm.addPageTitle' | trans }}{% endblock %}
 
 {% block body %}
     <main class="flex-1">
@@ -20,7 +20,7 @@
 
             <div class="flex justify-between items-center">
 
-                <h1 class="text-2xl font-bold mb-6">{{'inputs.addPageTitle' | trans}}</h1>
+                <h1 class="text-2xl font-bold mb-6">{{'inputForm.addPageTitle' | trans}}</h1>
                 <a href="{{ path('inputs')}}"
                    class="inline-block mb-4 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
                     <i class="fa-solid fa-arrow-left mr-1"></i> {{'goBack' | trans}}

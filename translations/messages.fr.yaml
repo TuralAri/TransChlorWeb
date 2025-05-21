@@ -247,3 +247,11 @@ materialForm:
     toAdsorption: "To"
     dclToValueBasedOnEc: "Valeur en fonction de E/C"
   editPageTitle: 'Edition de matériau'
+
+input:
+  title: "Simulations"
+  pageTitle: "Vos fichiers de simulation"
+  addBtn: "Créer un fichier de simulation"
+
+inputForm:
+  addPageTitle: "Créer un fichier de simulation"
