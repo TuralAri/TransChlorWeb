@@ -26,6 +26,8 @@ class InputController extends AbstractController
         $form = $this->createForm(InputFormType::class, $input);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $input = $form->getData();
+            dd($input);
         }
 
         return $this->render('inputs/add.html.twig', [

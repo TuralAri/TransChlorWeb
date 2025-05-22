@@ -8,6 +8,7 @@ use App\Entity\Material;
 use App\Entity\ProbabilisticLawParams;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,7 +29,15 @@ class InputFormType extends AbstractType
             ->add('computingTimeStep')
             ->add('wallThickness')
             ->add('elementsNumber')
-            ->add('meshType')
+            ->add('meshType', ChoiceType::class,[
+                'choices' => [
+                    '1: écart constant' => '1',
+                    '2: écart proportionnel' =>'2',
+                    '3: écart exponentiel'=>'3',
+                    '4: Plusieurs écarts constants'=>'4',
+                    '5: Plusieurs écarts constants, non symétriques' =>'5',
+                ]
+            ])
             ->add('resultsDisplayTime')
             ->add('capillarityTreatment')
             ->add('leftEdgeCO2')
