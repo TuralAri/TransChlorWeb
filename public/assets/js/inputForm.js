@@ -1,9 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
     const tabs = [
-        { buttonId: "materials", sectionId: "materialSection" },
+        { buttonId: "inputInfo", sectionId: "inputInfoSection"},
         { buttonId: "programSettings", sectionId: "programSettingsSection" },
-        { buttonId: "waterTransport", sectionId: "waterTransportSection" },
-        { buttonId: "ph", sectionId: "phSection" },
+        { buttonId: "phAndWaterTransport", sectionId: "phAndWaterTransportSection" },
         { buttonId: "initialConditions", sectionId: "initialConditionsSection" },
         { buttonId: "probabilistic", sectionId: "probabilisticSection" }
     ];
