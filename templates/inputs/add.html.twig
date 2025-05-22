@@ -26,6 +26,70 @@
                     <i class="fa-solid fa-arrow-left mr-1"></i> {{'goBack' | trans}}
                 </a>
             </div>
+
+            <div class="flex flex-wrap md:flex-row sm:flex-row gap-2">
+                <button id="materials" type="button" class="inline-block px-4 py-2 bg-gray-400 hover:bg-gray-400 active">Matériaux</button>
+                <button id="programSettings" type="button" class="inline-block px-4 py-2 bg-gray-300 hover:bg-gray-400">Paramètres du programme</button>
+                <button id="waterTransport" type="button" class="inline-block px-4 py-2 bg-gray-300 hover:bg-gray-400">Transport Hydrique</button>
+                <button id="ph" type="button" class="inline-block px-4 py-2 bg-gray-300 hover:bg-gray-400">Carbonatation</button>
+                <button id="initialConditions" type="button" class="inline-block px-4 py-2 bg-gray-300 hover:bg-gray-400">Conditions initiales</button>
+                <button id="probabilistic" type="button" class="inline-block px-4 py-2 bg-gray-300 hover:bg-gray-400">Analyse Probabiliste</button>
+            </div>
+            <section id="materialSection" class="tab-section mt-4 bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold">Matériaux</h2>
+                </div>
+                <div class="gap-2 items-center w-fit justify-left">
+
+                </div>
+            </section>
+            <section id="programSettingsSection" class="tab-section mt-4 hidden bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold">Paramètres du programme</h2>
+                </div>
+                <div class="gap-2 items-center w-fit justify-left">
+
+                </div>
+            </section>
+            <section id="waterTransportSection" class="tab-section mt-4 hidden bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold">Transport Hydrique</h2>
+                </div>
+                <div class="gap-2 items-center w-fit justify-left">
+
+                </div>
+            </section>
+            <section id="phSection" class="tab-section mt-4 hidden bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold">Carbonatation</h2>
+                </div>
+                <div class="gap-2 items-center w-fit justify-left">
+
+                </div>
+            </section>
+            <section id="initialConditionsSection" class="tab-section mt-4 hidden bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold">Conditions Initiales</h2>
+                </div>
+                <div class="gap-2 items-center w-fit justify-left">
+
+                </div>
+            </section>
+            <section id="probabilisticSection" class="tab-section mt-4 hidden bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold">Analyse Probabilistique</h2>
+                </div>
+                <div class="gap-2 items-center w-fit justify-left">
+
+                </div>
+            </section>
+
+            {{ form_start(form) }}
+            {{ form(form) }}
+            {{ form_end(form) }}
         </div>
     </main>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/js/inputForm.js') }}"></script>
 {% endblock %}
