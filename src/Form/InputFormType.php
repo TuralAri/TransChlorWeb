@@ -55,21 +55,21 @@ class InputFormType extends AbstractType
                 'choice_label' => 'id',
                 'multiple' => true,
             ])
-            ->add('vaporWaterTransport', EntityType::class, [
-                'class' => ProbabilisticLawParams::class,
-                'choice_label' => 'id',
+            ->add('vaporWaterTransport', ProbabilisticLawFormType::class, [
+//                'class' => ProbabilisticLawParams::class,
+//                'choice_label' => 'id',
             ])
-            ->add('liquidWaterTransportCapillarity', EntityType::class, [
-                'class' => ProbabilisticLawParams::class,
-                'choice_label' => 'id',
+            ->add('liquidWaterTransportCapillarity', ProbabilisticLawFormType::class, [
+//                'class' => ProbabilisticLawParams::class,
+//                'choice_label' => 'id',
             ])
-            ->add('chlorideIonicTransport', EntityType::class, [
-                'class' => ProbabilisticLawParams::class,
-                'choice_label' => 'id',
+            ->add('chlorideIonicTransport', ProbabilisticLawFormType::class, [
+//                'class' => ProbabilisticLawParams::class,
+//                'choice_label' => 'id',
             ])
-            ->add('carbonation', EntityType::class, [
-                'class' => ProbabilisticLawParams::class,
-                'choice_label' => 'id',
+            ->add('carbonation', ProbabilisticLawFormType::class, [
+//                'class' => ProbabilisticLawParams::class,
+//                'choice_label' => 'id',
             ])
         ;
     }
