@@ -14,14 +14,46 @@ class ProbabilisticLawFormType extends AbstractType
         $commonAttr = ['class' => 'ml-2 p-2 border rounded-lg text-left'];
 
         $builder
-            ->add('meanValue', null, ['attr' => $commonAttr])
-            ->add('standardDeviation', null, ['attr' => $commonAttr])
-            ->add('lambda', null, ['attr' => $commonAttr])
-            ->add('ksi', null, ['attr' => $commonAttr])
-            ->add('pMinus', null, ['attr' => $commonAttr])
-            ->add('pPlus', null, ['attr' => $commonAttr])
-            ->add('x1', null, ['attr' => $commonAttr])
-            ->add('x2', null, ['attr' => $commonAttr])
+            ->add('meanValue', null, [
+                'attr' => $commonAttr,
+                'required' => false,
+                'empty_data' => null,
+            ])
+            ->add('standardDeviation', null, [
+                'attr' => $commonAttr,
+                'required' => false,
+                'empty_data' => null,
+            ])
+            ->add('lambda', null, [
+                'attr' => $commonAttr,
+                'required' => false,
+                'empty_data' => null,
+            ])
+            ->add('ksi', null, [
+                'attr' => $commonAttr,
+                'required' => false,
+                'empty_data' => null,
+            ])
+            ->add('pMinus', null, [
+                'attr' => $commonAttr,
+                'required' => false,
+                'empty_data' => null,
+            ])
+            ->add('pPlus', null, [
+                'attr' => $commonAttr,
+                'required' => false,
+                'empty_data' => null,
+            ])
+            ->add('x1', null, [
+                'attr' => $commonAttr,
+                'required' => false,
+                'empty_data' => null,
+            ])
+            ->add('x2', null, [
+                'attr' => $commonAttr,
+                'required' => false,
+                'empty_data' => null,
+            ])
         ;
     }
 

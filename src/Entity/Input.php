@@ -81,11 +81,13 @@ class Input
     #[ORM\Column]
     private ?float $rightEdgeCO2 = null;
 
-    #[ORM\Column]
-    private ?int $leftEdgeCO2Choice = null;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Location $leftEdgeCO2Choice = null;
 
-    #[ORM\Column]
-    private ?int $rightEdgeCO2Choice = null;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Location $rightEdgeCO2Choice = null;
 
     #[ORM\Column]
     private array $thermalTransport = [];
@@ -141,9 +143,6 @@ class Input
 
         $this->leftEdgeCO2 = 0.036;
         $this->rightEdgeCO2 = 0.036;
-
-        $this->leftEdgeCO2Choice = 1;// choice 1 temp
-        $this->rightEdgeCO2Choice = 1;//choice 1 temp
     }
 
     public function getId(): ?int
@@ -403,24 +402,24 @@ class Input
         return $this;
     }
 
-    public function getLeftEdgeCO2Choice(): ?int
+    public function getLeftEdgeCO2Choice(): ?Location
     {
         return $this->leftEdgeCO2Choice;
     }
 
-    public function setLeftEdgeCO2Choice(int $leftEdgeCO2Choice): static
+    public function setLeftEdgeCO2Choice(Location $leftEdgeCO2Choice): static
     {
         $this->leftEdgeCO2Choice = $leftEdgeCO2Choice;
 
         return $this;
     }
 
-    public function getRightEdgeCO2Choice(): ?int
+    public function getRightEdgeCO2Choice(): ?Location
     {
         return $this->rightEdgeCO2Choice;
     }
 
-    public function setRightEdgeCO2Choice(int $rightEdgeCO2Choice): static
+    public function setRightEdgeCO2Choice(Location $rightEdgeCO2Choice): static
     {
         $this->rightEdgeCO2Choice = $rightEdgeCO2Choice;
 
@@ -463,16 +462,14 @@ class Input
         return $this;
     }
 
-    public function isWaterVaporTransportActivated(): ?bool
+    public function isWaterVaporTransportActivated(): bool
     {
         return $this->isWaterVaporTransportActivated;
     }
 
-    public function setWaterVaporTransportActivated(bool $isWaterVaporTransportActivated): static
+    public function setIsWaterVaporTransportActivated(bool $value): void
     {
-        $this->isWaterVaporTransportActivated = $isWaterVaporTransportActivated;
-
-        return $this;
+        $this->isWaterVaporTransportActivated = $value;
     }
 
     public function isCapillarityTransportActivated(): ?bool
@@ -480,7 +477,7 @@ class Input
         return $this->isCapillarityTransportActivated;
     }
 
-    public function setCapillarityTransportActivated(bool $isCapillarityTransportActivated): static
+    public function setIsCapillarityTransportActivated(bool $isCapillarityTransportActivated): static
     {
         $this->isCapillarityTransportActivated = $isCapillarityTransportActivated;
 
@@ -492,7 +489,7 @@ class Input
         return $this->isIonicTransportActivated;
     }
 
-    public function setIonicTransportActivated(bool $isIonicTransportActivated): static
+    public function setIsIonicTransportActivated(bool $isIonicTransportActivated): static
     {
         $this->isIonicTransportActivated = $isIonicTransportActivated;
 
@@ -504,7 +501,7 @@ class Input
         return $this->isCarbonatationActivated;
     }
 
-    public function setCarbonatationActivated(bool $isCarbonatationActivated): static
+    public function setIsCarbonatationActivated(bool $isCarbonatationActivated): static
     {
         $this->isCarbonatationActivated = $isCarbonatationActivated;
 

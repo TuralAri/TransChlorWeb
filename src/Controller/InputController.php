@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Input;
 use App\Form\InputFormType;
+use App\Form\InputFormType2Type;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
