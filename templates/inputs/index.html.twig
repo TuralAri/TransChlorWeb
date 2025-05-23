@@ -51,7 +51,7 @@
                                        title="{{ 'input.edit' | trans }}">
                                         <i class="fa-solid fa-edit"></i>
                                     </a>
-                                    <form method="post" action="" class="inline-block" onsubmit="return confirm('{{ 'materials.confirmDelete' | trans }}');">
+                                    <form method="post" action="" class="inline-block" onsubmit="return confirm('{{ 'input.confirmDelete' | trans }}');">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ input.id) }}">
                                         <button type="submit" class="px-4 py-2 bg-red-500 hover:bg-red-800 rounded text-white" title="{{ 'input.delete' | trans }}">
                                             <i class="fa-solid fa-trash"></i>

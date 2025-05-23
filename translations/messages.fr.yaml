@@ -261,3 +261,4 @@ input:
 
 inputForm:
   addPageTitle: "Créer un fichier de simulation"
+  editPageTitle: "Modifier un fichier de simulation"

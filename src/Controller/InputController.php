@@ -58,4 +58,26 @@ class InputController extends AbstractController
         ]);
     }
 
+    #[Route('/inputs/edit/{id}', name: 'edit_input')]
+    public function edit(Input $input, Request $request, EntityManagerInterface $entityManager) : Response
+    {
+        $user = $this->getUser();
+        if(!$user || $input->getUser()->getId() != $user->getId()){
+            return $this->redirectToRoute('index');
+        }
+
+        $form = $this->createForm(InputFormType::class, $input);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $input = $form->getData();
+            $entityManager->persist($input);
+            $entityManager->flush();
+            return $this->redirectToRoute('inputs');
+        }
+
+        return $this->render('inputs/add.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
 }

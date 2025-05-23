@@ -1,0 +1,218 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'inputForm.editPageTitle' | trans }}{% endblock %}
+
+{% block body %}
+    <main class="flex-1 min-h-screen">
+        <div class=" mx-[10%] px-4 py-8 ">
+
+            {% for message in app.flashes('success') %}
+                <div class="bg-green-100 p-4 mb-4 rounded-lg">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('error') %}
+                <div class="bg-red-100 p-4 mb-4 rounded-lg">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            <div class="flex justify-between items-center">
+
+                <h1 class="text-2xl font-bold mb-6">{{'inputForm.addPageTitle' | trans}}</h1>
+                <a href="{{ path('inputs')}}"
+                   class="inline-block mb-4 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> {{'goBack' | trans}}
+                </a>
+            </div>
+            {{ form_start(form) }}
+            <div class="flex flex-wrap md:flex-row sm:flex-row gap-2">
+                <button id="inputInfo" type="button" class="inline-block px-4 py-2 bg-gray-400 hover:bg-gray-400 active">Informations</button>
+                <button id="programSettings" type="button" class="inline-block px-4 py-2 bg-gray-300 hover:bg-gray-400">Paramètres du programme</button>
+                <button id="phAndWaterTransport" type="button" class="inline-block px-4 py-2 bg-gray-300 hover:bg-gray-400">Carbonatation et Transport Hydrique</button>
+                <button id="initialConditions" type="button" class="inline-block px-4 py-2 bg-gray-300 hover:bg-gray-400">Conditions initiales</button>
+                <button id="probabilistic" type="button" class="inline-block px-4 py-2 bg-gray-300 hover:bg-gray-400">Analyse Probabiliste</button>
+            </div>
+            <section id="inputInfoSection" class="tab-section mt-4 bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold">Informations</h2>
+                </div>
+                <div class="gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.name, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                </div>
+                <div class="w-full">
+                    {{ form_row(form.comment, {'attr': {'class': 'w-full p-2 border rounded-lg', 'rows': '5'}, 'row_attr': {'class': 'w-full'}}) }}
+                </div>
+            </section>
+            <section id="programSettingsSection" class="tab-section mt-4 bg-white p-6 rounded-lg border-2 space-y-4 border-black hidden">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold">Paramètres du programme</h2>
+                </div>
+                <div class="flex flex-wrap">
+                    <div class="space-y-4">
+                        <div class="gap-2 items-center w-fit justify-left">
+                            {{ form_row(form.maxComputingTime, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        </div>
+                        <div class="gap-2 items-center w-fit justify-left">
+                            {{ form_row(form.computingTimeStep, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        </div>
+                        <div class="gap-2 items-center w-fit justify-left">
+                            {{ form_row(form.saveTimeTemperature, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        </div>
+                        <div class="gap-2 items-center w-fit justify-left">
+                            {{ form_row(form.saveTimeRelativeHumidity, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        </div>
+                        <div class="gap-2 items-center w-fit justify-left">
+                            {{ form_row(form.saveTimeWaterContent, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        </div>
+                        <div class="gap-2 items-center w-fit justify-left">
+                            {{ form_row(form.saveTimePh, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        </div>
+                        <div class="gap-2 items-center w-fit justify-left">
+                            {{ form_row(form.saveTimeFreeChlorures, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        </div>
+                        <div class="gap-2 items-center w-fit justify-left">
+                            {{ form_row(form.saveTimeTotalChlorures, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        </div>
+                        <div class="gap-2 items-center w-fit justify-left">
+                            {{ form_row(form.resultsDisplayTime, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="gap-2 items-center w-fit justify-left">
+                            {{ form_row(form.wallThickness, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        </div>
+                        <div class="gap-2 items-center w-fit justify-left">
+                            {{ form_row(form.elementsNumber, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        </div>
+                        <div class="gap-2 items-center w-fit justify-left">
+                            {{ form_row(form.meshType, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        </div>
+                        <div class="gap-2 items-center w-fit justify-left">
+                            {{ form_row(form.exposureFile1, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        </div>
+                        <div class="gap-2 items-center w-fit justify-left">
+                            {{ form_row(form.exposureFile2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        </div>
+                        <div class="gap-2 items-center w-fit justify-left">
+                            {{ form_row(form.material, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="phAndWaterTransportSection" class="tab-section mt-4 hidden bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold">Carbonatation et Transport Hydrique</h2>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <div class="space-y-4">
+                        <div class="gap-2 items-center w-fit justify-left">
+                            {{ form_row(form.capillarityTreatment, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="gap-2 items-center w-fit justify-left flex flex-wrap">
+                            {{ form_row(form.leftEdgeCO2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                            {{ form_row(form.leftEdgeCO2Choice, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        </div>
+                        <div class="gap-2 items-center w-fit justify-left flex flex-wrap">
+                            {{ form_row(form.rightEdgeCO2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                            {{ form_row(form.rightEdgeCO2Choice, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="initialConditionsSection" class="tab-section mt-4 hidden bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold">Conditions Initiales</h2>
+                </div>
+                <div class="gap-2 items-center w-fit justify-left">
+                    {{ form_row(form.thermalTransport, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    {{ form_row(form.waterTransport, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    {{ form_row(form.IonicTransport, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    <div class="overflow-x-auto">
+                        <table id="editableTable" class="min-w-full table-auto border border-gray-300">
+                            <thead class="bg-gray-100">
+                            <tr>
+                                <th class="border border-gray-300 px-4 py-2">X</th>
+                                <th class="border border-gray-300 px-4 py-2">T</th>
+                                <th class="border border-gray-300 px-4 py-2">H</th>
+                                <th class="border border-gray-300 px-4 py-2">I</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td contenteditable="true" class="border border-gray-300 px-4 py-2 focus:outline-blue-500">0</td>
+                                <td contenteditable="true" class="border border-gray-300 px-4 py-2 focus:outline-blue-500">20</td>
+                                <td contenteditable="true" class="border border-gray-300 px-4 py-2 focus:outline-blue-500">100</td>
+                                <td contenteditable="true" class="border border-gray-300 px-4 py-2 focus:outline-blue-500">0</td>
+                            </tr>
+                            <tr>
+                                <td contenteditable="true" class="border border-gray-300 px-4 py-2 focus:outline-blue-500">100</td>
+                                <td contenteditable="true" class="border border-gray-300 px-4 py-2 focus:outline-blue-500">20</td>
+                                <td contenteditable="true" class="border border-gray-300 px-4 py-2 focus:outline-blue-500">100</td>
+                                <td contenteditable="true" class="border border-gray-300 px-4 py-2 focus:outline-blue-500">0</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="button" onclick="ajouterLigne()" id="addLineBtn" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Ajouter une ligne</button>
+                </div>
+            </section>
+            <section id="probabilisticSection" class="tab-section mt-4 hidden bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold">Analyse Probabilistique</h2>
+                </div>
+                <div class="gap-2 w-fit justify-left flex flex-wrap justify-around">
+                    <section class="tab-section mt-4 bg-white p-6 rounded-lg border-2 space-y-4 border-black lg:w-2/5">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-xl font-semibold">Transport Hydrique de vapeur d'eau</h3>
+                        </div>
+                        <div id="vaporWaterTransportDiv" class="hidden gap-2 items-center w-fit justify-left">
+                            {{ form_row(form.vaporWaterTransport, {'attr': {'class': 'p-2 rounded-lg space-y-4'}}) }}
+                        </div>
+                        {{ form_row(form.isWaterVaporTransportActivated, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </section>
+
+                    <section class="tab-section mt-4 bg-white p-6 rounded-lg border-2 space-y-4 border-black lg:w-2/5">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-xl font-semibold">Transport hydrique d'eau liquide par capillarité</h3>
+                        </div>
+                        <div id="liquidWaterTransportDiv" class="hidden gap-2 items-center w-fit justify-left">
+                            {{ form_row(form.liquidWaterTransportCapillarity, {'attr': {'class': 'p-2 rounded-lg space-y-4'}}) }}
+                        </div>
+                        {{ form_row(form.isCapillarityTransportActivated, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </section>
+
+                    <section class="tab-section mt-4 bg-white p-6 rounded-lg border-2 space-y-4 border-black lg:w-2/5">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-xl font-semibold">Transport ionique des chlorures</h3>
+                        </div>
+                        <div id="chlorideIonicTransportDiv" class="hidden gap-2 items-center w-fit justify-left">
+                            {{ form_row(form.chlorideIonicTransport, {'attr': {'class': 'p-2 rounded-lg space-y-4'}}) }}
+                        </div>
+                        {{ form_row(form.isIonicTransportActivated, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </section>
+
+                    <section class="tab-section mt-4 bg-white p-6 rounded-lg border-2 space-y-4 border-black lg:w-2/5">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-xl font-semibold">Carbonatation</h3>
+                        </div>
+                        <div id="carbonationDiv" class="hidden gap-2 items-center w-fit justify-left">
+                            {{ form_row(form.carbonation, {'attr': {'class': 'p-2 rounded-lg space-y-4'}}) }}
+                        </div>
+                        {{ form_row(form.isCarbonatationActivated, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    </section>
+                </div>
+            </section>
+
+            {{ form_row(form.submit, {'attr' : {'class': 'px-4 py-2 mt-4 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'}}) }}
+
+            {{ form_end(form) }}
+        </div>
+    </main>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/js/inputForm.js') }}"></script>
+{% endblock %}
