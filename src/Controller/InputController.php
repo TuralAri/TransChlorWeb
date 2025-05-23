@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class InputController extends AbstractController
 {
@@ -58,7 +59,7 @@ class InputController extends AbstractController
         ]);
     }
 
-    #[Route('/inputs/edit/{id}', name: 'edit_input')]
+    #[Route('/inputs/{id}/edit', name: 'edit_input')]
     public function edit(Input $input, Request $request, EntityManagerInterface $entityManager) : Response
     {
         $user = $this->getUser();
@@ -78,6 +79,26 @@ class InputController extends AbstractController
         return $this->render('inputs/add.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    #[Route('/inputs/{id}/delete', name: 'delete_input', methods: ['POST'])]
+    public function delete(Request $request, Input $input, EntityManagerInterface $entityManager, TranslatorInterface $translator): Response
+    {
+        $user = $this->getUser();
+        if(!$user){
+            return $this->redirectToRoute('index');
+        }
+
+        if ($this->isCsrfTokenValid('delete' . $input->getId(), $request->request->get('_token')) && $input->getUser() === $user) {
+            $entityManager->remove($input);
+            $entityManager->flush();
+
+            $this->addFlash('success', $translator->trans('input.deleteSuccess'));
+        } else {
+            $this->addFlash('error', $translator->trans('input.deleteError'));
+        }
+
+        return $this->redirectToRoute('inputs');
     }
 
 }

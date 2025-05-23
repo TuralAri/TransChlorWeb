@@ -47,11 +47,11 @@
                                     {{ input.comment ?? 'input.noComment' | trans }}
                                 </td>
                                 <td class="px-6 py-4 text-sm">
-                                    <a href="" class="inline-block px-4 py-2 bg-yellow-500 hover:bg-yellow-800 rounded text-white"
+                                    <a href="{{ path('edit_input', {'id':input.id}) }}" class="inline-block px-4 py-2 bg-yellow-500 hover:bg-yellow-800 rounded text-white"
                                        title="{{ 'input.edit' | trans }}">
                                         <i class="fa-solid fa-edit"></i>
                                     </a>
-                                    <form method="post" action="" class="inline-block" onsubmit="return confirm('{{ 'input.confirmDelete' | trans }}');">
+                                    <form method="post" action="{{ path('delete_input', {'id': input.id}) }}" class="inline-block" onsubmit="return confirm('{{ 'input.confirmDelete' | trans }}');">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ input.id) }}">
                                         <button type="submit" class="px-4 py-2 bg-red-500 hover:bg-red-800 rounded text-white" title="{{ 'input.delete' | trans }}">
                                             <i class="fa-solid fa-trash"></i>

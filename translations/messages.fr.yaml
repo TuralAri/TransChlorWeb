@@ -258,6 +258,8 @@ input:
   noComment: "Pas de commentaire"
   name: "Nom du fichier"
   confirmDelete: "Êtes vous sur de vouloir supprimer ce fichier ? Cette action est irréversible."
+  deleteError: "Le fichier n'a pas pu être supprimé"
+  deleteSuccess: "Le fichier a bien été supprimé"
 
 inputForm:
   addPageTitle: "Créer un fichier de simulation"
