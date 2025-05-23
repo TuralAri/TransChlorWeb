@@ -39,7 +39,12 @@ class InputFormType extends AbstractType
                 ]
             ])
             ->add('resultsDisplayTime')
-            ->add('capillarityTreatment')
+            ->add('capillarityTreatment', ChoiceType::class,[
+                'choices' => [
+                    'Usual capillary succion' => '1',
+                    'Hydrophobic Treatment' => '2'
+                ]
+            ])
             ->add('leftEdgeCO2')
             ->add('rightEdgeCO2')
             ->add('leftEdgeCO2Choice')
