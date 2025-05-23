@@ -123,6 +123,27 @@ class Input
     public function __construct()
     {
         $this->material = new ArrayCollection();
+        $this->maxComputingTime = 73000;
+        $this->computingTimeStep = 3600;
+
+        $this->saveTimeTemperature = 8760;
+        $this->saveTimeRelativeHumidity = 8760;
+        $this->saveTimeWaterContent = 8760;
+        $this->saveTimePh = 8760;
+        $this->saveTimeFreeChlorures = 8760;
+        $this->saveTimeTotalChlorures = 8760;
+
+        $this->wallThickness = 100;
+        $this->elementsNumber = 100;
+        $this->meshType = 1;
+
+        $this->resultsDisplayTime = 720;
+
+        $this->leftEdgeCO2 = 0.036;
+        $this->rightEdgeCO2 = 0.036;
+
+        $this->leftEdgeCO2Choice = 1;// choice 1 temp
+        $this->rightEdgeCO2Choice = 1;//choice 1 temp
     }
 
     public function getId(): ?int
