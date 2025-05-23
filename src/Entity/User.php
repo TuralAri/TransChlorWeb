@@ -48,10 +48,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Material::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $materials;
 
+    /**
+     * @var Collection<int, Input>
+     */
+    #[ORM\OneToMany(targetEntity: Input::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $inputs;
+
     public function __construct()
     {
         $this->meteoFiles = new ArrayCollection();
         $this->materials = new ArrayCollection();
+        $this->inputs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -182,6 +189,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($material->getUser() === $this) {
                 $material->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Input>
+     */
+    public function getInputs(): Collection
+    {
+        return $this->inputs;
+    }
+
+    public function addInput(Input $input): static
+    {
+        if (!$this->inputs->contains($input)) {
+            $this->inputs->add($input);
+            $input->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInput(Input $input): static
+    {
+        if ($this->inputs->removeElement($input)) {
+            // set the owning side to null (unless already changed)
+            if ($input->getUser() === $this) {
+                $input->setUser(null);
             }
         }
 

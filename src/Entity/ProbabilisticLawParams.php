@@ -13,28 +13,28 @@ class ProbabilisticLawParams
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?float $meanValue = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?float $standardDeviation = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?float $lambda = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?float $ksi = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?float $pMinus = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?float $pPlus = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?float $x1 = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?float $x2 = null;
 
     public function getId(): ?int

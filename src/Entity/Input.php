@@ -122,6 +122,10 @@ class Input
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?ProbabilisticLawParams $carbonation = null;
 
+    #[ORM\ManyToOne(inversedBy: 'inputs')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->material = new ArrayCollection();
@@ -552,6 +556,18 @@ class Input
     public function setCarbonation(?ProbabilisticLawParams $carbonation): static
     {
         $this->carbonation = $carbonation;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

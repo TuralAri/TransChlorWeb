@@ -252,6 +252,12 @@ input:
   title: "Simulations"
   pageTitle: "Vos fichiers de simulation"
   addBtn: "Créer un fichier de simulation"
+  delete: "Supprimer le fichier de simulation"
+  edit: "Modifier le fichier de simulation"
+  comment: "Commentaire"
+  noComment: "Pas de commentaire"
+  name: "Nom du fichier"
+  confirmDelete: "Êtes vous sur de vouloir supprimer ce fichier ? Cette action est irréversible."
 
 inputForm:
   addPageTitle: "Créer un fichier de simulation"

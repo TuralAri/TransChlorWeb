@@ -5,6 +5,7 @@ namespace App\Form;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
+//This class permits to convert the string json array to a real array that can be saved in the entity
 class JsonToArrayTransformer implements DataTransformerInterface
 {
     public function transform($value): mixed
