@@ -134,6 +134,7 @@ class InputController extends AbstractController
         fwrite($handle, $input->getWallThickness() . "\n"); //Length
         fwrite($handle, $input->getElementsNumber() . "\n"); //Ne
 
+        fwrite($handle, $input->getMeshType() . "\n"); //ChoixRep
         switch ($input->getMeshType()) {
             case 1:
                 break; //Nothing
@@ -199,7 +200,25 @@ class InputController extends AbstractController
             fwrite($handle, $material->getConcreteAge() . "\n");//age du béton
             fwrite($handle, $material->getHydrationRate() . "\n");//taux d'hydratation
             //
+            switch ($material->getCementType()){
+                case 1:
+                    fwrite($handle, "0.9" . "\n");
+                    fwrite($handle, "1.1" . "\n");
+                    break;
+                case 2:
+                    fwrite($handle, "1.0" . "\n");
+                    fwrite($handle, "1.0" . "\n");
+                    break;
+                case 3:
+                    fwrite($handle, "0.85" . "\n");
+                    fwrite($handle, "1.15" . "\n");
+                    break;
+                case 4:
+                    fwrite($handle, "0.6" . "\n");
+                    fwrite($handle, "1.5" . "\n");
+                    break;
 
+            }
             //
             fwrite($handle, $material->getEd() . "\n");//énergie d'activation pour la vapeur d'eau (température)
             fwrite($handle, $material->getToDiffusion() . "\n");//température de référence pour l'énergie d'activation précédente
@@ -209,11 +228,13 @@ class InputController extends AbstractController
             fwrite($handle, $material->getCementDensity() . "\n");//masse volumique du ciment
             //
 
-
             //
             fwrite($handle, $material->getEc() . "\n");//eau sur ciment pour le calcul Dcap // CORRESPOND AU E/C VIRTUEL
-
-
+            //
+            $this->writeInitialCondition($input->getThermalTransport(), $handle);
+            $this->writeInitialCondition($input->getWaterTransport(), $handle);
+            $this->writeInitialCondition($input->getIonicTransport(), $handle);
+            //
         }
 
         fclose($handle);
@@ -225,6 +246,14 @@ class InputController extends AbstractController
         );
 
         return $response;
+    }
+
+    public function writeInitialCondition(Array $data, $handle) : void {
+        fwrite($handle,count($data) . "\n");
+        foreach($data as $val){
+            fwrite($handle, $val['x'] . "\n");
+            fwrite($handle, $val['value'] . "\n");
+        }
     }
 
 }

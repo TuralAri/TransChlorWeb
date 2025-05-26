@@ -68,7 +68,7 @@ class InputFormType extends AbstractType
             ])
             ->add('material', EntityType::class, [
                 'class' => Material::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
                 'multiple' => true,
             ])
             ->add('leftEdgeCO2Choice', EntityType::class, [
