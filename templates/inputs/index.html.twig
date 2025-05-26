@@ -56,6 +56,11 @@
                                         title="{{ 'input.edit' | trans }}">
                                         <i class="fa-solid fa-download"></i>
                                     </a>
+                                    <form method="get" action="{{ path('launch_computation', {'id': input.id}) }}" class="inline-block" onsubmit="return confirm('{{ 'input.confirmLaunch' | trans }}');">
+                                        <button type="submit" class="px-4 py-2 bg-blue-500 hover:bg-blue-700 rounded text-white" title="{{ 'input.launch' | trans }}">
+                                            <i class="fa-solid fa-play"></i>
+                                        </button>
+                                    </form>
                                     <form method="post" action="{{ path('delete_input', {'id': input.id}) }}" class="inline-block" onsubmit="return confirm('{{ 'input.confirmDelete' | trans }}');">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ input.id) }}">
                                         <button type="submit" class="px-4 py-2 bg-red-500 hover:bg-red-700 rounded text-white" title="{{ 'input.delete' | trans }}">

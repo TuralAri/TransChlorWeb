@@ -282,7 +282,7 @@ class InputController extends AbstractController
     }
 
     #[Route('/inputs/{id}/compute', name: 'launch_computation', methods: ['GET'])]
-    public function compute(Input $input, TranslatorInterface $translator)
+    public function compute(Input $input, TranslatorInterface $translator) : Response
     {
         $filepath = $this->writeInputFile($input);
         $response = $this->forward('App\Controller\ComputationController::start1D', [
