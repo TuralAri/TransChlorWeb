@@ -165,10 +165,10 @@ class InputController extends AbstractController
         fwrite($handle, $tempMat->getTc() . "\n"); //tc
         switch ($input->getCapillarityTreatment()) { //ImpHydr
             case 1:
-                fwrite($handle, "false" . "\n");
+                fwrite($handle, "False" . "\n");
                 break;
             case 2:
-                fwrite($handle, "true" . "\n");
+                fwrite($handle, "True" . "\n");
                 break;
         }
         fwrite($handle, $tempMat->getLimitWaterContent() . "\n"); //H_Snap
