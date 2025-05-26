@@ -116,6 +116,7 @@ class InputController extends AbstractController
         $materials = $input->getMaterial();
         $tempMat = $materials->get(0); //Variable pour les valeurs d'input tant qu'on a pas fixé le probleme des variables dans les mauvaises entitées.
 
+        $expositionDirectory = $this->getParameter('upload_directory') . '/Ressources/Exposition/';
         $uploadDirectory = $this->getParameter('upload_directory') . '/Ressources/Input/';
 
         if (!is_dir($uploadDirectory)) {
@@ -179,11 +180,14 @@ class InputController extends AbstractController
         fwrite($handle, $tempMat->getHeatCapacity() . "\n"); //capCal
         fwrite($handle, $input->getLeftEdgeCO2() . "\n"); //GyCO2
         fwrite($handle, $input->getRightEdgeCO2() . "\n"); //DyCO2
-        fwrite($handle, "2" . "\n"); //Number of expo files NEXPO
-
-        for($i = 0; $i < 2; $i++) {
-            fwrite($handle, $i . "Fichier expo virtuel" . "\n");
+        if($input->getExposureFile1()->getId() == $input->getExposureFile2()->getId()){ //Number of exposition files
+            fwrite($handle, "1" . "\n");
+        }else{
+            fwrite($handle, "2" . "\n");
         }
+
+        fwrite($handle, $expositionDirectory . $input->getExposureFile1()->getExposureSerie()->getId() . '/' . $input->getExposureFile1()->getFilename() . "\n");
+        fwrite($handle, $expositionDirectory . $input->getExposureFile2()->getExposureSerie()->getId() . '/' . $input->getExposureFile2()->getFilename() . "\n");
 
         fwrite($handle, $materials->count() . "\n");//Var03 number of materials
         foreach($materials as $material){
