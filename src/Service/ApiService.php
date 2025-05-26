@@ -339,12 +339,13 @@ class ApiService
      * @return void
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function start1DComputing(string $computationId) :void
+    public function start1DComputing(string $computationId, string $inputFile) :void
     {
         $this->httpClient->request('GET', $this->apiUrl . '/api/computing/run', [
             'query' => [
                 'mode' => '1D',
-                'computationId' => $computationId
+                'computationId' => $computationId,
+                'outfile' => $inputFile
             ]
         ]);
     }

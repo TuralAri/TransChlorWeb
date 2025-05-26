@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Input;
 use App\Form\InputFormType;
 use App\Repository\InputRepository;
+use App\Service\ApiService;
 use Doctrine\ORM\EntityManagerInterface;
 use http\Exception\RuntimeException;
 use Knp\Component\Pager\PaginatorInterface;
@@ -18,6 +19,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class InputController extends AbstractController
 {
+    private ApiService $apiService;
+    public function __construct(ApiService $apiService)
+    {
+        $this->apiService = $apiService;
+    }
+
     #[Route('/inputs', name: 'inputs')]
     public function index(Request $request, PaginatorInterface $paginator) : Response
     {
@@ -108,10 +115,19 @@ class InputController extends AbstractController
     #[Route('/inputs/{id}/generate', name: 'generate_input')]
     public function generateInput(Input $input): Response
     {
-        return $this->writeInputFile($input);
+//        return $this->writeInputFile($input);
+
+        $filePath = $this->writeInputFile($input);
+
+        $response = new BinaryFileResponse($filePath);
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT
+        );
+
+        return $response;
     }
 
-    public function writeInputFile(Input $input) : Response
+    public function writeInputFile(Input $input) : String
     {
         $materials = $input->getMaterial();
         $tempMat = $materials->get(0); //Variable pour les valeurs d'input tant qu'on a pas fixé le probleme des variables dans les mauvaises entitées.
@@ -262,13 +278,21 @@ class InputController extends AbstractController
 
         fclose($handle);
 
-        $response = new BinaryFileResponse($filePath);
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            $filename
-        );
+        return $filePath;
+    }
 
-        return $response;
+    #[Route('/inputs/{id}/compute', name: 'launch_computation', methods: ['GET'])]
+    public function compute(Input $input, TranslatorInterface $translator)
+    {
+        $filepath = $this->writeInputFile($input);
+        $response = $this->forward('App\Controller\ComputationController::start1D', [
+           'outfile' => $filepath,
+        ]);
+        $response = json_decode($response->getContent(), true);
+
+        return $this->redirectToRoute("show_computation", [
+            'id' => $response['computationId'],
+        ]);
     }
 
     public function writeInitialCondition(Array $data, $handle) : void {
