@@ -231,7 +231,26 @@ class InputController extends AbstractController
             fwrite($handle, $material->getAggregateDensity() . "\n");//masse volumique des granulats
             fwrite($handle, $material->getCementDensity() . "\n");//masse volumique du ciment
             //
-
+            if(!$input->isWaterVaporTransportActivated()){
+                for ($i = 0; $i < 5; $i++) {
+                    fwrite($handle, "0" . "\n");
+                }
+            }
+            if(!$input->isCapillarityTransportActivated()){
+                for ($i = 0; $i < 5; $i++) {
+                    fwrite($handle, "0" . "\n");
+                }
+            }
+            if(!$input->isIonicTransportActivated()){
+                for ($i = 0; $i < 5; $i++) {
+                    fwrite($handle, "0" . "\n");
+                }
+            }
+            if(!$input->isCarbonatationActivated()){
+                for ($i = 0; $i < 5; $i++) {
+                    fwrite($handle, "0" . "\n");
+                }
+            }
             //
             fwrite($handle, $material->getEc() . "\n");//eau sur ciment pour le calcul Dcap // CORRESPOND AU E/C VIRTUEL
             //
