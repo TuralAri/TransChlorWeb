@@ -95,17 +95,39 @@ class InputFormType extends AbstractType
 //                'class' => ProbabilisticLawParams::class,
 //                'choice_label' => 'id',
             ])
-            ->add('aoDiffusion')
-            ->add('hc')
-            ->add('aoCapillarity')
-            ->add('tc')
-            ->add('limitWaterContent')
-            ->add('delayCoefficient')
-            ->add('alphaOh')
-            ->add('eb')
-            ->add('toAdsorption')
-            ->add('adsorptionFa')
-            ->add('heatCapacity')
+            ->add('aoDiffusion', TextType::class, [
+                'label' => 'materialForm.labels.aoDiffusion',
+            ])
+            ->add('hc', TextType::class, [
+                'label' => 'materialForm.labels.hc',
+            ])
+            ->add('aoCapillarity', TextType::class, [
+                'label' => 'materialForm.labels.aoCapillarity',
+            ])
+            ->add('tc', TextType::class, [
+                'label' => 'materialForm.labels.tc',
+            ])
+            ->add('limitWaterContent', TextType::class, [
+                'label' => 'materialForm.labels.limitWaterContent',
+            ])
+            ->add('delayCoefficient', TextType::class, [
+                'label' => 'materialForm.labels.retardationCoefficient',
+            ])
+            ->add('alphaOh', TextType::class, [
+                'label' => 'materialForm.labels.alphaOh',
+            ])
+            ->add('eb', TextType::class, [
+                'label' => 'materialForm.labels.eb',
+            ])
+            ->add('toAdsorption', TextType::class, [
+                'label' => 'materialForm.labels.toAdsorption',
+            ])
+            ->add('adsorptionFa', TextType::class, [
+                'label' => 'materialForm.labels.adsorptionFa',
+            ])
+            ->add('heatCapacity', TextType::class, [
+                'label' => 'materialForm.labels.heatCapacity',
+            ])
             ->add('submit', SubmitType::class);
         ;
 

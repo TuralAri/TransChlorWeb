@@ -87,7 +87,7 @@ class InputController extends AbstractController
             return $this->redirectToRoute('inputs');
         }
 
-        return $this->render('inputs/add.html.twig', [
+        return $this->render('inputs/edit.html.twig', [
             'form' => $form->createView(),
         ]);
     }
