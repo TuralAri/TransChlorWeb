@@ -40,9 +40,6 @@ class Material
     private ?AggregateType $aggregateType = null;
 
     #[ORM\Column]
-    private ?float $heatCapacity = null;
-
-    #[ORM\Column]
     private ?float $surfaceHeatTransfer = null;
 
     #[ORM\Column]
@@ -55,9 +52,6 @@ class Material
     private ?float $aoDiffusion = null;
 
     #[ORM\Column]
-    private ?float $hc = null;
-
-    #[ORM\Column]
     private ?float $ed = null;
 
     #[ORM\Column]
@@ -67,12 +61,6 @@ class Material
     private ?float $surfaceTransferCoefficient = null;
 
     #[ORM\Column]
-    private ?float $aoCapillarity = null;
-
-    #[ORM\Column]
-    private ?float $tc = null;
-
-    #[ORM\Column]
     private ?float $dclTo = null;
 
     #[ORM\Column]
@@ -80,24 +68,6 @@ class Material
 
     #[ORM\Column]
     private ?float $toChlorideDiffusion = null;
-
-    #[ORM\Column]
-    private ?float $retardationCoefficient = null;
-
-    #[ORM\Column]
-    private ?float $limitWaterContent = null;
-
-    #[ORM\Column]
-    private ?float $adsorptionFa = null;
-
-    #[ORM\Column]
-    private ?float $alphaOh = null;
-
-    #[ORM\Column]
-    private ?float $eb = null;
-
-    #[ORM\Column]
-    private ?float $toAdsorption = null;
 
     #[ORM\Column(length: 255)]
     private ?string $CementType = null;
@@ -136,26 +106,16 @@ class Material
         $this->ec = 0;
         $this->concreteAge = 0;
         $this->hydrationRate = 0;
-        $this->heatCapacity = 0.7;
         $this->surfaceHeatTransfer = 1;
         $this->cementDensity = 3150;
         $this->aggregateDensity = 2550;
         $this->d100Percent = 0;
         $this->aoDiffusion = 0.05;
-        $this->hc = 0.75;
         $this->ed = 0;
         $this->toDiffusion = 293.16;
         $this->surfaceTransferCoefficient = 1;
-        $this->aoCapillarity = 0.09;
-        $this->tc = 0.95;
         $this->alphaDiffusion = 0.026;
         $this->toChlorideDiffusion = 20;
-        $this->retardationCoefficient = 0.7;
-        $this->limitWaterContent = 0.8;
-        $this->adsorptionFa = 3.57;
-        $this->alphaOh = 0.56;
-        $this->eb = 0;
-        $this->toAdsorption = 293.16;
     }
 
     public function getId(): ?int
@@ -259,18 +219,6 @@ class Material
         return $this;
     }
 
-    public function getHeatCapacity(): ?float
-    {
-        return $this->heatCapacity;
-    }
-
-    public function setHeatCapacity(float $heatCapacity): static
-    {
-        $this->heatCapacity = $heatCapacity;
-
-        return $this;
-    }
-
     public function getSurfaceHeatTransfer(): ?float
     {
         return $this->surfaceHeatTransfer;
@@ -319,18 +267,6 @@ class Material
         return $this;
     }
 
-    public function getHc(): ?float
-    {
-        return $this->hc;
-    }
-
-    public function setHc(float $hc): static
-    {
-        $this->hc = $hc;
-
-        return $this;
-    }
-
     public function getEd(): ?float
     {
         return $this->ed;
@@ -367,30 +303,6 @@ class Material
         return $this;
     }
 
-    public function getAoCapillarity(): ?float
-    {
-        return $this->aoCapillarity;
-    }
-
-    public function setAoCapillarity(float $aoCapillarity): static
-    {
-        $this->aoCapillarity = $aoCapillarity;
-
-        return $this;
-    }
-
-    public function getTc(): ?float
-    {
-        return $this->tc;
-    }
-
-    public function setTc(float $tc): static
-    {
-        $this->tc = $tc;
-
-        return $this;
-    }
-
     public function getDclTo(): ?float
     {
         return $this->dclTo;
@@ -423,78 +335,6 @@ class Material
     public function setToChlorideDiffusion(float $toChlorideDiffusion): static
     {
         $this->toChlorideDiffusion = $toChlorideDiffusion;
-
-        return $this;
-    }
-
-    public function getRetardationCoefficient(): ?float
-    {
-        return $this->retardationCoefficient;
-    }
-
-    public function setRetardationCoefficient(float $retardationCoefficient): static
-    {
-        $this->retardationCoefficient = $retardationCoefficient;
-
-        return $this;
-    }
-
-    public function getLimitWaterContent(): ?float
-    {
-        return $this->limitWaterContent;
-    }
-
-    public function setLimitWaterContent(float $limitWaterContent): static
-    {
-        $this->limitWaterContent = $limitWaterContent;
-
-        return $this;
-    }
-
-    public function getAdsorptionFa(): ?float
-    {
-        return $this->adsorptionFa;
-    }
-
-    public function setAdsorptionFa(float $adsorptionFa): static
-    {
-        $this->adsorptionFa = $adsorptionFa;
-
-        return $this;
-    }
-
-    public function getAlphaOh(): ?float
-    {
-        return $this->alphaOh;
-    }
-
-    public function setAlphaOh(float $alphaOh): static
-    {
-        $this->alphaOh = $alphaOh;
-
-        return $this;
-    }
-
-    public function getEb(): ?float
-    {
-        return $this->eb;
-    }
-
-    public function setEb(float $eb): static
-    {
-        $this->eb = $eb;
-
-        return $this;
-    }
-
-    public function getToAdsorption(): ?float
-    {
-        return $this->toAdsorption;
-    }
-
-    public function setToAdsorption(float $toAdsorption): static
-    {
-        $this->toAdsorption = $toAdsorption;
 
         return $this;
     }

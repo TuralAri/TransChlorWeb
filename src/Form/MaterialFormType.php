@@ -69,9 +69,6 @@ class MaterialFormType extends AbstractType
                 'multiple' => false,
                 'label' => 'materialForm.labels.permeability',
             ])
-            ->add('heatCapacity', TextType::class, [
-                'label' => 'materialForm.labels.heatCapacity',
-            ])
             ->add('surfaceHeatTransfer', TextType::class, [
                 'label' => 'materialForm.labels.surfaceHeatTransfer',
             ])
@@ -87,9 +84,6 @@ class MaterialFormType extends AbstractType
             ->add('aoDiffusion', TextType::class, [
                 'label' => 'materialForm.labels.aoDiffusion',
             ])
-            ->add('hc', TextType::class, [
-                'label' => 'materialForm.labels.hc',
-            ])
             ->add('ed', TextType::class, [
                 'label' => 'materialForm.labels.ed',
             ])
@@ -98,12 +92,6 @@ class MaterialFormType extends AbstractType
             ])
             ->add('surfaceTransferCoefficient', TextType::class, [
                 'label' => 'materialForm.labels.surfaceTransferCoefficient',
-            ])
-            ->add('aoCapillarity', TextType::class, [
-                'label' => 'materialForm.labels.aoCapillarity',
-            ])
-            ->add('tc', TextType::class, [
-                'label' => 'materialForm.labels.tc',
             ])
             ->add('dclTo', TextType::class, [
                 'label' => 'materialForm.labels.dclTo',
@@ -116,24 +104,6 @@ class MaterialFormType extends AbstractType
             ])
             ->add('toChlorideDiffusion', TextType::class, [
                 'label' => 'materialForm.labels.toChlorideDiffusion',
-            ])
-            ->add('retardationCoefficient', TextType::class, [
-                'label' => 'materialForm.labels.retardationCoefficient',
-            ])
-            ->add('limitWaterContent', TextType::class, [
-                'label' => 'materialForm.labels.limitWaterContent',
-            ])
-            ->add('adsorptionFa', TextType::class, [
-                'label' => 'materialForm.labels.adsorptionFa',
-            ])
-            ->add('alphaOh', TextType::class, [
-                'label' => 'materialForm.labels.alphaOh',
-            ])
-            ->add('eb', TextType::class, [
-                'label' => 'materialForm.labels.eb',
-            ])
-            ->add('toAdsorption', TextType::class, [
-                'label' => 'materialForm.labels.toAdsorption',
             ])
             ->add('aggregateType', EntityType::class, [
                 'class' => AggregateType::class,

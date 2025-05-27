@@ -95,10 +95,6 @@
                     {{ form_row(form.aggregateType, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center '}}) }}
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
-                    {{ form_row(form.heatCapacity, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    {{ 'materialForm.measures.heatCapacity' | trans }}
-                </div>
-                <div class="hidden gap-2 items-center w-fit justify-left">
                     {{ form_row(form.surfaceHeatTransfer, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
                 </div>
                 <div class="hidden gap-2 items-center w-fit justify-left">
@@ -133,9 +129,6 @@
                         {{ form_row(form.aoDiffusion, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
                     </div>
                     <div class="hidden gap-2 items-center w-fit justify-left">
-                        {{ form_row(form.hc, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    </div>
-                    <div class="hidden gap-2 items-center w-fit justify-left">
                         {{ form_row(form.ed, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
                     </div>
                     <div class="hidden gap-2 items-center w-fit justify-left">
@@ -156,20 +149,6 @@
                     </div>
                 </section>
                 {# Capillarity part #}
-                <section id="part5" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
-                    <div class="flex justify-between items-center">
-                        <h2 class="text-xl font-semibold">{{ 'materialForm.capillarity' | trans }}</h2>
-                        <button id="part5Button" class="text-xl font-bold  border-black p-4">
-                            +
-                        </button>
-                    </div>
-                    <div class="hidden gap-2 items-center w-fit justify-left">
-                        {{ form_row(form.aoCapillarity, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    </div>
-                    <div class="hidden gap-2 items-center w-fit justify-left">
-                        {{ form_row(form.tc, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    </div>
-                </section>
             </section>
 
             {# ionicTransportChlorides big section #}
@@ -182,10 +161,10 @@
                     {#                    </button>#}
                 </div>
                 {# diffusionInWater part #}
-                <section id="part6" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
+                <section id="part5" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
                     <div class="flex justify-between items-center">
                         <h2 class="text-xl font-semibold">{{ 'materialForm.diffusionInWater' | trans }}</h2>
-                        <button id="part6Button" class="text-xl font-bold  border-black p-4">
+                        <button id="part5Button" class="text-xl font-bold  border-black p-4">
                             +
                         </button>
                     </div>
@@ -212,44 +191,7 @@
                     </div>
                 </section>
                 {# waterConvection part #}
-                <section id="part7" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
-                    <div class="flex justify-between items-center">
-                        <h2 class="text-xl font-semibold">{{ 'materialForm.waterConvection' | trans }}</h2>
-                        <button id="part7Button" class="text-xl font-bold  border-black p-4">
-                            +
-                        </button>
-                    </div>
-                    <div class="hidden gap-2 items-center w-fit justify-left">
-                        {{ form_row(form.retardationCoefficient, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    </div>
-                    <div class="hidden gap-2 items-center w-fit justify-left">
-                        {{ form_row(form.limitWaterContent, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    </div>
-                </section>
                 {# freeBoundChlorideIonsRelation part #}
-                <section id="part8" class="bg-white p-6 rounded-lg border-2 space-y-4 border-black">
-                    <div class="flex justify-between items-center">
-                        <h2 class="text-xl font-semibold">{{ 'materialForm.freeBoundChlorideIonsRelation' | trans }}</h2>
-                        <button id="part8Button" class="text-xl font-bold  border-black p-4">
-                            +
-                        </button>
-                    </div>
-                    <div class="hidden gap-2 items-center w-fit justify-left">
-                        {{ form_row(form.adsorptionFa, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    </div>
-                    <div class="hidden gap-2 items-center w-fit justify-left">
-                        {{ form_row(form.alphaOh, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    </div>
-                    <div class="hidden gap-2 items-center w-fit justify-left">
-                        {{ form_row(form.eb, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                        {{ 'materialForm.measures.jmol' | trans }}
-                    </div>
-                    <div class="hidden gap-2 items-center w-fit justify-left">
-                        {{ form_row(form.toAdsorption, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                        {{ 'materialForm.measures.kelvin' | trans }}
-                    </div>
-                </section>
-
 
             </section>
 
