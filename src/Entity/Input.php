@@ -180,6 +180,17 @@ class Input
 
         $this->leftEdgeCO2 = 0.036;
         $this->rightEdgeCO2 = 0.036;
+
+        $this->hc = 0.75;
+        $this->heatCapacity = 0.7;
+        $this->aoDiffusion = 0.09;
+        $this->tc = 0.95;
+        $this->limitWaterContent = 0.8;
+        $this->delayCoefficient = 0.7;
+        $this->alphaOh = 0.56;
+        $this->eb = 0;
+        $this->toAdsorption = 293.16;
+        $this->adsorptionFa = 3.57;
     }
 
     public function getId(): ?int
