@@ -126,6 +126,39 @@ class Input
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    #[ORM\Column]
+    private ?float $aoDiffusion = null;
+
+    #[ORM\Column]
+    private ?float $hc = null;
+
+    #[ORM\Column]
+    private ?float $aoCapillarity = null;
+
+    #[ORM\Column]
+    private ?float $tc = null;
+
+    #[ORM\Column]
+    private ?float $limitWaterContent = null;
+
+    #[ORM\Column]
+    private ?float $alphaOh = null;
+
+    #[ORM\Column]
+    private ?float $eb = null;
+
+    #[ORM\Column]
+    private ?float $toAdsorption = null;
+
+    #[ORM\Column]
+    private ?float $adsorptionFa = null;
+
+    #[ORM\Column]
+    private ?float $heatCapacity = null;
+
+    #[ORM\Column]
+    private ?float $delayCoefficient = null;
+
     public function __construct()
     {
         $this->material = new ArrayCollection();
@@ -568,6 +601,138 @@ class Input
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getAoDiffusion(): ?float
+    {
+        return $this->aoDiffusion;
+    }
+
+    public function setAoDiffusion(float $aoDiffusion): static
+    {
+        $this->aoDiffusion = $aoDiffusion;
+
+        return $this;
+    }
+
+    public function getHc(): ?float
+    {
+        return $this->hc;
+    }
+
+    public function setHc(float $hc): static
+    {
+        $this->hc = $hc;
+
+        return $this;
+    }
+
+    public function getAoCapillarity(): ?float
+    {
+        return $this->aoCapillarity;
+    }
+
+    public function setAoCapillarity(float $aoCapillarity): static
+    {
+        $this->aoCapillarity = $aoCapillarity;
+
+        return $this;
+    }
+
+    public function getTc(): ?float
+    {
+        return $this->tc;
+    }
+
+    public function setTc(float $tc): static
+    {
+        $this->tc = $tc;
+
+        return $this;
+    }
+
+    public function getLimitWaterContent(): ?float
+    {
+        return $this->limitWaterContent;
+    }
+
+    public function setLimitWaterContent(float $limitWaterContent): static
+    {
+        $this->limitWaterContent = $limitWaterContent;
+
+        return $this;
+    }
+
+    public function getAlphaOh(): ?float
+    {
+        return $this->alphaOh;
+    }
+
+    public function setAlphaOh(float $alphaOh): static
+    {
+        $this->alphaOh = $alphaOh;
+
+        return $this;
+    }
+
+    public function getEb(): ?float
+    {
+        return $this->eb;
+    }
+
+    public function setEb(float $eb): static
+    {
+        $this->eb = $eb;
+
+        return $this;
+    }
+
+    public function getToAdsorption(): ?float
+    {
+        return $this->toAdsorption;
+    }
+
+    public function setToAdsorption(float $toAdsorption): static
+    {
+        $this->toAdsorption = $toAdsorption;
+
+        return $this;
+    }
+
+    public function getAdsorptionFa(): ?float
+    {
+        return $this->adsorptionFa;
+    }
+
+    public function setAdsorptionFa(float $adsorptionFa): static
+    {
+        $this->adsorptionFa = $adsorptionFa;
+
+        return $this;
+    }
+
+    public function getHeatCapacity(): ?float
+    {
+        return $this->heatCapacity;
+    }
+
+    public function setHeatCapacity(float $heatCapacity): static
+    {
+        $this->heatCapacity = $heatCapacity;
+
+        return $this;
+    }
+
+    public function getDelayCoefficient(): ?float
+    {
+        return $this->delayCoefficient;
+    }
+
+    public function setDelayCoefficient(float $delayCoefficient): static
+    {
+        $this->delayCoefficient = $delayCoefficient;
 
         return $this;
     }

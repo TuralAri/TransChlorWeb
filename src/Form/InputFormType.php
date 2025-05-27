@@ -95,6 +95,17 @@ class InputFormType extends AbstractType
 //                'class' => ProbabilisticLawParams::class,
 //                'choice_label' => 'id',
             ])
+            ->add('aoDiffusion')
+            ->add('hc')
+            ->add('aoCapillarity')
+            ->add('tc')
+            ->add('limitWaterContent')
+            ->add('delayCoefficient')
+            ->add('alphaOh')
+            ->add('eb')
+            ->add('toAdsorption')
+            ->add('adsorptionFa')
+            ->add('heatCapacity')
             ->add('submit', SubmitType::class);
         ;
 
