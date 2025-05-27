@@ -175,10 +175,10 @@ class InputController extends AbstractController
         fwrite($handle, 0 . "\n"); //CLmin
         fwrite($handle, 0 . "\n"); //CLecart
         fwrite($handle, 0 . "\n"); //Tecart
-        fwrite($handle, $tempMat->getAoDiffusion() . "\n"); //aa
-        fwrite($handle, $tempMat->getHc() . "\n"); //hc
-        fwrite($handle, $tempMat->getAoCapillarity() . "\n"); //ab
-        fwrite($handle, $tempMat->getTc() . "\n"); //tc
+        fwrite($handle, $input->getAoDiffusion() . "\n"); //aa
+        fwrite($handle, $input->getHc() . "\n"); //hc
+        fwrite($handle, $input->getAoCapillarity() . "\n"); //ab
+        fwrite($handle, $input->getTc() . "\n"); //tc
         switch ($input->getCapillarityTreatment()) { //ImpHydr
             case 1:
                 fwrite($handle, "False" . "\n");
@@ -187,13 +187,13 @@ class InputController extends AbstractController
                 fwrite($handle, "True" . "\n");
                 break;
         }
-        fwrite($handle, $tempMat->getLimitWaterContent() . "\n"); //H_Snap
-        fwrite($handle, $tempMat->getRetardationCoefficient() . "\n"); //Retard
-        fwrite($handle, $tempMat->getAlphaOh() . "\n"); //aOH
-        fwrite($handle, $tempMat->getEb() . "\n"); //EbG
-        fwrite($handle, $tempMat->getToAdsorption() . "\n"); //toG
-        fwrite($handle, $tempMat->getAdsorptionFa() . "\n"); //faG
-        fwrite($handle, $tempMat->getHeatCapacity() . "\n"); //capCal
+        fwrite($handle, $input->getLimitWaterContent() . "\n"); //H_Snap
+        fwrite($handle, $input->getDelayCoefficient() . "\n"); //Retard
+        fwrite($handle, $input->getAlphaOh() . "\n"); //aOH
+        fwrite($handle, $input->getEb() . "\n"); //EbG
+        fwrite($handle, $input->getToAdsorption() . "\n"); //toG
+        fwrite($handle, $input->getAdsorptionFa() . "\n"); //faG
+        fwrite($handle, $input->getHeatCapacity() . "\n"); //capCal
         fwrite($handle, $input->getLeftEdgeCO2() . "\n"); //GyCO2
         fwrite($handle, $input->getRightEdgeCO2() . "\n"); //DyCO2
         if($input->getExposureFile1()->getId() == $input->getExposureFile2()->getId()){ //Number of exposition files

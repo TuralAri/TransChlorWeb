@@ -182,8 +182,9 @@ class Input
         $this->rightEdgeCO2 = 0.036;
 
         $this->hc = 0.75;
+        $this->aoCapillarity = 0.09;
         $this->heatCapacity = 0.7;
-        $this->aoDiffusion = 0.09;
+        $this->aoDiffusion = 0.05;
         $this->tc = 0.95;
         $this->limitWaterContent = 0.8;
         $this->delayCoefficient = 0.7;

@@ -77,6 +77,12 @@ document.addEventListener("DOMContentLoaded", () => {
     updateTableData();
 });
 
+//adding form listeners
+
+for(let i =1; i<=4; i++){
+    addFormListener(i);
+}
+
 //Fetchs the data from the table to construct the arrays
 function updateTableData() {
     const table = document.getElementById("editableTable");
@@ -141,4 +147,26 @@ function ajouterLigne() {
     addInputListenersToCells();
     updateTableData();
     console.log("Ligne ajoutée");
+}
+
+function addFormListener(id){
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggleButton = document.getElementById("part"+id+"Button");
+        const section = document.getElementById("part"+id);
+        const hiddenDivs = section.querySelectorAll(".hidden");
+        toggleButton.addEventListener("click", function (event) {
+            event.preventDefault();
+            const isHidden = hiddenDivs[0].classList.contains("hidden");
+            hiddenDivs.forEach(div => {
+                if (isHidden) {
+                    div.classList.remove("hidden");
+                    div.classList.add("flex");
+                } else {
+                    div.classList.add("hidden");
+                    div.classList.remove("flex");
+                }
+            });
+            toggleButton.textContent = isHidden ? "−" : "+";
+        });
+    });
 }
