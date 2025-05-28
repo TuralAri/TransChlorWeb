@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use http\Exception\RuntimeException;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,10 +59,16 @@ class InputController extends AbstractController
         }
 
         $input = new Input();
-        $form = $this->createForm(InputFormType::class, $input);
+        $form = $this->createForm(InputFormType::class, $input, [
+            'attr' => ['id' => 'input_form'],
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $input = $form->getData();
+
+            $probabilisticData = $request->request;
+            dd($probabilisticData);
+
             $input->setUser($user);
             $entityManager->persist($input);
             $entityManager->flush();
@@ -307,7 +314,7 @@ class InputController extends AbstractController
     }
 
     #[Route('/material/{id}/form/{type}', name: 'material_probabilistic_law_form')]
-    public function getMaterialForm(Material $material, string $type) : Response
+    public function getMaterialForm(Material $material, string $type, FormFactoryInterface $formFactory) : Response
     {
         if(!$material){
             throw $this->createNotFoundException('Material not found');
@@ -315,6 +322,7 @@ class InputController extends AbstractController
 
         $probabilisticLawParams = new ProbabilisticLawParams();
         $probabilisticLawParams->setMaterial($material);
+        $probabilisticLawParams->setType($type);
 
         switch($type){
             case "waterVaporTransport":
@@ -350,13 +358,28 @@ class InputController extends AbstractController
 
         $this->setLawParameters($probabilisticLawParams);
 
-        $form = $this->createForm(ProbabilisticLawFormType::class, $probabilisticLawParams);
+//        $form = $this->createForm(ProbabilisticLawFormType::class, $probabilisticLawParams);
+
+        $formName = sprintf('probabilistic_%d_%s', $material->getId(), $type);
+
+        $form = $formFactory->createNamed(
+            $formName,
+            ProbabilisticLawFormType::class,
+            $probabilisticLawParams
+        );
+
+        $html = $this->render('inputs/form.html.twig', [
+            'form' => $form->createView(),
+            'materialId' => $material->getId(),
+            'type' => $type,
+        ]);
 
         return $this->json([
            'success' => true,
-           'form' => $this->renderView('inputs/form.html.twig', [
-               'form' => $form->createView(),
-           ])
+//           'form' => $this->renderView('inputs/form.html.twig', [
+//               'form' => $form->createView(),
+//           ])
+            'form' => $html->getContent()
         ]);
     }
 

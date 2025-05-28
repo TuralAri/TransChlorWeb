@@ -15,6 +15,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     inputMaterials.addEventListener("change", updateSelectedMaterials);
     inputProbilisticMaterials.addEventListener("change", showForm);
+
+    // Avant envoi du formulaire global
+    document.getElementById('input_form').addEventListener('submit', e => {
+        gatherSubFormsData();
+    });
 });
 
 function updateSelectedMaterials() {
@@ -53,6 +58,7 @@ function fetchProbabilisticForms(materialId) {
                     wrapper.classList.add("material-form", "hidden");
                     wrapper.dataset.materialId = materialId;
                     wrapper.innerHTML = `<h4>${materialId} ${transportType}</h4>${data.form}`;
+
                     targetDiv.appendChild(wrapper);
                 }
             })
@@ -73,4 +79,40 @@ function showForm(){
         form.classList.remove("hidden");
     });
 }
+
+function gatherSubFormsData() {
+    const data = {};
+
+    document.querySelectorAll('.material-form').forEach(formDiv => {
+        const materialId = formDiv.dataset.materialId;
+        const formType = formDiv.id.split('_')[1];
+
+        data[materialId] = data[materialId] || {};
+        data[materialId][formType] = {};
+
+        const inputs = formDiv.querySelectorAll('input, select, textarea');
+
+        inputs.forEach(input => {
+            let name = input.name;
+            let value = input.value;
+
+            const matches = name.match(/\[(.+)\]$/);
+            if (matches && matches[1]) {
+                const fieldName = matches[1];
+                data[materialId][formType][fieldName] = value;
+            } else {
+                data[materialId][formType][name] = value;
+            }
+        });
+    });
+
+    const hiddenField = document.getElementById('input_form_probabilisticData');
+    if (hiddenField) {
+        hiddenField.value = JSON.stringify(data);
+    } else {
+        console.warn('Champ caché probabilisticData non trouvé');
+    }
+}
+
+
 

@@ -7,6 +7,7 @@ use App\Entity\ProbabilisticLawParams;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,6 +24,11 @@ class ProbabilisticLawFormType extends AbstractType
                 'choice_label' => 'name',
                 'attr' => ['class' => 'hidden'],
                 'label_attr' => ['class' => 'hidden'],
+            ])
+            ->add('type', TextType::class, [
+                'attr' => ['class' => 'hidden'],
+                'label_attr' => ['class' => 'hidden'],
+                'required' => false,
             ])
             ->add('meanValue', TextType::class, [
                 'attr' => $commonAttr,
