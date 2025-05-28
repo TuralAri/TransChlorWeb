@@ -21,6 +21,8 @@ class ProbabilisticLawFormType extends AbstractType
             ->add('material', EntityType::class, [
                 'class' => Material::class,
                 'choice_label' => 'name',
+                'attr' => ['class' => 'hidden'],
+                'label_attr' => ['class' => 'hidden'],
             ])
             ->add('meanValue', TextType::class, [
                 'attr' => $commonAttr,

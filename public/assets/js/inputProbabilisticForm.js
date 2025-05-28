@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     inputProbilisticMaterials = document.getElementById("selectedMaterials");
 
     inputMaterials.addEventListener("change", updateSelectedMaterials);
+    inputProbilisticMaterials.addEventListener("change", showForm);
 });
 
 function updateSelectedMaterials() {
@@ -49,9 +50,9 @@ function fetchProbabilisticForms(materialId) {
                 if (data.success) {
                     const wrapper = document.createElement("div");
                     wrapper.id = uniqueFormId;
-                    wrapper.classList.add("material-form-wrapper");
-                    wrapper.innerHTML = `<h4>Matériau ${materialId} – ${transportType}</h4>${data.form}`;
-
+                    wrapper.classList.add("material-form", "hidden");
+                    wrapper.dataset.materialId = materialId;
+                    // wrapper.innerHTML = `<h4>${materialId} ${transportType}</h4>${data.form}`;
                     targetDiv.appendChild(wrapper);
                 }
             })
@@ -60,3 +61,16 @@ function fetchProbabilisticForms(materialId) {
             });
     }
 }
+
+function showForm(){
+    const selectedId = inputProbilisticMaterials.value;
+
+    document.querySelectorAll(".material-form").forEach(form => {
+        form.classList.add("hidden");
+    });
+
+    document.querySelectorAll(`.material-form[data-material-id="${selectedId}"]`).forEach(form => {
+        form.classList.remove("hidden");
+    });
+}
+
