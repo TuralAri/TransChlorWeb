@@ -319,15 +319,36 @@ class InputController extends AbstractController
         switch($type){
             case "waterVaporTransport":
                 $probabilisticLawParams->setMeanValue($material->getD100Percent());
-                error_log("test : " . $material->getD100Percent());
+                $probabilisticLawParams->setStandardDeviation($material->getD100Percent() / 1.36);
                 break;
             case "capillarityTransport":
+                $ec = $material->getEc();
+                $a = 0.0000625 * ($ec * $ec) - 0.000104 * $ec + 0.00003;
+                $b = -0.015547 * ($ec * $ec) + 0.021655 * $ec - 0.005652;
+                $probabilisticLawParams->setMeanValue($a * 100 + $b);
+                $probabilisticLawParams->setStandardDeviation(0.00005962);
                 break;
             case "ionicTransport":
+                $probabilisticLawParams->setMeanValue($material->getDclTo());
+                $probabilisticLawParams->setStandardDeviation(0.000005772);
                 break;
             case "carbonation":
+                $ec = $material->getEc();
+                $cementDensity = $material->getCementDensity();
+                error_log("CEMENT TEST" . $cementDensity);
+
+                $numerator = $cementDensity * ($ec - 0.3) * (1 - 0.7);
+                $denominator = 1000 * (1 + $cementDensity * $ec / 1000);
+                $expression = $numerator / $denominator;
+
+                $meanValue = 2.8 * ($expression * $expression);
+
+                $probabilisticLawParams->setMeanValue($meanValue);
+                $probabilisticLawParams->setStandardDeviation(0.000005772);
                 break;
         }
+
+        $this->setLawParameters($probabilisticLawParams);
 
         $form = $this->createForm(ProbabilisticLawFormType::class, $probabilisticLawParams);
 
@@ -337,6 +358,29 @@ class InputController extends AbstractController
                'form' => $form->createView(),
            ])
         ]);
+    }
+
+    function setLawParameters(ProbabilisticLawParams $probabilisticLawParams) : void
+    {
+        $probabilisticLawParams->setLambda(
+            log(
+                pow($probabilisticLawParams->getMeanValue(), 2) /
+                sqrt(pow($probabilisticLawParams->getMeanValue(), 2) + pow($probabilisticLawParams->getStandardDeviation(), 2))
+            )
+        );
+        $probabilisticLawParams->setKsi(
+            sqrt(log(
+                pow($probabilisticLawParams->getStandardDeviation(), 2) /
+                pow($probabilisticLawParams->getMeanValue(), 2) + 1
+            ))
+        );
+        $sm = exp($probabilisticLawParams->getLambda()) * (1- exp(-$probabilisticLawParams->getKsi()));
+        $sp = exp($probabilisticLawParams->getLambda()) * (exp($probabilisticLawParams->getKsi())-1);
+        $probabilisticLawParams->setPMinus($sp / ($sp + $sm));
+        $probabilisticLawParams->setPPlus($sm / ($sp + $sm));
+
+        $probabilisticLawParams->setX1(exp($probabilisticLawParams->getLambda() - $probabilisticLawParams->getKsi()));
+        $probabilisticLawParams->setX2(exp($probabilisticLawParams->getLambda() + $probabilisticLawParams->getKsi()));
     }
 
 }
