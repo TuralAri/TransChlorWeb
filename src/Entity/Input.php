@@ -110,18 +110,6 @@ class Input
     #[ORM\Column]
     private ?bool $isCarbonatationActivated = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?ProbabilisticLawParams $vaporWaterTransport = null;
-
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?ProbabilisticLawParams $liquidWaterTransportCapillarity = null;
-
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?ProbabilisticLawParams $chlorideIonicTransport = null;
-
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?ProbabilisticLawParams $carbonation = null;
-
     #[ORM\ManyToOne(inversedBy: 'inputs')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
@@ -159,6 +147,12 @@ class Input
     #[ORM\Column]
     private ?float $delayCoefficient = null;
 
+    /**
+     * @var Collection<int, ProbabilisticLawParams>
+     */
+    #[ORM\OneToMany(targetEntity: ProbabilisticLawParams::class, mappedBy: 'input')]
+    private Collection $probabilisticParams;
+
     public function __construct()
     {
         $this->material = new ArrayCollection();
@@ -192,6 +186,7 @@ class Input
         $this->eb = 0;
         $this->toAdsorption = 293.16;
         $this->adsorptionFa = 3.57;
+        $this->probabilisticParams = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -557,54 +552,6 @@ class Input
         return $this;
     }
 
-    public function getVaporWaterTransport(): ?ProbabilisticLawParams
-    {
-        return $this->vaporWaterTransport;
-    }
-
-    public function setVaporWaterTransport(?ProbabilisticLawParams $vaporWaterTransport): static
-    {
-        $this->vaporWaterTransport = $vaporWaterTransport;
-
-        return $this;
-    }
-
-    public function getLiquidWaterTransportCapillarity(): ?ProbabilisticLawParams
-    {
-        return $this->liquidWaterTransportCapillarity;
-    }
-
-    public function setLiquidWaterTransportCapillarity(?ProbabilisticLawParams $liquidWaterTransportCapillarity): static
-    {
-        $this->liquidWaterTransportCapillarity = $liquidWaterTransportCapillarity;
-
-        return $this;
-    }
-
-    public function getChlorideIonicTransport(): ?ProbabilisticLawParams
-    {
-        return $this->chlorideIonicTransport;
-    }
-
-    public function setChlorideIonicTransport(?ProbabilisticLawParams $chlorideIonicTransport): static
-    {
-        $this->chlorideIonicTransport = $chlorideIonicTransport;
-
-        return $this;
-    }
-
-    public function getCarbonation(): ?ProbabilisticLawParams
-    {
-        return $this->carbonation;
-    }
-
-    public function setCarbonation(?ProbabilisticLawParams $carbonation): static
-    {
-        $this->carbonation = $carbonation;
-
-        return $this;
-    }
-
     public function getUser(): ?User
     {
         return $this->user;
@@ -745,6 +692,36 @@ class Input
     public function setDelayCoefficient(float $delayCoefficient): static
     {
         $this->delayCoefficient = $delayCoefficient;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProbabilisticLawParams>
+     */
+    public function getProbabilisticParams(): Collection
+    {
+        return $this->probabilisticParams;
+    }
+
+    public function addProbabilisticParam(ProbabilisticLawParams $probabilisticParam): static
+    {
+        if (!$this->probabilisticParams->contains($probabilisticParam)) {
+            $this->probabilisticParams->add($probabilisticParam);
+            $probabilisticParam->setInput($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProbabilisticParam(ProbabilisticLawParams $probabilisticParam): static
+    {
+        if ($this->probabilisticParams->removeElement($probabilisticParam)) {
+            // set the owning side to null (unless already changed)
+            if ($probabilisticParam->getInput() === $this) {
+                $probabilisticParam->setInput(null);
+            }
+        }
 
         return $this;
     }

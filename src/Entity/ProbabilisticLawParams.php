@@ -40,6 +40,12 @@ class ProbabilisticLawParams
     #[ORM\ManyToOne]
     private ?Material $Material = null;
 
+    #[ORM\ManyToOne(inversedBy: 'probabilisticParams')]
+    private ?Input $input = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $type = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -149,6 +155,30 @@ class ProbabilisticLawParams
     public function setMaterial(?Material $Material): static
     {
         $this->Material = $Material;
+
+        return $this;
+    }
+
+    public function getInput(): ?Input
+    {
+        return $this->input;
+    }
+
+    public function setInput(?Input $input): static
+    {
+        $this->input = $input;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): static
+    {
+        $this->type = $type;
 
         return $this;
     }
