@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Input;
+use App\Entity\Material;
+use App\Entity\ProbabilisticLawParams;
 use App\Form\InputFormType;
+use App\Form\ProbabilisticLawFormType;
 use App\Repository\InputRepository;
 use App\Service\ApiService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -301,6 +304,39 @@ class InputController extends AbstractController
             fwrite($handle, $val['x'] . "\n");
             fwrite($handle, $val['value'] . "\n");
         }
+    }
+
+    #[Route('/material/{id}/form/{type}', name: 'material_probabilistic_law_form')]
+    public function getMaterialForm(Material $material, string $type) : Response
+    {
+        if(!$material){
+            throw $this->createNotFoundException('Material not found');
+        }
+
+        $probabilisticLawParams = new ProbabilisticLawParams();
+        $probabilisticLawParams->setMaterial($material);
+
+        switch($type){
+            case "waterVaporTransport":
+                $probabilisticLawParams->setMeanValue($material->getD100Percent());
+                error_log("test : " . $material->getD100Percent());
+                break;
+            case "capillarityTransport":
+                break;
+            case "ionicTransport":
+                break;
+            case "carbonation":
+                break;
+        }
+
+        $form = $this->createForm(ProbabilisticLawFormType::class, $probabilisticLawParams);
+
+        return $this->json([
+           'success' => true,
+           'form' => $this->renderView('inputs/form.html.twig', [
+               'form' => $form->createView(),
+           ])
+        ]);
     }
 
 }

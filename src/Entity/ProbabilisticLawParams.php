@@ -37,6 +37,9 @@ class ProbabilisticLawParams
     #[ORM\Column(nullable: true)]
     private ?float $x2 = null;
 
+    #[ORM\ManyToOne]
+    private ?Material $Material = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -134,6 +137,18 @@ class ProbabilisticLawParams
     public function setX2(float $x2): static
     {
         $this->x2 = $x2;
+
+        return $this;
+    }
+
+    public function getMaterial(): ?Material
+    {
+        return $this->Material;
+    }
+
+    public function setMaterial(?Material $Material): static
+    {
+        $this->Material = $Material;
 
         return $this;
     }

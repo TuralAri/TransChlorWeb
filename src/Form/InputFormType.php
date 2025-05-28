@@ -79,22 +79,6 @@ class InputFormType extends AbstractType
                 'class' => Location::class,
                 'choice_label' => 'name',
             ])
-            ->add('vaporWaterTransport', ProbabilisticLawFormType::class, [
-//                'class' => ProbabilisticLawParams::class,
-//                'choice_label' => 'id',
-            ])
-            ->add('liquidWaterTransportCapillarity', ProbabilisticLawFormType::class, [
-//                'class' => ProbabilisticLawParams::class,
-//                'choice_label' => 'id',
-            ])
-            ->add('chlorideIonicTransport', ProbabilisticLawFormType::class, [
-//                'class' => ProbabilisticLawParams::class,
-//                'choice_label' => 'id',
-            ])
-            ->add('carbonation', ProbabilisticLawFormType::class, [
-//                'class' => ProbabilisticLawParams::class,
-//                'choice_label' => 'id',
-            ])
             ->add('aoDiffusion', TextType::class, [
                 'label' => 'materialForm.labels.aoDiffusion',
             ])

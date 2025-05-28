@@ -2,8 +2,12 @@
 
 namespace App\Form;
 
+use App\Entity\Material;
 use App\Entity\ProbabilisticLawParams;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,42 +18,46 @@ class ProbabilisticLawFormType extends AbstractType
         $commonAttr = ['class' => 'ml-2 p-2 border rounded-lg text-left'];
 
         $builder
-            ->add('meanValue', null, [
+            ->add('material', EntityType::class, [
+                'class' => Material::class,
+                'choice_label' => 'name',
+            ])
+            ->add('meanValue', TextType::class, [
                 'attr' => $commonAttr,
                 'required' => false,
                 'empty_data' => null,
             ])
-            ->add('standardDeviation', null, [
+            ->add('standardDeviation', TextType::class, [
                 'attr' => $commonAttr,
                 'required' => false,
                 'empty_data' => null,
             ])
-            ->add('lambda', null, [
+            ->add('lambda', TextType::class, [
                 'attr' => $commonAttr,
                 'required' => false,
                 'empty_data' => null,
             ])
-            ->add('ksi', null, [
+            ->add('ksi', TextType::class, [
                 'attr' => $commonAttr,
                 'required' => false,
                 'empty_data' => null,
             ])
-            ->add('pMinus', null, [
+            ->add('pMinus', TextType::class, [
                 'attr' => $commonAttr,
                 'required' => false,
                 'empty_data' => null,
             ])
-            ->add('pPlus', null, [
+            ->add('pPlus', TextType::class, [
                 'attr' => $commonAttr,
                 'required' => false,
                 'empty_data' => null,
             ])
-            ->add('x1', null, [
+            ->add('x1', TextType::class, [
                 'attr' => $commonAttr,
                 'required' => false,
                 'empty_data' => null,
             ])
-            ->add('x2', null, [
+            ->add('x2', TextType::class, [
                 'attr' => $commonAttr,
                 'required' => false,
                 'empty_data' => null,
