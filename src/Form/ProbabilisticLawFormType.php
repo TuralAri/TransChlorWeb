@@ -16,7 +16,7 @@ class ProbabilisticLawFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $commonAttr = ['class' => 'ml-2 p-2 border rounded-lg text-left'];
+        $commonAttr = ['readonly' => true];
 
         $builder
             ->add('material', EntityType::class, [
@@ -35,7 +35,8 @@ class ProbabilisticLawFormType extends AbstractType
                 'choices' => [
                     'Loi normale' => '1',
                     'Loi logonormale' =>'2',
-                ]
+                ],
+                'data' => '2'
             ])
             ->add('meanValue', TextType::class, [
                 'attr' => $commonAttr,
@@ -43,7 +44,6 @@ class ProbabilisticLawFormType extends AbstractType
                 'empty_data' => null,
             ])
             ->add('standardDeviation', TextType::class, [
-                'attr' => $commonAttr,
                 'required' => false,
                 'empty_data' => null,
             ])
