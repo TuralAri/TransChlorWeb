@@ -364,13 +364,15 @@ class InputController extends AbstractController
         //logonormal law case
         else if($lawParams->getLawType() == 2){
             fwrite($handle, "2" . "\n");
+        }else{
+            throw new RuntimeException("Unknown law type: " . $lawParams->getLawType());
         }
     }
 
     #[Route('/inputs/{id}/compute', name: 'launch_computation', methods: ['GET'])]
-    public function compute(Input $input, TranslatorInterface $translator) : Response
+    public function compute(Input $input, TranslatorInterface $translator, ProbabilisticLawParamsRepository $lawParamsRepository) : Response
     {
-        $filepath = $this->writeInputFile($input);
+        $filepath = $this->writeInputFile($input, $lawParamsRepository);
         $response = $this->forward('App\Controller\ComputationController::start1D', [
            'outfile' => $filepath,
         ]);
