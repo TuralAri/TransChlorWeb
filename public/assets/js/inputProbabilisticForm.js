@@ -57,9 +57,19 @@ function fetchProbabilisticForms(materialId) {
                     wrapper.id = uniqueFormId;
                     wrapper.classList.add("material-form", "hidden");
                     wrapper.dataset.materialId = materialId;
+                    wrapper.dataset.transportType = transportType;
+                    wrapper.dataset.material = JSON.stringify(data.materialData);
                     wrapper.innerHTML = `${data.form}`;
 
                     targetDiv.appendChild(wrapper);
+
+                    //adding an event listener to the standard deviation input
+                    const stdInput = wrapper.querySelector('[name$="[standardDeviation]"]');
+                    if (stdInput) {
+                        stdInput.addEventListener("input", () => {
+                            handleStdDevChange(wrapper, stdInput);
+                        });
+                    }
                 }
             })
             .catch(error => {
@@ -67,6 +77,91 @@ function fetchProbabilisticForms(materialId) {
             });
     }
 }
+
+function handleStdDevChange(wrapper, stdInput) {
+    const material = JSON.parse(wrapper.dataset.material || '{}');
+    const type = wrapper.dataset.transportType;
+
+    const std = parseFloat(stdInput.value);
+    if (isNaN(std)) return;
+
+    const computed = computeValues(material, type, std);
+    const updateField = (name, value) => {
+        const input = wrapper.querySelector(`[name$="[${name}]"]`);
+        if (input && value !== null && !isNaN(value)) {
+            input.value = value;
+        }
+    };
+
+    updateField("meanValue", computed.meanValue);
+    updateField("standardDeviation", std);
+    updateField("lambda", computed.lambda);
+    updateField("ksi", computed.ksi);
+    updateField("pMinus", computed.pMinus);
+    updateField("pPlus", computed.pPlus);
+    updateField("x1", computed.x1);
+    updateField("x2", computed.x2);
+}
+
+
+function computeValues(material, type, std) {
+    let mean = null;
+
+    switch (type) {
+        case 'waterVaporTransport':
+            mean = material.d100;
+            break;
+        case 'capillarityTransport':
+            const ec = material.ec;
+            const a = 0.0000625 * (ec * ec) - 0.000104 * ec + 0.00003;
+            const b = -0.015547 * (ec * ec) + 0.021655 * ec - 0.005652;
+            mean = a * 100 + b;
+            break;
+        case 'ionicTransport':
+            mean = material.dcl;
+            break;
+        case 'carbonation':
+            const ecC = material.ec;
+            const cementDensity = material.cementDensity;
+            const numerator = cementDensity * (ecC - 0.3) * (1 - 0.7);
+            const denominator = 1000 * (1 + (cementDensity * ecC / 1000));
+            const expression = numerator / denominator;
+            mean = 2.8 * expression * expression;
+            break;
+    }
+
+    if (!mean || !std || std <= 0) return {};
+
+    const mean2 = mean * mean;
+    const std2 = std * std;
+
+    const lambda = Math.log(mean2 / Math.sqrt(mean2 + std2));
+    const ksi = Math.sqrt(Math.log((std2 / mean2) + 1));
+    console.log(lambda);
+    console.log(ksi);
+
+    const sm = Math.exp(lambda) * (1 - Math.exp(-ksi));
+    const sp = Math.exp(lambda) * (Math.exp(ksi) - 1);
+
+    const pMinus = sp / (sp + sm);
+    const pPlus = sm / (sp + sm);
+
+    const x1 = Math.exp(lambda - ksi);
+    const x2 = Math.exp(lambda + ksi);
+
+    return {
+        meanValue: mean,
+        standardDeviation: std,
+        lambda,
+        ksi,
+        pMinus,
+        pPlus,
+        x1,
+        x2
+    };
+}
+
+
 
 function showForm(){
     const selectedId = inputProbilisticMaterials.value;

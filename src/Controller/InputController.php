@@ -463,7 +463,13 @@ class InputController extends AbstractController
 //           'form' => $this->renderView('inputs/form.html.twig', [
 //               'form' => $form->createView(),
 //           ])
-            'form' => $html->getContent()
+            'form' => $html->getContent(),
+            'materialData' => [
+                'ec' => $material->getEc(),
+                'd100' => $material->getD100Percent(),
+                'dcl' => $material->getDclTo(),
+                'cementDensity' => $material->getCementDensity(),
+            ],
         ]);
     }
 
