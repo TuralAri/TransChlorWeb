@@ -66,10 +66,35 @@ class InputController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $input = $form->getData();
 
-            $probabilisticData = $request->request;
-            dd($probabilisticData);
+            $probabilisticDataRaw = $form->get('probabilisticData')->getData();
+
+            if ($probabilisticDataRaw) {
+                $probabilisticData = json_decode($probabilisticDataRaw, true);
+
+                $transports = [
+                    'waterVaporTransport' => 'isWaterVaporTransportActivated',
+                    'capillarityTransport' => 'isCapillarityTransportActivated',
+                    'ionicTransport' => 'isIonicTransportActivated',
+                    'carbonation' => 'isCarbonatationActivated',
+                ];
+
+                foreach ($probabilisticData as $probabilisticItem) {
+                    foreach ($transports as $key => $activationMethod) {
+                        if (method_exists($input, $activationMethod) && $input->$activationMethod()) {
+                            if (isset($probabilisticItem[$key])) {
+                                $transport = new ProbabilisticLawParams();
+                                $this->setProbabilisticData($probabilisticItem[$key], $transport, $entityManager);
+                                $input->addProbabilisticParam($transport);
+                                $entityManager->persist($transport);
+                            }
+                        }
+                    }
+                }
+            }
+
 
             $input->setUser($user);
+
             $entityManager->persist($input);
             $entityManager->flush();
             return $this->redirectToRoute('inputs');
@@ -78,6 +103,22 @@ class InputController extends AbstractController
         return $this->render('inputs/add.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    public function setProbabilisticData($array, ProbabilisticLawParams $probabilisticLawParams, EntityManagerInterface $entityManager) : void
+    {
+        $material = $entityManager->getRepository(Material::class)->find($array['material']);
+
+        $probabilisticLawParams->setMaterial($material);
+        $probabilisticLawParams->setType($array['type']);
+        $probabilisticLawParams->setMeanValue($array['meanValue']);
+        $probabilisticLawParams->setStandardDeviation($array['standardDeviation']);
+        $probabilisticLawParams->setLambda($array['lambda']);
+        $probabilisticLawParams->setKsi($array['ksi']);
+        $probabilisticLawParams->setPMinus($array['pMinus']);
+        $probabilisticLawParams->setPPlus($array['pPlus']);
+        $probabilisticLawParams->setX1($array['x1']);
+        $probabilisticLawParams->setX2($array['x2']);
     }
 
     #[Route('/inputs/{id}/edit', name: 'edit_input')]
