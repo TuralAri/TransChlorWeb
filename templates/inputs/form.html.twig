@@ -1,7 +1,35 @@
 {{ form_start(form) }}
 {{ form_errors(form) }}
 
-{% for child in form %}
-    {{ form_row(child) }}
-{% endfor %}
+{{ form_row(form.material)}}
+{{ form_row(form.type)}}
+<div class="space-y-2">
+    <div class="gap-2 items-center w-fit justify-left">
+        {{ form_row(form.lawType, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+    </div>
+    <div class="gap-2 items-center w-fit justify-left">
+        {{ form_row(form.meanValue, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center bg-gray-100'}}) }}
+    </div>
+    <div class="gap-2 items-center w-fit justify-left">
+        {{ form_row(form.standardDeviation, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+    </div>
+    <div class="gap-2 items-center w-fit justify-left">
+        {{ form_row(form.lambda, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center bg-gray-100'}}) }}
+    </div>
+    <div class="gap-2 items-center w-fit justify-left">
+        {{ form_row(form.ksi, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center bg-gray-100'}}) }}
+    </div>
+    <div class="gap-2 items-center w-fit justify-left">
+        {{ form_row(form.pMinus, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center bg-gray-100'}}) }}
+    </div>
+    <div class="gap-2 items-center w-fit justify-left">
+        {{ form_row(form.pPlus, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center bg-gray-100'}}) }}
+    </div>
+    <div class="gap-2 items-center w-fit justify-left">
+        {{ form_row(form.x1, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center bg-gray-100'}}) }}
+    </div>
+    <div class="gap-2 items-center w-fit justify-left">
+        {{ form_row(form.x2, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center bg-gray-100'}}) }}
+    </div>
+</div>
 {{ form_end(form) }}
