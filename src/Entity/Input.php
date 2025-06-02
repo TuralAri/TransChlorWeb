@@ -150,7 +150,7 @@ class Input
     /**
      * @var Collection<int, ProbabilisticLawParams>
      */
-    #[ORM\OneToMany(targetEntity: ProbabilisticLawParams::class, mappedBy: 'input')]
+    #[ORM\OneToMany(targetEntity: ProbabilisticLawParams::class, mappedBy: 'input', cascade: ['remove'], orphanRemoval: true)]
     private Collection $probabilisticParams;
 
     public function __construct()
