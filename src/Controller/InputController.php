@@ -8,6 +8,7 @@ use App\Entity\ProbabilisticLawParams;
 use App\Form\InputFormType;
 use App\Form\ProbabilisticLawFormType;
 use App\Repository\InputRepository;
+use App\Repository\ProbabilisticLawParamsRepository;
 use App\Service\ApiService;
 use Doctrine\ORM\EntityManagerInterface;
 use http\Exception\RuntimeException;
@@ -164,11 +165,11 @@ class InputController extends AbstractController
     }
 
     #[Route('/inputs/{id}/generate', name: 'generate_input')]
-    public function generateInput(Input $input): Response
+    public function generateInput(Input $input, ProbabilisticLawParamsRepository $lawParamsRepository): Response
     {
 //        return $this->writeInputFile($input);
 
-        $filePath = $this->writeInputFile($input);
+        $filePath = $this->writeInputFile($input, $lawParamsRepository);
 
         $response = new BinaryFileResponse($filePath);
         $response->setContentDisposition(
@@ -178,7 +179,7 @@ class InputController extends AbstractController
         return $response;
     }
 
-    public function writeInputFile(Input $input) : String
+    public function writeInputFile(Input $input, ProbabilisticLawParamsRepository $lawParamsRepository) : String
     {
         $materials = $input->getMaterial();
         $tempMat = $materials->get(0); //Variable pour les valeurs d'input tant qu'on a pas fixé le probleme des variables dans les mauvaises entitées.
@@ -298,26 +299,45 @@ class InputController extends AbstractController
             fwrite($handle, $material->getAggregateDensity() . "\n");//masse volumique des granulats
             fwrite($handle, $material->getCementDensity() . "\n");//masse volumique du ciment
             //
-            if(!$input->isWaterVaporTransportActivated()){
-                for ($i = 0; $i < 5; $i++) {
-                    fwrite($handle, "0" . "\n");
+            $transports = [
+                'waterVaporTransport' => 'isWaterVaporTransportActivated',
+                'capillarityTransport' => 'isCapillarityTransportActivated',
+                'ionicTransport' => 'isIonicTransportActivated',
+                'carbonation' => 'isCarbonatationActivated',
+            ];
+
+            foreach ($transports as $type => $activationMethod) {
+                if (method_exists($input, $activationMethod) && $input->$activationMethod()) {
+                    $lawParam = $lawParamsRepository->findOneByMaterialInputAndType($material, $input, $type);
+                    $this->writeLawParams($lawParam, $handle);
+                }else{
+                    for ($i = 0; $i < 5; $i++) {
+                        fwrite($handle, "0" . "\n");
+                    }
                 }
             }
-            if(!$input->isCapillarityTransportActivated()){
-                for ($i = 0; $i < 5; $i++) {
-                    fwrite($handle, "0" . "\n");
-                }
-            }
-            if(!$input->isIonicTransportActivated()){
-                for ($i = 0; $i < 5; $i++) {
-                    fwrite($handle, "0" . "\n");
-                }
-            }
-            if(!$input->isCarbonatationActivated()){
-                for ($i = 0; $i < 5; $i++) {
-                    fwrite($handle, "0" . "\n");
-                }
-            }
+
+//            if(!$input->isWaterVaporTransportActivated()){
+//                for ($i = 0; $i < 5; $i++) {
+//                    fwrite($handle, "0" . "\n");
+//                }
+//            }
+//            if(!$input->isCapillarityTransportActivated()){
+//                for ($i = 0; $i < 5; $i++) {
+//                    fwrite($handle, "0" . "\n");
+//                }
+//            }
+//            if(!$input->isIonicTransportActivated()){
+//                for ($i = 0; $i < 5; $i++) {
+//                    fwrite($handle, "0" . "\n");
+//                }
+//            }
+//            if(!$input->isCarbonatationActivated()){
+//                for ($i = 0; $i < 5; $i++) {
+//                    fwrite($handle, "0" . "\n");
+//                }
+//            }
+
             //
             fwrite($handle, $material->getEc() . "\n");//eau sur ciment pour le calcul Dcap // CORRESPOND AU E/C VIRTUEL
             //
@@ -329,6 +349,22 @@ class InputController extends AbstractController
         fclose($handle);
 
         return $filePath;
+    }
+
+    public function writeLawParams(ProbabilisticLawParams $lawParams, $handle) : void
+    {
+        //Normal law case
+        if($lawParams->getLawType() == 1){
+            fwrite($handle, "1" . "\n");
+            fwrite($handle, ($lawParams->getMeanValue() - $lawParams->getStandardDeviation()) / $lawParams->getMeanValue() . "\n");
+            fwrite($handle, ($lawParams->getMeanValue() + $lawParams->getStandardDeviation()) / $lawParams->getMeanValue() . "\n");
+            fwrite($handle, "0.5" . "\n");
+            fwrite($handle, "0.5" . "\n");
+        }
+        //logonormal law case
+        else if($lawParams->getLawType() == 2){
+            fwrite($handle, "2" . "\n");
+        }
     }
 
     #[Route('/inputs/{id}/compute', name: 'launch_computation', methods: ['GET'])]

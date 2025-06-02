@@ -38,7 +38,7 @@ class ProbabilisticLawParams
     private ?float $x2 = null;
 
     #[ORM\ManyToOne]
-    private ?Material $Material = null;
+    private ?Material $material = null;
 
     #[ORM\ManyToOne(inversedBy: 'probabilisticParams')]
     private ?Input $input = null;
@@ -152,12 +152,12 @@ class ProbabilisticLawParams
 
     public function getMaterial(): ?Material
     {
-        return $this->Material;
+        return $this->material;
     }
 
-    public function setMaterial(?Material $Material): static
+    public function setMaterial(?Material $material): static
     {
-        $this->Material = $Material;
+        $this->material = $material;
 
         return $this;
     }
