@@ -364,6 +364,12 @@ class InputController extends AbstractController
         //logonormal law case
         else if($lawParams->getLawType() == 2){
             fwrite($handle, "2" . "\n");
+            fwrite($handle, ((exp($lawParams->getLambda() - $lawParams->getKsi())) / $lawParams->getMeanValue()) . "\n");
+            fwrite($handle, ((exp($lawParams->getLambda() + $lawParams->getKsi())) / $lawParams->getMeanValue()) . "\n");
+            $sm = exp($lawParams->getLambda()) * (1 - exp(-$lawParams->getKsi()));
+            $sp = exp($lawParams->getLambda()) * (exp($lawParams->getKsi()) - 1);
+            fwrite($handle, ($sp / ($sp + $sm)) . "\n");
+            fwrite($handle, ($sm / ($sp + $sm)) . "\n");
         }else{
             throw new RuntimeException("Unknown law type: " . $lawParams->getLawType());
         }
