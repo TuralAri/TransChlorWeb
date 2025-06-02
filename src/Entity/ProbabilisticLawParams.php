@@ -46,6 +46,9 @@ class ProbabilisticLawParams
     #[ORM\Column(length: 255)]
     private ?string $type = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $lawType = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -179,6 +182,18 @@ class ProbabilisticLawParams
     public function setType(string $type): static
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getLawType(): ?int
+    {
+        return $this->lawType;
+    }
+
+    public function setLawType(?int $lawType): static
+    {
+        $this->lawType = $lawType;
 
         return $this;
     }

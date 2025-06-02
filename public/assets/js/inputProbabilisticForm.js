@@ -57,7 +57,7 @@ function fetchProbabilisticForms(materialId) {
                     wrapper.id = uniqueFormId;
                     wrapper.classList.add("material-form", "hidden");
                     wrapper.dataset.materialId = materialId;
-                    wrapper.innerHTML = `<h4>${materialId} ${transportType}</h4>${data.form}`;
+                    wrapper.innerHTML = `${data.form}`;
 
                     targetDiv.appendChild(wrapper);
                 }

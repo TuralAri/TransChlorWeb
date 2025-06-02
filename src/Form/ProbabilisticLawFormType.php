@@ -30,6 +30,13 @@ class ProbabilisticLawFormType extends AbstractType
                 'label_attr' => ['class' => 'hidden'],
                 'required' => false,
             ])
+            ->add('lawType', ChoiceType::class,[
+                'attr' => $commonAttr,
+                'choices' => [
+                    'Loi normale' => '1',
+                    'Loi logonormale' =>'2',
+                ]
+            ])
             ->add('meanValue', TextType::class, [
                 'attr' => $commonAttr,
                 'required' => false,

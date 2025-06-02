@@ -92,7 +92,6 @@ class InputController extends AbstractController
                 }
             }
 
-
             $input->setUser($user);
 
             $entityManager->persist($input);
@@ -111,6 +110,7 @@ class InputController extends AbstractController
 
         $probabilisticLawParams->setMaterial($material);
         $probabilisticLawParams->setType($array['type']);
+        $probabilisticLawParams->setLawType($array['lawType']);
         $probabilisticLawParams->setMeanValue($array['meanValue']);
         $probabilisticLawParams->setStandardDeviation($array['standardDeviation']);
         $probabilisticLawParams->setLambda($array['lambda']);
@@ -326,7 +326,6 @@ class InputController extends AbstractController
             $this->writeInitialCondition($input->getIonicTransport(), $handle);
             //
         }
-
         fclose($handle);
 
         return $filePath;
