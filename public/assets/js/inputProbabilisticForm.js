@@ -80,7 +80,7 @@ function fetchProbabilisticForms(materialId) {
                 }
             })
             .catch(error => {
-                console.error("Erreur lors de la récupération du formulaire :", error);
+                console.error("Error while getting the form :", error);
             });
     }
 }
@@ -235,7 +235,7 @@ function gatherSubFormsData() {
     if (hiddenField) {
         hiddenField.value = JSON.stringify(data);
     } else {
-        console.warn('Champ caché probabilisticData non trouvé');
+        console.warn('hidden field "input_form_probabilisticData" not found.');
     }
 }
 
