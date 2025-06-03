@@ -16,11 +16,15 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class InputFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        /** @var UserInterface $user */
+        $user = $options['user'];
+
         $builder
             ->add('name')
             ->add('comment')
@@ -72,6 +76,11 @@ class InputFormType extends AbstractType
                 'class' => Material::class,
                 'choice_label' => 'name',
                 'multiple' => true,
+                'query_builder' => function ($repo) use ($user) {
+                    return $repo->createQueryBuilder('m')
+                        ->where('m.user = :user')
+                        ->setParameter('user', $user);
+                },
             ])
             ->add('leftEdgeCO2Choice', EntityType::class, [
                 'class' => Location::class,
@@ -131,6 +140,7 @@ class InputFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Input::class,
+            'user' => null,
         ]);
     }
 }

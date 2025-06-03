@@ -62,6 +62,7 @@ class InputController extends AbstractController
         $input = new Input();
         $form = $this->createForm(InputFormType::class, $input, [
             'attr' => ['id' => 'input_form'],
+            'user' => $this->getUser(),
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
