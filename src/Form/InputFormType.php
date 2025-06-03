@@ -43,6 +43,7 @@ class InputFormType extends AbstractType
                     '5: Plusieurs écarts constants, non symétriques' =>'5',
                 ]
             ])
+            ->add('edgeElementLength')
             ->add('resultsDisplayTime')
             ->add('capillarityTreatment', ChoiceType::class,[
                 'choices' => [

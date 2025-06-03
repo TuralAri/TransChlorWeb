@@ -2,6 +2,10 @@ let thermalTransportInput;
 let waterTransportInput;
 let ionicTransportInput;
 
+let edgeElementLengthInput;
+let meshTypeInput;
+let edgeElementDiv;
+
 const tableData = {
     t: [],
     h: [],
@@ -25,6 +29,10 @@ document.addEventListener("DOMContentLoaded", () => {
     thermalTransportInput = document.getElementById("input_form_thermalTransport");
     waterTransportInput = document.getElementById("input_form_waterTransport");
     ionicTransportInput = document.getElementById("input_form_IonicTransport");
+
+    edgeElementLengthInput = document.getElementById("input_form_edgeElementLength");
+    meshTypeInput = document.getElementById("input_form_meshType");
+    edgeElementDiv = document.getElementById("edgeElementDiv")
 
     const addLineBtn = document.getElementById("addLineBtn");
 
@@ -75,12 +83,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
     addInputListenersToCells();
     updateTableData();
+
+    meshTypeInput.addEventListener("change", handleMeshTypeChange);
+    handleMeshTypeChange();
 });
 
 //adding form listeners
 
 for(let i =1; i<=4; i++){
     addFormListener(i);
+}
+
+function handleMeshTypeChange() {
+    if(meshTypeInput.value === "2" || meshTypeInput.value === "3") {
+        edgeElementDiv.classList.remove("hidden");
+    }
+    else {
+        edgeElementDiv.classList.add("hidden");
+    }
 }
 
 //Fetchs the data from the table to construct the arrays

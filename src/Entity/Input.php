@@ -153,6 +153,9 @@ class Input
     #[ORM\OneToMany(targetEntity: ProbabilisticLawParams::class, mappedBy: 'input', cascade: ['remove'], orphanRemoval: true)]
     private Collection $probabilisticParams;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $edgeElementLength = null;
+
     public function __construct()
     {
         $this->material = new ArrayCollection();
@@ -722,6 +725,18 @@ class Input
                 $probabilisticParam->setInput(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getEdgeElementLength(): ?int
+    {
+        return $this->edgeElementLength;
+    }
+
+    public function setEdgeElementLength(?int $edgeElementLength): static
+    {
+        $this->edgeElementLength = $edgeElementLength;
 
         return $this;
     }
