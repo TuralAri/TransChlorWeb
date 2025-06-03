@@ -208,6 +208,10 @@ class InputController extends AbstractController
         switch ($input->getMeshType()) {
             case 1:
                 break; //Nothing
+            case 2: //proportional deviation
+            case 3: //exponential deviation
+                fwrite($handle, $input->getEdgeElementLength() . "\n");
+                break;
         }
 
         fwrite($handle, $input->getMaxComputingTime() . "\n"); //TimeMax
