@@ -108,14 +108,15 @@ class InputController extends AbstractController
     public function setProbabilisticData($array, ProbabilisticLawParams $probabilisticLawParams, EntityManagerInterface $entityManager) : void
     {
         $material = $entityManager->getRepository(Material::class)->find($array['material']);
-
         $probabilisticLawParams->setMaterial($material);
         $probabilisticLawParams->setType($array['type']);
         $probabilisticLawParams->setLawType($array['lawType']);
         $probabilisticLawParams->setMeanValue($array['meanValue']);
         $probabilisticLawParams->setStandardDeviation($array['standardDeviation']);
-        $probabilisticLawParams->setLambda($array['lambda']);
-        $probabilisticLawParams->setKsi($array['ksi']);
+        if($array['lawType'] == 2){ //logonormal law
+            $probabilisticLawParams->setLambda($array['lambda']);
+            $probabilisticLawParams->setKsi($array['ksi']);
+        }
         $probabilisticLawParams->setPMinus($array['pMinus']);
         $probabilisticLawParams->setPPlus($array['pPlus']);
         $probabilisticLawParams->setX1($array['x1']);

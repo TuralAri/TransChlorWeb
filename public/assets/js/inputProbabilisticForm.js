@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+//function that updates the selected material and shows the corresponding forms (that were hidden)
 function updateSelectedMaterials() {
     inputProbilisticMaterials.innerHTML = '<option value="0">--Sélectionner un matériau--</option>';
 
@@ -65,8 +66,14 @@ function fetchProbabilisticForms(materialId) {
 
                     //adding an event listener to the standard deviation input
                     const stdInput = wrapper.querySelector('[name$="[standardDeviation]"]');
+                    const lawTypeInput = wrapper.querySelector('[name$="[lawType]"]');
                     if (stdInput) {
                         stdInput.addEventListener("input", () => {
+                            handleStdDevChange(wrapper, stdInput);
+                        });
+                    }
+                    if(lawTypeInput){
+                        lawTypeInput.addEventListener("change", () => {
                             handleStdDevChange(wrapper, stdInput);
                         });
                     }
@@ -85,7 +92,10 @@ function handleStdDevChange(wrapper, stdInput) {
     const std = parseFloat(stdInput.value);
     if (isNaN(std)) return;
 
-    const computed = computeValues(material, type, std);
+    const lawTypeInput = wrapper.querySelector('[name$="[lawType]"]');
+    const lawType = lawTypeInput ? parseInt(lawTypeInput.value) : 1;
+
+    const computed = computeValues(material, type, std, lawType);
     const updateField = (name, value) => {
         const input = wrapper.querySelector(`[name$="[${name}]"]`);
         if (input && value !== null && !isNaN(value)) {
@@ -103,8 +113,8 @@ function handleStdDevChange(wrapper, stdInput) {
     updateField("x2", computed.x2);
 }
 
-
-function computeValues(material, type, std) {
+//Function to compute values based on the material and type
+function computeValues(material, type, std, lawType) {
     let mean = null;
 
     switch (type) {
@@ -130,6 +140,26 @@ function computeValues(material, type, std) {
             break;
     }
 
+    console.log(lawType);
+
+
+    // Normal law (lawType = 1)
+    if (lawType === 1) {
+        const min = mean - std;
+        const max = mean + std;
+        return {
+            meanValue: mean,
+            standardDeviation: std,
+            lambda: '',
+            ksi: '',
+            pMinus: 0.5,
+            pPlus: 0.5,
+            x1: min,
+            x2: max
+        };
+    }
+
+    //else logonormal law (create if else for other laws)
     if (!mean || !std || std <= 0) return {};
 
     const mean2 = mean * mean;
