@@ -6,6 +6,7 @@ use App\Entity\Exposure;
 use App\Entity\ExposureSeries;
 use App\Entity\WeatherStation;
 use App\Form\ExposureSeriesFormType;
+use App\Repository\ExposureRepository;
 use App\Repository\ExposureSeriesRepository;
 use App\Service\ApiService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -133,6 +134,35 @@ class ExposureSeriesController extends AbstractController
             'exposureSeriesForm' => $exposureSeriesForm->createView(),
         ]);
     }
+
+    #[Route('/weatherstations/get-series-by-station/{id}', name: 'get_series_by_station')]
+    public function getSeriesByStation(WeatherStation $weatherStation, Request $request, ExposureSeriesRepository $repo): JsonResponse
+    {
+        $series = $weatherStation->getExposureSeries();
+
+        $data = [];
+        foreach ($series as $s) {
+            $data[] = ['id' => $s->getId(), 'name' => $s->__toString()];
+        }
+
+        return new JsonResponse($data);
+    }
+
+    #[Route('/get-exposures-by-series/{id}', name: 'get_exposures_by_series')]
+    public function getExposuresBySeries(ExposureSeries $exposureSeries, Request $request, ExposureRepository $repo): JsonResponse
+    {
+        $exposures = $exposureSeries->getExposures();
+
+        $data = [];
+        foreach ($exposures as $e) {
+            $data[] = ['id' => $e->getId(), 'type' => $e->getType()];
+        }
+
+        return new JsonResponse($data);
+    }
+
+
+
 
     public function getFormData($formData, int $case): array
     {

@@ -22,6 +22,11 @@ class ExposureSeries
     #[ORM\Column(length: 255)]
     private ?string $label = null;
 
+    public function __toString(): string
+    {
+        return '[' .$this->id. '] ' . $this->label ?? '';
+    }
+
     public function getLabel(): ?string
     {
         return $this->label;

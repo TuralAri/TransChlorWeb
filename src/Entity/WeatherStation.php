@@ -59,6 +59,11 @@ class WeatherStation
         $this->uploadedAt = new \DateTimeImmutable('now');
     }
 
+    public function __toString(): string
+    {
+        return '[' . $this->getId() . '] ' . $this->getLocalFileName();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

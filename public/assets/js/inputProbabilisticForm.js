@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
     inputMaterials.addEventListener("change", updateSelectedMaterials);
     inputProbilisticMaterials.addEventListener("change", showForm);
 
-    // Avant envoi du formulaire global
+    //just before sending the form, gather all the data from the sub-forms
     document.getElementById('input_form').addEventListener('submit', e => {
         gatherSubFormsData();
     });

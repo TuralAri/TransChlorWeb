@@ -3,10 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Exposure;
+use App\Entity\ExposureSeries;
 use App\Entity\Input;
 use App\Entity\Location;
 use App\Entity\Material;
 use App\Entity\ProbabilisticLawParams;
+use App\Entity\WeatherStation;
 use Doctrine\DBAL\Types\JsonType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -64,13 +66,32 @@ class InputFormType extends AbstractType
             ->add('isCapillarityTransportActivated')
             ->add('isIonicTransportActivated')
             ->add('isCarbonatationActivated')
+            ->add('weatherStation', EntityType::class, [
+                'class' => WeatherStation::class,
+//                'choice_label' => 'id' . 'localFileName',
+                'placeholder' => 'Choisissez une station météo',
+                'mapped' => false,
+                'required' => true,
+            ])
+            ->add('exposureSeries', EntityType::class, [
+                'class' => ExposureSeries::class,
+                'choice_label' => 'name',
+                'placeholder' => 'Choisissez une série d’exposition',
+                'mapped' => false,
+                'required' => true,
+                'choices' => [], // AJAX will fill this
+            ])
             ->add('exposureFile1', EntityType::class, [
                 'class' => Exposure::class,
                 'choice_label' => 'type',
+                'placeholder' => 'Choisissez une exposition',
+                'choices' => [], // AJAX will fill this
             ])
             ->add('exposureFile2', EntityType::class, [
                 'class' => Exposure::class,
                 'choice_label' => 'type',
+                'placeholder' => 'Choisissez une exposition',
+                'choices' => [], // AJAX will fill this
             ])
             ->add('material', EntityType::class, [
                 'class' => Material::class,
