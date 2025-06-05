@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'inputForm.editPageTitle' | trans }}{% endblock %}
+{% block title %}{{ 'inputForm.addPageTitle' | trans }}{% endblock %}
 
 {% block body %}
     <main class="flex-1 min-h-screen">
@@ -20,7 +20,7 @@
 
             <div class="flex justify-between items-center">
 
-                <h1 class="text-2xl font-bold mb-6">{{'inputForm.editPageTitle' | trans}}</h1>
+                <h1 class="text-2xl font-bold mb-6">{{'inputForm.addPageTitle' | trans}}</h1>
                 <a href="{{ path('inputs')}}"
                    class="inline-block mb-4 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
                     <i class="fa-solid fa-arrow-left mr-1"></i> {{'goBack' | trans}}
@@ -88,6 +88,15 @@
                         </div>
                         <div class="gap-2 items-center w-fit justify-left">
                             {{ form_row(form.meshType, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        </div>
+                        <div class="gap-2 items-center w-fit justify-left hidden" id="edgeElementDiv">
+                            {{ form_row(form.edgeElementLength, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        </div>
+                        <div class="gap-2 items-center w-fit justify-left">
+                            {{ form_row(form.weatherStation, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                        </div>
+                        <div class="gap-2 items-center w-fit justify-left">
+                            {{ form_row(form.exposureSeries, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
                         </div>
                         <div class="gap-2 items-center w-fit justify-left">
                             {{ form_row(form.exposureFile1, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
@@ -251,7 +260,7 @@
                     <option value="0">--Selectionner un matériau--</option>
                 </select>
                 <div class="gap-2 w-fit justify-left flex flex-wrap justify-around">
-                    <section class="tab-section mt-4 bg-white p-6 rounded-lg border-2 space-y-4 border-black lg:w-2/5">
+                    <section class="tab-section mt-4 bg-white p-6 rounded-lg border-2 space-y-4 border-black lg:w-2/5 sm:w-full w-full">
                         <div class="flex justify-between items-center">
                             <h3 class="text-xl font-semibold">Transport Hydrique de vapeur d'eau</h3>
                         </div>
@@ -260,7 +269,7 @@
                         {{ form_row(form.isWaterVaporTransportActivated, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
                     </section>
 
-                    <section class="tab-section mt-4 bg-white p-6 rounded-lg border-2 space-y-4 border-black lg:w-2/5">
+                    <section class="tab-section mt-4 bg-white p-6 rounded-lg border-2 space-y-4 border-black lg:w-2/5 sm:w-full w-full">
                         <div class="flex justify-between items-center">
                             <h3 class="text-xl font-semibold">Transport hydrique d'eau liquide par capillarité</h3>
                         </div>
@@ -270,7 +279,7 @@
                         {{ form_row(form.isCapillarityTransportActivated, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
                     </section>
 
-                    <section class="tab-section mt-4 bg-white p-6 rounded-lg border-2 space-y-4 border-black lg:w-2/5">
+                    <section class="tab-section mt-4 bg-white p-6 rounded-lg border-2 space-y-4 border-black lg:w-2/5 sm:w-full w-full">
                         <div class="flex justify-between items-center">
                             <h3 class="text-xl font-semibold">Transport ionique des chlorures</h3>
                         </div>
@@ -279,7 +288,7 @@
                         {{ form_row(form.isIonicTransportActivated, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
                     </section>
 
-                    <section class="tab-section mt-4 bg-white p-6 rounded-lg border-2 space-y-4 border-black lg:w-2/5">
+                    <section class="tab-section mt-4 bg-white p-6 rounded-lg border-2 space-y-4 border-black lg:w-2/5 sm:w-full w-full">
                         <div class="flex justify-between items-center">
                             <h3 class="text-xl font-semibold">Carbonatation</h3>
                         </div>

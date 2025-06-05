@@ -25,6 +25,11 @@ class Exposure
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $localname = null;
 
+    public function __toString(): string
+    {
+        return $this->type ?? 'N/A';
+    }
+
     public function getId(): ?int
     {
         return $this->id;

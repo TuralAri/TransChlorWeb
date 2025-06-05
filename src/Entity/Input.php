@@ -156,6 +156,12 @@ class Input
     #[ORM\Column(nullable: true)]
     private ?int $edgeElementLength = null;
 
+    #[ORM\ManyToOne]
+    private ?WeatherStation $weatherStation = null;
+
+    #[ORM\ManyToOne]
+    private ?ExposureSeries $exposureSeries = null;
+
     public function __construct()
     {
         $this->material = new ArrayCollection();
@@ -737,6 +743,30 @@ class Input
     public function setEdgeElementLength(?int $edgeElementLength): static
     {
         $this->edgeElementLength = $edgeElementLength;
+
+        return $this;
+    }
+
+    public function getWeatherStation(): ?WeatherStation
+    {
+        return $this->weatherStation;
+    }
+
+    public function setWeatherStation(?WeatherStation $weatherStation): static
+    {
+        $this->weatherStation = $weatherStation;
+
+        return $this;
+    }
+
+    public function getExposureSeries(): ?ExposureSeries
+    {
+        return $this->exposureSeries;
+    }
+
+    public function setExposureSeries(?ExposureSeries $exposureSeries): static
+    {
+        $this->exposureSeries = $exposureSeries;
 
         return $this;
     }

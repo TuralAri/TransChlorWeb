@@ -17,6 +17,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -152,6 +154,46 @@ class InputFormType extends AbstractType
             ->add('submit', SubmitType::class);
         ;
 
+        //adds listeners to dynamically update the form based on previous selections
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            $form = $event->getForm();
+            $data = $event->getData();
+            $em = $form->getConfig()->getOption('em');
+
+            // Pour exposureSeries
+            if (isset($data['weatherStation'])) {
+                $series = $em->getRepository(ExposureSeries::class)->findBy(['weatherStation' => $data['weatherStation']]);
+                $form->add('exposureSeries', EntityType::class, [
+                    'class' => ExposureSeries::class,
+                    'choices' => $series,
+                    'choice_label' => 'name',
+                    'placeholder' => 'Choisissez une série d’exposition',
+                    'mapped' => false,
+                    'required' => true,
+                ]);
+            }
+
+            // Pour exposureFile1 et exposureFile2
+            if (isset($data['exposureSeries'])) {
+                $expos = $em->getRepository(Exposure::class)->findBy(['ExposureSerie' => $data['exposureSeries']]);
+                $form->add('exposureFile1', EntityType::class, [
+                    'class' => Exposure::class,
+                    'choices' => $expos,
+                    'choice_label' => 'type',
+                    'placeholder' => 'Choisissez une exposition',
+                    'required' => true,
+                ]);
+                $form->add('exposureFile2', EntityType::class, [
+                    'class' => Exposure::class,
+                    'choices' => $expos,
+                    'choice_label' => 'type',
+                    'placeholder' => 'Choisissez une exposition',
+                    'required' => true,
+                ]);
+            }
+        });
+
+        // added transformers for JSON fields
         $builder->get('thermalTransport')->addModelTransformer(new JsonToArrayTransformer());
         $builder->get('waterTransport')->addModelTransformer(new JsonToArrayTransformer());
         $builder->get('IonicTransport')->addModelTransformer(new JsonToArrayTransformer());
@@ -162,6 +204,7 @@ class InputFormType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Input::class,
             'user' => null,
+            'em' => null, // EntityManager for fetching exposures
         ]);
     }
 }
