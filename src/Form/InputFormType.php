@@ -99,10 +99,19 @@ class InputFormType extends AbstractType
                 'class' => Material::class,
                 'choice_label' => 'name',
                 'multiple' => true,
-                'query_builder' => function ($repo) use ($user) {
-                    return $repo->createQueryBuilder('m')
+                'query_builder' => function ($repo) use ($user, $builder) {
+                    // adds the already existing materials for the user
+                    $input = $builder->getData();
+                    $qb = $repo->createQueryBuilder('m')
                         ->where('m.user = :user')
                         ->setParameter('user', $user);
+
+                    if ($input && count($input->getMaterial()) > 0) {
+                        $qb->orWhere('m.id IN (:materials)')
+                            ->setParameter('materials', $input->getMaterial());
+                    }
+
+                    return $qb;
                 },
             ])
             ->add('leftEdgeCO2Choice', EntityType::class, [

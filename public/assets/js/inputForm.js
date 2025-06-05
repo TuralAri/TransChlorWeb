@@ -92,8 +92,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (ionicTransportActivatedCheckbox.checked) chlorideIonicTransportDiv.classList.remove("hidden");
     if (carbonationActivatedCheckbox.checked) carbonationDiv.classList.remove("hidden");
 
+    prefillTableFromInputs();
     addInputListenersToCells();
-    updateTableData();
+    // updateTableData();
 
     meshTypeInput.addEventListener("change", handleMeshTypeChange);
     handleMeshTypeChange();
@@ -209,6 +210,57 @@ function updateTableData() {
     waterTransportInput.value = JSON.stringify(tableData.h);
     ionicTransportInput.value = JSON.stringify(tableData.i);
 }
+
+function prefillTableFromInputs() {
+    const tableBody = document.querySelector("#editableTable tbody");
+
+    //delete all rows except the last one (the empty row)
+    while (tableBody.rows.length > 1) {
+        tableBody.deleteRow(0);
+    }
+
+    // fuse and sort all x values from the three inputs
+    const allX = new Set();
+
+    const parsedT = JSON.parse(thermalTransportInput.value || "[]");
+    const parsedH = JSON.parse(waterTransportInput.value || "[]");
+    const parsedI = JSON.parse(ionicTransportInput.value || "[]");
+
+    parsedT.forEach(item => allX.add(item.x));
+    parsedH.forEach(item => allX.add(item.x));
+    parsedI.forEach(item => allX.add(item.x));
+
+    const sortedX = Array.from(allX).sort((a, b) => a - b);
+
+    sortedX.forEach(x => {
+        const row = tableBody.insertRow(tableBody.rows.length - 1);
+
+        const tVal = parsedT.find(item => item.x === x)?.value ?? "";
+        const hVal = parsedH.find(item => item.x === x)?.value ?? "";
+        const iVal = parsedI.find(item => item.x === x)?.value ?? "";
+
+        const xCell = row.insertCell();
+        xCell.textContent = x;
+        xCell.contentEditable = "true";
+        xCell.className = "border border-gray-300 px-4 py-2 focus:outline-blue-500";
+
+        const tCell = row.insertCell();
+        tCell.textContent = tVal;
+        tCell.contentEditable = "true";
+        tCell.className = "border border-gray-300 px-4 py-2 focus:outline-blue-500";
+
+        const hCell = row.insertCell();
+        hCell.textContent = hVal;
+        hCell.contentEditable = "true";
+        hCell.className = "border border-gray-300 px-4 py-2 focus:outline-blue-500";
+
+        const iCell = row.insertCell();
+        iCell.textContent = iVal;
+        iCell.contentEditable = "true";
+        iCell.className = "border border-gray-300 px-4 py-2 focus:outline-blue-500";
+    });
+}
+
 
 //Table manipulation logic
 function addInputListenersToCells() {
