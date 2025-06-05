@@ -49,7 +49,7 @@
                 <div class="flex justify-between items-center">
                     <h2 class="text-xl font-semibold">Paramètres du programme</h2>
                 </div>
-                <div class="flex flex-wrap">
+                <div class="flex flex-wrap gap-4">
                     <div class="space-y-4">
                         <div class="gap-2 items-center w-fit justify-left">
                             {{ form_row(form.maxComputingTime, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
@@ -220,9 +220,18 @@
                     <h2 class="text-xl font-semibold">Conditions Initiales</h2>
                 </div>
                 <div class="gap-2 items-center w-fit justify-left">
-                    {{ form_row(form.thermalTransport, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    {{ form_row(form.waterTransport, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
-                    {{ form_row(form.IonicTransport, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
+                    {{ form_row(form.thermalTransport, {
+                        'attr': {'class': 'hidden'},
+                        'label': false
+                    })}}
+                    {{ form_row(form.waterTransport, {
+                        'attr': {'class': 'hidden'},
+                        'label': false
+                    })}}
+                    {{ form_row(form.IonicTransport, {
+                        'attr': {'class': 'hidden'},
+                        'label': false
+                    })}}
                     <div class="overflow-x-auto">
                         <table id="editableTable" class="min-w-full table-auto border border-gray-300">
                             <thead class="bg-gray-100">
@@ -302,6 +311,7 @@
     </main>
 {% endblock %}
 {% block javascripts %}
+    <script>let pageType = "edit"</script>
     <script src="{{ asset('assets/js/inputForm.js') }}"></script>
     <script src="{{ asset('assets/js/inputProbabilisticForm.js') }}"></script>
 {% endblock %}

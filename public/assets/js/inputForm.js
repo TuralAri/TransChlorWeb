@@ -92,9 +92,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (ionicTransportActivatedCheckbox.checked) chlorideIonicTransportDiv.classList.remove("hidden");
     if (carbonationActivatedCheckbox.checked) carbonationDiv.classList.remove("hidden");
 
-    prefillTableFromInputs();
+    if(pageType === "edit"){
+        prefillTableFromInputs();
+    }
     addInputListenersToCells();
-    // updateTableData();
+    updateTableData();
 
     meshTypeInput.addEventListener("change", handleMeshTypeChange);
     handleMeshTypeChange();
