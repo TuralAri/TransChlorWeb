@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'inputForm.addPageTitle' | trans }}{% endblock %}
+{% block title %}{{ 'inputForm.editPageTitle' | trans }}{% endblock %}
 
 {% block body %}
     <main class="flex-1 min-h-screen">
@@ -20,7 +20,7 @@
 
             <div class="flex justify-between items-center">
 
-                <h1 class="text-2xl font-bold mb-6">{{'inputForm.addPageTitle' | trans}}</h1>
+                <h1 class="text-2xl font-bold mb-6">{{'inputForm.editPageTitle' | trans}}</h1>
                 <a href="{{ path('inputs')}}"
                    class="inline-block mb-4 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
                     <i class="fa-solid fa-arrow-left mr-1"></i> {{'goBack' | trans}}
@@ -291,7 +291,10 @@
                     </section>
                 </div>
             </section>
-
+            {{ form_row(form.probabilisticData, {
+                'attr': {'class': 'hidden'},
+                'label': false
+            }) }}
             {{ form_row(form.submit, {'attr' : {'class': 'px-4 py-2 mt-4 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'}}) }}
 
             {{ form_end(form) }}
