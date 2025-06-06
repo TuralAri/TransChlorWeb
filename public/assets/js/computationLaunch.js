@@ -1,4 +1,9 @@
 function launchComputation(inputID, nqual, materialNames){
+    let confirmation = confirm("Êtes-vous sûr de vouloir lancer le calcul ?");
+    if (!confirmation) {
+        return;
+    }
+
     let epLayers = [0.0];
     let nlayers = 1;
     let jsonData = {};
