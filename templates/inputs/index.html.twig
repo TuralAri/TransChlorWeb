@@ -57,7 +57,7 @@
                                         <i class="fa-solid fa-download"></i>
                                     </a>
                                     {% set materialNames = input.material|map(m => m.name)|join(',') %}
-                                    <button onclick="launchComputation({{ input.id }}, {{ input.material|length }},  '{{ materialNames }}'.split(','))"
+                                    <button onclick="launchComputation({{ input.id }}, {{ input.material|length }},  '{{ materialNames }}'.split(','), '{{ input.wallThickness }}')"
                                             class="px-4 py-2 bg-blue-500 hover:bg-blue-700 rounded text-white"
                                             title="{{ 'input.launch' | trans }}">
                                         <i class="fa-solid fa-play"></i>
@@ -87,5 +87,13 @@
     </main>
 {% endblock %}
 {% block javascripts %}
+    {#  Pushing translations in the JS  #}
+    <script>
+            const translations = {
+            confirmLaunch: "{{ 'computations.confirmLaunch' | trans|e('js') }}",
+            confirmLayers: "{{ 'computations.confirmLayers' | trans|e('js') }}",
+            invalidValue: "{{ 'computations.invalidValue' | trans|e('js') }}",
+            promptLayerThickness: "{{ 'computations.promptLayerThickness' | trans({'%name%': '__NAME__', '%index%': '__INDEX__', '%max%': '__MAX__'}) | e('js') }}"        };
+    </script>
     <script src="{{ asset('assets/js/computationLaunch.js') }}"></script>
 {% endblock %}

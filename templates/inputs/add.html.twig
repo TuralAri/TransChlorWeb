@@ -28,15 +28,15 @@
             </div>
             {{ form_start(form) }}
             <div class="flex flex-wrap md:flex-row sm:flex-row gap-2">
-                <button id="inputInfo" type="button" class="inline-block px-4 py-2 bg-gray-400 hover:bg-gray-400 active">Informations</button>
-                <button id="programSettings" type="button" class="inline-block px-4 py-2 bg-gray-300 hover:bg-gray-400">Paramètres du programme</button>
-                <button id="phAndWaterTransport" type="button" class="inline-block px-4 py-2 bg-gray-300 hover:bg-gray-400">Transport</button>
-                <button id="initialConditions" type="button" class="inline-block px-4 py-2 bg-gray-300 hover:bg-gray-400">Conditions initiales</button>
-                <button id="probabilistic" type="button" class="inline-block px-4 py-2 bg-gray-300 hover:bg-gray-400">Analyse Probabiliste</button>
+                <button id="inputInfo" type="button" class="inline-block px-4 py-2 bg-gray-400 hover:bg-gray-400 active">{{ 'inputForm.informations' | trans }}</button>
+                <button id="programSettings" type="button" class="inline-block px-4 py-2 bg-gray-300 hover:bg-gray-400">{{ 'inputForm.programSettings' | trans }}</button>
+                <button id="phAndWaterTransport" type="button" class="inline-block px-4 py-2 bg-gray-300 hover:bg-gray-400">{{ 'inputForm.transport' | trans }}</button>
+                <button id="initialConditions" type="button" class="inline-block px-4 py-2 bg-gray-300 hover:bg-gray-400">{{ 'inputForm.initialConditions' | trans }}</button>
+                <button id="probabilistic" type="button" class="inline-block px-4 py-2 bg-gray-300 hover:bg-gray-400">{{ 'inputForm.probabilisticAnalysis' | trans }}</button>
             </div>
             <section id="inputInfoSection" class="tab-section mt-4 bg-white p-6 rounded-lg border-2 space-y-4 border-black">
                 <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-semibold">Informations</h2>
+                    <h2 class="text-xl font-semibold">{{ 'inputForm.informations' | trans }}</h2>
                 </div>
                 <div class="gap-2 items-center w-fit justify-left">
                     {{ form_row(form.name, {'attr': {'class': 'ml-2 p-2 border rounded-lg text-center'}}) }}
@@ -47,7 +47,7 @@
             </section>
             <section id="programSettingsSection" class="tab-section mt-4 bg-white p-6 rounded-lg border-2 space-y-4 border-black hidden">
                 <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-semibold">Paramètres du programme</h2>
+                    <h2 class="text-xl font-semibold">{{ 'inputForm.programSettings' | trans }}</h2>
                 </div>
                 <div class="flex flex-wrap gap-4">
                     <div class="space-y-4">
@@ -112,7 +112,7 @@
             </section>
             <section id="phAndWaterTransportSection" class="tab-section mt-4 hidden bg-white p-6 rounded-lg border-2 space-y-4 border-black">
                 <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-semibold">Carbonatation et Transport Hydrique</h2>
+                    <h2 class="text-xl font-semibold">{{ 'inputForm.transportTitle' | trans }}</h2>
                 </div>
                 <div class="flex flex-wrap gap-2 flex-col">
                     <div class="space-y-4">
@@ -217,7 +217,7 @@
             </section>
             <section id="initialConditionsSection" class="tab-section mt-4 hidden bg-white p-6 rounded-lg border-2 space-y-4 border-black">
                 <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-semibold">Conditions Initiales</h2>
+                    <h2 class="text-xl font-semibold">{{ 'inputForm.initialConditions' | trans }}</h2>
                 </div>
                 <div class="gap-2 items-center w-fit justify-left">
                     {{ form_row(form.thermalTransport, {
@@ -263,15 +263,15 @@
             </section>
             <section id="probabilisticSection" class="tab-section mt-4 hidden bg-white p-6 rounded-lg border-2 space-y-4 border-black">
                 <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-semibold">Analyse Probabilistique</h2>
+                    <h2 class="text-xl font-semibold">{{ 'inputForm.probabilisticAnalysis' | trans }}</h2>
                 </div>
                 <label for="selectedMaterials"></label><select id="selectedMaterials" class="p-2 rounded-lg space-y-4">
-                    <option value="0">--Selectionner un matériau--</option>
+                    <option value="0">{{ 'inputForm.selectMaterial' | trans }}</option>
                 </select>
                 <div class="gap-2 w-fit justify-left flex flex-wrap justify-around">
                     <section class="tab-section mt-4 bg-white p-6 rounded-lg border-2 space-y-4 border-black lg:w-2/5 sm:w-full w-full">
                         <div class="flex justify-between items-center">
-                            <h3 class="text-xl font-semibold">Transport Hydrique de vapeur d'eau</h3>
+                            <h3 class="text-xl font-semibold">{{ 'inputForm.waterVaporTransport' | trans }}</h3>
                         </div>
                         <div id="vaporWaterTransportDiv" class="hidden gap-2 items-center w-fit justify-left">
                         </div>
@@ -280,7 +280,7 @@
 
                     <section class="tab-section mt-4 bg-white p-6 rounded-lg border-2 space-y-4 border-black lg:w-2/5 sm:w-full w-full">
                         <div class="flex justify-between items-center">
-                            <h3 class="text-xl font-semibold">Transport hydrique d'eau liquide par capillarité</h3>
+                            <h3 class="text-xl font-semibold">{{ 'inputForm.waterCapillarityTransport' | trans }}</h3>
                         </div>
                         <div id="liquidWaterTransportDiv" class="hidden gap-2 items-center w-fit justify-left">
 
@@ -290,7 +290,7 @@
 
                     <section class="tab-section mt-4 bg-white p-6 rounded-lg border-2 space-y-4 border-black lg:w-2/5 sm:w-full w-full">
                         <div class="flex justify-between items-center">
-                            <h3 class="text-xl font-semibold">Transport ionique des chlorures</h3>
+                            <h3 class="text-xl font-semibold">{{ 'inputForm.ionicTransport' | trans }}</h3>
                         </div>
                         <div id="chlorideIonicTransportDiv" class="hidden gap-2 items-center w-fit justify-left">
                         </div>
@@ -299,7 +299,7 @@
 
                     <section class="tab-section mt-4 bg-white p-6 rounded-lg border-2 space-y-4 border-black lg:w-2/5 sm:w-full w-full">
                         <div class="flex justify-between items-center">
-                            <h3 class="text-xl font-semibold">Carbonatation</h3>
+                            <h3 class="text-xl font-semibold">{{ 'inputForm.carbonation' | trans }}</h3>
                         </div>
                         <div id="carbonationDiv" class="hidden gap-2 items-center w-fit justify-left">
 

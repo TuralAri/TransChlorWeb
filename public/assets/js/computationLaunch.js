@@ -1,5 +1,5 @@
-function launchComputation(inputID, nqual, materialNames){
-    let confirmation = confirm("Êtes-vous sûr de vouloir lancer le calcul ?");
+function launchComputation(inputID, nqual, materialNames, length) {
+    let confirmation = confirm(translations.confirmLaunch);
     if (!confirmation) {
         return;
     }
@@ -9,13 +9,18 @@ function launchComputation(inputID, nqual, materialNames){
     let jsonData = {};
 
     if (nqual > 1) {
-        let useMultilayer = confirm("Are there many layers? (Click 'OK' for yes, 'Cancel' for no)");
+        let useMultilayer = confirm(translations.confirmLayers);
         if (useMultilayer) {
             for(let i = 1;i<nqual;i++){
-                let name = materialNames[i] || `couche no ${i}`;
-                let ep = prompt(`Épaisseur de ${name} ? (max ${length} mm)`);
+                let name = materialNames[i];
+                let promptText = translations.promptLayerThickness
+                    .replace('__NAME__', name)
+                    .replace('__INDEX__', i)
+                    .replace('__MAX__', length);
+
+                let ep = prompt(promptText);
                 if(ep ===null || isNaN(parseFloat(ep))){
-                    alert("Valeur invalide. Calcul annulé.");
+                    alert(translations.invalidValue);
                     return;
                 }
 

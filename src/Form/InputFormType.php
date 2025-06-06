@@ -30,50 +30,103 @@ class InputFormType extends AbstractType
         $user = $options['user'];
 
         $builder
-            ->add('name')
-            ->add('comment')
-            ->add('saveTimeTemperature')
-            ->add('saveTimeRelativeHumidity')
-            ->add('saveTimeWaterContent')
-            ->add('saveTimePh')
-            ->add('saveTimeFreeChlorures')
-            ->add('saveTimeTotalChlorures')
-            ->add('maxComputingTime')
-            ->add('computingTimeStep')
-            ->add('wallThickness')
-            ->add('elementsNumber')
+            ->add('name', TextType::class, [
+                'label' => 'inputForm.name',
+            ])
+            ->add('comment', TextType::class, [
+                'label' => 'inputForm.comment',
+            ])
+            ->add('saveTimeTemperature', TextType::class, [
+                'label' => 'inputForm.saveTimeTemperature',
+            ])
+            ->add('saveTimeRelativeHumidity', TextType::class, [
+                'label' => 'inputForm.saveTimeMoisture',
+            ])
+            ->add('saveTimeWaterContent', TextType::class, [
+                'label' => 'inputForm.saveTimeWaterContent',
+            ])
+            ->add('saveTimePh', TextType::class, [
+                'label' => 'inputForm.saveTimePh',
+            ])
+            ->add('saveTimeFreeChlorures', TextType::class, [
+                'label' => 'inputForm.saveTimeFreeChloride',
+            ])
+            ->add('saveTimeTotalChlorures', TextType::class, [
+                'label' => 'inputForm.saveTimeTotalChloride',
+            ])
+            ->add('maxComputingTime', TextType::class, [
+                'label' => 'inputForm.maxComputingTime',
+            ])
+            ->add('computingTimeStep', TextType::class, [
+                'label' => 'inputForm.computingTimeStep',
+            ])
+            ->add('wallThickness', TextType::class, [
+                'label' => 'inputForm.wallThickness',
+            ])
+            ->add('elementsNumber', TextType::class, [
+                'label' => 'inputForm.elementsNumber',
+            ])
             ->add('meshType', ChoiceType::class,[
                 'choices' => [
-                    '1: écart constant' => '1',
-                    '2: écart proportionnel' =>'2',
-                    '3: écart exponentiel'=>'3',
-                    '4: Plusieurs écarts constants'=>'4',
-                    '5: Plusieurs écarts constants, non symétriques' =>'5',
-                ]
+                    'inputForm.meshTypeOptions.constantGap' => '1',
+                    'inputForm.meshTypeOptions.proportionalGap' =>'2',
+                    'inputForm.meshTypeOptions.ExponentialGap'=>'3',
+                    'inputForm.meshTypeOptions.severalConstantGaps'=>'4',
+                    'inputForm.meshTypeOptions.severalConstantGapsNotSymmetric' =>'5',
+                ],
+                'label' => 'inputForm.meshType',
             ])
-            ->add('edgeElementLength')
-            ->add('resultsDisplayTime')
+            ->add('edgeElementLength', TextType::class, [
+                'label' => 'inputForm.edgeElementLength',
+            ])
+            ->add('resultsDisplayTime', TextType::class, [
+                'label' => 'inputForm.resultsDisplayTime',
+            ])
             ->add('capillarityTreatment', ChoiceType::class,[
+                'label' => 'inputForm.capillarityTreatment',
                 'choices' => [
-                    'Usual capillary succion' => '1',
-                    'Hydrophobic Treatment' => '2'
+                    'inputForm.capillarityTreatmentOptions.usualCapillarySuction' => '1',
+                    'inputForm.capillarityTreatmentOptions.hydrophobicTreatment' => '2'
                 ]
             ])
-            ->add('leftEdgeCO2')
-            ->add('rightEdgeCO2')
+            ->add('leftEdgeCO2', TextType::class, [
+                'label' => 'inputForm.leftBorderCO2',
+            ])
+            ->add('rightEdgeCO2', TextType::class, [
+                'label' => 'inputForm.rightBorderCO2',
+            ])
+            ->add('leftEdgeCO2Choice', EntityType::class, [
+                'class' => Location::class,
+                'choice_label' => 'name',
+                'label' => ' '
+            ])
+            ->add('rightEdgeCO2Choice', EntityType::class, [
+                'class' => Location::class,
+                'choice_label' => 'name',
+                'label' => ' '
+            ])
             ->add('thermalTransport')
             ->add('waterTransport')
             ->add('IonicTransport')
-            ->add('isWaterVaporTransportActivated')
-            ->add('isCapillarityTransportActivated')
-            ->add('isIonicTransportActivated')
-            ->add('isCarbonatationActivated')
+            ->add('isWaterVaporTransportActivated', null, [
+                'label' => 'inputForm.probabilisticLaw',
+            ])
+            ->add('isCapillarityTransportActivated', null, [
+                'label' => 'inputForm.probabilisticLaw',
+            ])
+            ->add('isIonicTransportActivated', null, [
+                'label' => 'inputForm.probabilisticLaw',
+            ])
+            ->add('isCarbonatationActivated', null, [
+                'label' => 'inputForm.probabilisticLaw',
+            ])
             ->add('weatherStation', EntityType::class, [
                 'class' => WeatherStation::class,
 //                'choice_label' => 'id' . 'localFileName',
                 'placeholder' => 'Choisissez une station météo',
                 'mapped' => false,
                 'required' => true,
+                'label' => 'inputForm.weatherStation',
             ])
             ->add('exposureSeries', EntityType::class, [
                 'class' => ExposureSeries::class,
@@ -82,21 +135,25 @@ class InputFormType extends AbstractType
                 'mapped' => false,
                 'required' => true,
                 'choices' => [], // AJAX will fill this
+                'label' => 'inputForm.exposureSeries',
             ])
             ->add('exposureFile1', EntityType::class, [
                 'class' => Exposure::class,
                 'choice_label' => 'type',
                 'placeholder' => 'Choisissez une exposition',
                 'choices' => [], // AJAX will fill this
+                'label' => 'inputForm.leftExposure',
             ])
             ->add('exposureFile2', EntityType::class, [
                 'class' => Exposure::class,
                 'choice_label' => 'type',
                 'placeholder' => 'Choisissez une exposition',
                 'choices' => [], // AJAX will fill this
+                'label' => 'inputForm.rightExposure',
             ])
             ->add('material', EntityType::class, [
                 'class' => Material::class,
+                'label' => 'inputForm.materials',
                 'choice_label' => 'name',
                 'multiple' => true,
                 'query_builder' => function ($repo) use ($user, $builder) {
@@ -113,14 +170,6 @@ class InputFormType extends AbstractType
 
                     return $qb;
                 },
-            ])
-            ->add('leftEdgeCO2Choice', EntityType::class, [
-                'class' => Location::class,
-                'choice_label' => 'name',
-            ])
-            ->add('rightEdgeCO2Choice', EntityType::class, [
-                'class' => Location::class,
-                'choice_label' => 'name',
             ])
             ->add('aoDiffusion', TextType::class, [
                 'label' => 'materialForm.labels.aoDiffusion',
@@ -160,7 +209,9 @@ class InputFormType extends AbstractType
                 'required' => false,
 //                'attr' => ['style' => 'display:none;'], // champ caché
             ])
-            ->add('submit', SubmitType::class);
+            ->add('submit', SubmitType::class, [
+                'label' => 'inputForm.save'
+            ]);
         ;
 
         //adds listeners to dynamically update the form based on previous selections
