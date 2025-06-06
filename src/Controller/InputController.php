@@ -373,10 +373,6 @@ class InputController extends AbstractController
         ]);
         $response = json_decode($response->getContent(), true);
 
-        return $this->json([
-            $data
-        ]);
-
         return $this->redirectToRoute("show_computation", [
             'id' => $response['computationId'],
         ]);
