@@ -80,7 +80,7 @@ class ComputationController extends AbstractController
     }
 
     #[Route('/api/computations/1d', name: 'start_1d', methods: ['GET'])]
-    public function start1D(EntityManagerInterface $entityManager, string $outfile) : JsonResponse{
+    public function start1D(EntityManagerInterface $entityManager, string $outfile, $data) : JsonResponse{
         $computation = new Computation();
         $computation->setStartDate(new \DateTime());
         $computation->setEndDate(new \DateTime());
@@ -102,7 +102,7 @@ class ComputationController extends AbstractController
         $entityManager->flush();
 
         //call api to start computation
-        $this->apiService->start1DComputing($computation->getId(), $outfile);
+        $this->apiService->start1DComputing($computation->getId(), $outfile, $data);
 
         return $this->json([
             'computationId' => $computation->getId(),

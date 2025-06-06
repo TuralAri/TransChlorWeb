@@ -326,11 +326,13 @@ class InputController extends AbstractController
             //
             fwrite($handle, $material->getEc() . "\n");//eau sur ciment pour le calcul Dcap // CORRESPOND AU E/C VIRTUEL
             //
-            $this->writeInitialCondition($input->getThermalTransport(), $handle);
-            $this->writeInitialCondition($input->getWaterTransport(), $handle);
-            $this->writeInitialCondition($input->getIonicTransport(), $handle);
-            //
         }
+
+        $this->writeInitialCondition($input->getThermalTransport(), $handle);
+        $this->writeInitialCondition($input->getWaterTransport(), $handle);
+        $this->writeInitialCondition($input->getIonicTransport(), $handle);
+        //
+
         fclose($handle);
 
         return $filePath;
@@ -360,14 +362,20 @@ class InputController extends AbstractController
         }
     }
 
-    #[Route('/inputs/{id}/compute', name: 'launch_computation', methods: ['GET'])]
-    public function compute(Input $input, TranslatorInterface $translator, ProbabilisticLawParamsRepository $lawParamsRepository) : Response
+    #[Route('/inputs/{id}/compute', name: 'launch_computation', methods: ['POST'])]
+    public function compute(Input $input, Request $request, TranslatorInterface $translator, ProbabilisticLawParamsRepository $lawParamsRepository) : Response
     {
         $filepath = $this->writeInputFile($input, $lawParamsRepository);
+        $data = json_decode($request->getContent(), true);
         $response = $this->forward('App\Controller\ComputationController::start1D', [
            'outfile' => $filepath,
+            'data' => json_encode($data)
         ]);
         $response = json_decode($response->getContent(), true);
+
+        return $this->json([
+            $data
+        ]);
 
         return $this->redirectToRoute("show_computation", [
             'id' => $response['computationId'],
