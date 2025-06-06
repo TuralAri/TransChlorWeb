@@ -317,16 +317,16 @@ class ApiService
      * Will start a new computation on the API with the specified id, will cause issues if an already instantiated
      * computing was run with the same id (you'll get more data for an already existing computation)
      * CAUTION ! ONLY USE NEW COMPUTATIONS ID TO NOT MIX TWO COMPUTATIONS DATA
-     * @param string $computationId
+     * @param int $computationId
      * @return void
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function startRandomComputing(string $computationId) :void
+    public function startRandomComputing(int $computationId) :void
     {
-        $this->httpClient->request('GET', $this->apiUrl . '/api/computing/run', [
-            'query' => [
+        $this->httpClient->request('POST', $this->apiUrl . '/api/computing/run', [
+            'json' => [
                 'mode' => 'random',
-                'computationId' => $computationId
+                'computationId' => $computationId,
             ]
         ]);
     }

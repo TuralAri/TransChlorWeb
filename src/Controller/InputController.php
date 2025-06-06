@@ -258,7 +258,7 @@ class InputController extends AbstractController
         if($input->getExposureFile1()->getId() == $input->getExposureFile2()->getId()){ //Number of exposition files
             fwrite($handle, "1" . "\n");
         }else{
-            fwrite($handle, "2" . "\n");
+            fwrite($handle, "1" . "\n");
         }
 
         fwrite($handle, $expositionDirectory . $input->getExposureFile1()->getExposureSerie()->getId() . '/' . $input->getExposureFile1()->getFilename() . "\n");
