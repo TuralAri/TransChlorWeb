@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copier le code Symfony
-COPY symfony/ /var/www/html/
+COPY . /var/www/html/
 
 # Définir les droits
 RUN chown -R www-data:www-data /var/www/html
