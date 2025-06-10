@@ -8,6 +8,7 @@ ENV https_proxy=$HTTPS_PROXY
 
 # Activer les modules Apache nécessaires
 RUN a2enmod rewrite
+RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
 
 # Installer les extensions PHP nécessaires pour Symfony
 RUN apt-get update && apt-get install -y \
