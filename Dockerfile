@@ -1,0 +1,26 @@
+FROM php:8.2-apache
+
+# Activer les modules Apache nécessaires
+RUN a2enmod rewrite
+
+# Installer les extensions PHP nécessaires pour Symfony
+RUN apt-get update && apt-get install -y \
+    libicu-dev libonig-dev libzip-dev zip unzip git curl \
+    && docker-php-ext-install intl pdo pdo_mysql zip opcache
+
+# Installer Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Copier le code Symfony
+COPY symfony/ /var/www/html/
+
+# Définir les droits
+RUN chown -R www-data:www-data /var/www/html
+
+# Changer le docroot pour Symfony (dossier `public`)
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+
+# Adapter la config Apache pour Symfony
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/000-default.conf
+
+WORKDIR /var/www/html
