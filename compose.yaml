@@ -5,6 +5,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        HTTP_PROXY: "http://proxy.iutbourg.univ-lyon1.fr:3128"
+        HTTPS_PROXY: "http://proxy.iutbourg.univ-lyon1.fr:3128"
     container_name: symfony_apache
     volumes:
       - ./:/var/www/html
