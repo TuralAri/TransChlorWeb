@@ -11,6 +11,7 @@ services:
     container_name: symfony_apache
     volumes:
       - .:/var/www/html
+    entrypoint: /var/www/html/docker/database-init-entrypoint.sh
     ports:
       - "80:80"
     depends_on:
