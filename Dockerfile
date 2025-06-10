@@ -1,10 +1,10 @@
+FROM php:8.2-apache
+
 ARG HTTP_PROXY
 ARG HTTPS_PROXY
 
 ENV http_proxy=$HTTP_PROXY
 ENV https_proxy=$HTTPS_PROXY
-
-FROM php:8.2-apache
 
 # Activer les modules Apache nécessaires
 RUN a2enmod rewrite
