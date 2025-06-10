@@ -14,6 +14,11 @@ RUN apt-get update && apt-get install -y \
     libicu-dev libonig-dev libzip-dev zip unzip git curl \
     && docker-php-ext-install intl pdo pdo_mysql zip opcache
 
+# Installer les dépendances de Node.js et NPM
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install -g npm
+
 # Installer Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
@@ -30,4 +35,6 @@ ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/000-default.conf
 
 WORKDIR /var/www/html
-RUN composer install --no-interaction --optimize-autoloader
+RUN composer install --no-interaction --optimize-autoloader \
+    && npm install \
+    && npm run build
