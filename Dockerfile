@@ -28,6 +28,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY . /var/www/html/
 
 # Définir les droits
+RUN chmod +x /var/www/html/docker/database-init-entrypoint.sh
 RUN chown -R www-data:www-data /var/www/html
 
 # Changer le docroot pour Symfony (dossier `public`)
