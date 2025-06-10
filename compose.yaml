@@ -10,7 +10,6 @@ services:
         HTTPS_PROXY: "http://proxy.iutbourg.univ-lyon1.fr:3128"
     container_name: symfony_apache
     volumes:
-      - ./public:/var/www/html/public
       - ./var:/var/www/html/var
     ports:
       - "80:80"
