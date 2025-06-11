@@ -6,7 +6,7 @@
 parameters:
     kernel.k: '%kernel.project_dir%'
     upload_directory: '%kernel.project_dir%/var/uploads'
-    api_url: 'http://localhost:5000' #LIEN API VERS QUI TOUS LES APPELS SE FERONT
+    api_url: 'http://transchlor_api:8080' #LIEN API VERS QUI TOUS LES APPELS SE FERONT
     locale: 'fr'
 
 services:
