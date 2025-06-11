@@ -41,7 +41,7 @@ class ApiService
         error_log("file sended with var :  " . $route . '  ds  '.$filePath);
         error_log($this->apiUrl . '/' .$route);
         $file = fopen($filePath, 'r');
-        $response = $this->httpClient->request('POST', 'http://localhost:5000/' . $route , [
+        $response = $this->httpClient->request('POST', $this->apiUrl.'/' . $route , [
             'headers' => [
                 'Content-Type' => 'multipart/form-data'
             ],
