@@ -24,9 +24,6 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
 # Installer Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copier le code Symfony
-COPY . /var/www/html/
-
 RUN chown -R www-data:www-data /var/www/html
 
 # Changer le docroot pour Symfony (dossier `public`)
