@@ -30,6 +30,3 @@ RUN chown -R www-data:www-data /var/www/html
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 
 WORKDIR /var/www/html
-RUN composer install --no-interaction --optimize-autoloader \
-    && npm install \
-    && npm run build

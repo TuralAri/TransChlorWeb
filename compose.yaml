@@ -11,6 +11,12 @@ services:
     container_name: symfony_apache
     volumes:
       - ./:/var/www/html
+    command: >
+      bash -c "
+        if [ -f composer.json ]; then composer install --no-interaction --optimize-autoloader; fi &&
+        if [ -f package.json ]; then npm install && npm run build; fi &&
+        apache2-foreground
+      "
     ports:
       - "80:80"
     depends_on:
