@@ -45,7 +45,7 @@ services:
       dockerfile: Dockerfile
     container_name: transchlor_api
     ports:
-      - "5000:80"
+      - "5000:5000"
 
 volumes:
   db_data:
