@@ -7,13 +7,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHttpClient<RandomComputingStrategy>(client =>
 {
-    client.BaseAddress = new Uri("http://localhost:8000/api/");
+    client.BaseAddress = new Uri("http://web/api/");
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 
 builder.Services.AddHttpClient<RealComputingStrategy>(client =>
 {
-    client.BaseAddress = new Uri("http://localhost:8000/api/");
+    client.BaseAddress = new Uri("http://web/api/");
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 
