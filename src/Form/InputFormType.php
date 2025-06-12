@@ -78,6 +78,7 @@ class InputFormType extends AbstractType
             ])
             ->add('edgeElementLength', TextType::class, [
                 'label' => 'inputForm.edgeElementLength',
+                'required' => false
             ])
             ->add('resultsDisplayTime', TextType::class, [
                 'label' => 'inputForm.resultsDisplayTime',
