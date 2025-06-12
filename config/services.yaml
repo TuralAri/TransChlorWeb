@@ -5,8 +5,8 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     kernel.k: '%kernel.project_dir%'
-    upload_directory: '%kernel.project_dir%/var/uploads'
-    api_url: 'http://transchlor_api:8080' #LIEN API VERS QUI TOUS LES APPELS SE FERONT
+    upload_directory: '%kernel.project_dir%/%env(UPLOAD_DIRECTORY)%'
+    api_url: '%env(API_URL)%' #LIEN API VERS QUI TOUS LES APPELS SE FERONT
     locale: 'fr'
 
 services:
