@@ -3,6 +3,7 @@ using System.Globalization;
 using Microsoft.VisualBasic;
 using System.Net.Http.Json;
 using Microsoft.VisualBasic.CompilerServices;
+using TransChlorApi.Utils;
 
 namespace TransChlorApi.Models
 {
@@ -617,6 +618,7 @@ namespace TransChlorApi.Models
                 {
                     Console.WriteLine("on ouvre le fichier");
                     Console.WriteLine($"{INFile},{nFic}");
+                    INFile = PathUtils.ResolvePath(INFile);
                     FileSystem.FileOpen(nFic, INFile, OpenMode.Input, OpenAccess.Read);
                     Console.WriteLine("on a bien ouvert");
                     // FileSystem.Input(nFic, ref NbreEn);

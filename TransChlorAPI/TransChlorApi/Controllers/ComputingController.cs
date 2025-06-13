@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SysFile = System.IO;
 using System.Threading.Tasks;
 using TransChlorApi.Services;
+using TransChlorApi.Utils;
 
 namespace TransChlorApi.Controllers
 {
@@ -39,6 +40,7 @@ namespace TransChlorApi.Controllers
             if (body.TryGetProperty("outfile", out var outfileElement))
             {
                 outfile = outfileElement.GetString() ?? outfile;
+                outfile = PathUtils.ResolvePath(outfile);
             }
 
             if (body.TryGetProperty("data", out var dataElement))
