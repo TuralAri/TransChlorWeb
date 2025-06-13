@@ -15,6 +15,7 @@ services:
     container_name: symfony_apache
     volumes:
       - ./:/var/www/html
+      - ./data/shared:/data/shared
     command: >
       bash -c "
         if [ -f composer.json ]; then composer install --no-interaction --optimize-autoloader; fi &&
@@ -56,6 +57,8 @@ services:
     container_name: transchlor_api
     ports:
       - "5000:8080"
+    volumes:
+      - ./data/shared:/data/shared
 
 volumes:
   db_data:
