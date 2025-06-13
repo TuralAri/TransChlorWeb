@@ -21,6 +21,9 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs \
     && npm install -g npm
 
+# Modification des tailles d'upload maximales
+RUN echo "upload_max_filesize = 200M\npost_max_size = 210M" > /usr/local/etc/php/conf.d/uploads.ini
+
 # Installer Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
