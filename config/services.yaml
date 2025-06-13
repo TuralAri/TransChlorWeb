@@ -6,7 +6,9 @@
 parameters:
     kernel.k: '%kernel.project_dir%'
     upload_directory: '%kernel.project_dir%/%env(UPLOAD_DIRECTORY)%'
+    relative_upload_directory: '%env(UPLOAD_DIRECTORY)%' # relative path to the upload directory
     api_url: '%env(API_URL)%' #LIEN API VERS QUI TOUS LES APPELS SE FERONT
+    using_docker: '%env(USING_DOCKER)%'
     locale: 'fr'
 
 services:

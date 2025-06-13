@@ -14,6 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use http\Exception\RuntimeException;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -167,12 +168,24 @@ class InputController extends AbstractController
         return $this->redirectToRoute('inputs');
     }
 
-    #[Route('/inputs/{id}/generate', name: 'generate_input')]
-    public function generateInput(Input $input, ProbabilisticLawParamsRepository $lawParamsRepository): Response
+    public function toRelativePath(string $absolutePath, ParameterBagInterface $params): string
     {
-//        return $this->writeInputFile($input);
+        $uploadDir = rtrim($params->get('relative_upload_directory'), '/');
+        $projectRoot = realpath(__DIR__ . '/../../');
+        $basePath = $projectRoot . '/' . ltrim($uploadDir, '/');
 
-        $filePath = $this->writeInputFile($input, $lawParamsRepository);
+        //In case you're coding on Windows
+        $absolutePath = str_replace('\\', '/', $absolutePath);
+        $basePath = str_replace('\\', '/', $basePath);
+
+        return ltrim(str_replace($basePath, '', $absolutePath), '/');
+    }
+
+    #[Route('/inputs/{id}/generate', name: 'generate_input')]
+    public function generateInput(Input $input, ProbabilisticLawParamsRepository $lawParamsRepository, ParameterBagInterface $bag): Response
+    {
+
+        $filePath = $this->writeInputFile($input, $lawParamsRepository, $bag);
 
         $response = new BinaryFileResponse($filePath);
         $response->setContentDisposition(
@@ -182,10 +195,9 @@ class InputController extends AbstractController
         return $response;
     }
 
-    public function writeInputFile(Input $input, ProbabilisticLawParamsRepository $lawParamsRepository) : String
+    public function writeInputFile(Input $input, ProbabilisticLawParamsRepository $lawParamsRepository, ParameterBagInterface $bag) : String
     {
         $materials = $input->getMaterial();
-        $tempMat = $materials->get(0); //Variable pour les valeurs d'input tant qu'on a pas fixé le probleme des variables dans les mauvaises entitées.
 
         $expositionDirectory = $this->getParameter('upload_directory') . '/Ressources/Exposition/';
         $uploadDirectory = $this->getParameter('upload_directory') . '/Ressources/Input/';
@@ -261,8 +273,16 @@ class InputController extends AbstractController
             fwrite($handle, "1" . "\n");
         }
 
-        fwrite($handle, $expositionDirectory . $input->getExposureFile1()->getExposureSerie()->getId() . '/' . $input->getExposureFile1()->getFilename() . "\n");
-        fwrite($handle, $expositionDirectory . $input->getExposureFile2()->getExposureSerie()->getId() . '/' . $input->getExposureFile2()->getFilename() . "\n");
+        $leftExpostionLink = $expositionDirectory . $input->getExposureFile1()->getExposureSerie()->getId() . '/' . $input->getExposureFile1()->getFilename();
+        $rightExpostionLink = $expositionDirectory . $input->getExposureFile2()->getExposureSerie()->getId() . '/' . $input->getExposureFile2()->getFilename();
+
+        if($bag->get('using_docker') === 'true' ){
+            $leftExpostionLink = $this->toRelativePath($leftExpostionLink, $bag);
+            $rightExpostionLink = $this->toRelativePath($rightExpostionLink, $bag);
+        }
+
+        fwrite($handle, $leftExpostionLink . "\n");
+        fwrite($handle, $rightExpostionLink . "\n");
 
         fwrite($handle, $materials->count() . "\n");//Var03 number of materials
         foreach($materials as $material){
@@ -363,9 +383,14 @@ class InputController extends AbstractController
     }
 
     #[Route('/inputs/{id}/compute', name: 'launch_computation', methods: ['POST'])]
-    public function compute(Input $input, Request $request, TranslatorInterface $translator, ProbabilisticLawParamsRepository $lawParamsRepository) : Response
+    public function compute(Input $input, Request $request, TranslatorInterface $translator, ProbabilisticLawParamsRepository $lawParamsRepository, ParameterBagInterface $bag) : Response
     {
-        $filepath = $this->writeInputFile($input, $lawParamsRepository);
+        $filepath = $this->writeInputFile($input, $lawParamsRepository, $bag);
+
+        if($bag->get('using_docker') === 'true' ){
+            $filepath = $this->toRelativePath($filepath, $bag);
+        }
+
         $data = json_decode($request->getContent(), true);
         $response = $this->forward('App\Controller\ComputationController::start1D', [
            'outfile' => $filepath,
