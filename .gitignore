@@ -1,25 +1,87 @@
-###> symfony/framework-bundle ###
-/.env.local
+########################################
+# Symfony
+########################################
+
+# Environnements
+.env.local
 /.env.local.php
 /.env.*.local
+
+# Secrets
 /config/secrets/prod/prod.decrypt.private.php
-/public/bundles/
+
+# Cache, logs, fichiers temporaires
 /var/
+/data/
+
+# Dépendances PHP
 /vendor/
-###< symfony/framework-bundle ###
 
-###> phpunit/phpunit ###
-/phpunit.xml
-.phpunit.result.cache
-###< phpunit/phpunit ###
-
-###> symfony/phpunit-bridge ###
-.phpunit.result.cache
-/phpunit.xml
-###< symfony/phpunit-bridge ###
-###> symfony/webpack-encore-bundle ###
+# Webpack Encore
 /node_modules/
 /public/build/
 npm-debug.log
 yarn-error.log
-###< symfony/webpack-encore-bundle ###
+
+# PHPUnit
+/phpunit.xml
+.phpunit.result.cache
+
+# Bundles Symfony
+/public/bundles/
+
+########################################
+# .NET / C#
+########################################
+
+# Dossiers de build
+bin/
+obj/
+artifacts/
+publish/
+
+# Dépendances .NET
+packages/
+
+# Fichiers temporaires et caches
+project.lock.json
+project.fragment.lock.json
+project.nuget.cache
+project.packagespec.json
+*.pdb
+
+# Fichiers générés
+*.GeneratedMSBuildEditorConfig.editorconfig
+*.CoreCompileInputs.cache
+*.AssemblyInfoInputs.cache
+*.assets.cache
+*.genruntimeconfig.cache
+*.GlobalUsings.g.cs
+
+# Fichiers de projet NuGet
+*.nuget.dgspec.json
+*.nuget.g.props
+*.nuget.g.targets
+
+# Fichiers utilisateur
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Éditeurs & IDEs
+.idea/
+.vs/
+.vscode/
+*.DotSettings.user
+
+# Sauvegardes d’éditeurs
+*~
+*.swp
+
+########################################
+# Autres
+########################################
+
+# Logs
+*.log
