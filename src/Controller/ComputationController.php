@@ -11,6 +11,7 @@ use App\Repository\ComputationResultRepository;
 use App\Service\ApiService;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use phpDocumentor\Reflection\Types\Integer;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -80,11 +81,12 @@ class ComputationController extends AbstractController
     }
 
     #[Route('/api/computations/1d', name: 'start_1d', methods: ['GET'])]
-    public function start1D(EntityManagerInterface $entityManager, string $outfile, $data) : JsonResponse{
+    public function start1D(EntityManagerInterface $entityManager, string $outfile, $data, int $length) : JsonResponse{
         $computation = new Computation();
         $computation->setStartDate(new \DateTime());
         $computation->setEndDate(new \DateTime());
         $computation->setStatus("progress"); //status is whether in progess or stopped
+        $computation->setLength($length);
 
         $types = $this->getTypes();
         $computationsActualResults = [];
@@ -260,7 +262,7 @@ class ComputationController extends AbstractController
                 'label' => $this->getGraphLabel($type, $translator),
                 'data' => array_map(
                     fn($depth, $val) => ['x' => $depth, 'y' => $val],
-                    range(0, 100),
+                    range(0, $computation->getLength()),
                     $result->getComputedValues()
                 ),
                 'borderColor' => $this->getGraphColor($type),

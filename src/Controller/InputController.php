@@ -394,7 +394,8 @@ class InputController extends AbstractController
         $data = json_decode($request->getContent(), true);
         $response = $this->forward('App\Controller\ComputationController::start1D', [
            'outfile' => $filepath,
-            'data' => json_encode($data)
+            'data' => json_encode($data),
+            'length' => $input->getWallThickness()
         ]);
         $response = json_decode($response->getContent(), true);
 

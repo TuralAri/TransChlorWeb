@@ -37,6 +37,9 @@ class Computation
     #[ORM\OneToMany(targetEntity: ComputationActualResult::class, mappedBy: 'computation', orphanRemoval: true)]
     private Collection $computationActualResults;
 
+    #[ORM\Column]
+    private ?int $length = null;
+
     public function __construct()
     {
         $this->computationResults = new ArrayCollection();
@@ -140,6 +143,18 @@ class Computation
                 $computationActualResult->setComputation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLength(): ?int
+    {
+        return $this->length;
+    }
+
+    public function setLength(int $length): static
+    {
+        $this->length = $length;
 
         return $this;
     }
