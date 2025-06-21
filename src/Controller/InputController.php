@@ -134,7 +134,11 @@ class InputController extends AbstractController
             return $this->redirectToRoute('index');
         }
 
-        $form = $this->createForm(InputFormType::class, $input);
+        $form = $this->createForm(InputFormType::class, $input, [
+            'attr' => ['id' => 'input_form'],
+            'user' => $this->getUser(),
+            'em' => $entityManager,
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $input = $form->getData();
