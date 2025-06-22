@@ -29,6 +29,7 @@ footer:
 
 #related to the index home page
 home:
+  pageTitle : "Transchlor - L'application web de modélisation d'ions chlorures"
   title: "Fonctionnalités principales"
   climaticModelTitle: "Modèle Climatique"
   climaticModelDescription : "Intégration des données climatiques pour une modélisation précise de l'influence des conditions environnementales sur la pénétration des chlorures."
@@ -173,6 +174,8 @@ computations:
   confirmLayers: "Y a-t-il plusieurs couches ? (Appuyer sur 'Annuler' si vous n'avez qu'une seule couche de béton)"
   invalidValue: "Valeur invalide, calcul annulé"
   promptLayerThickness: "Épaisseur de %name% couche no %index% ? (max %max% mm)"
+  computationsResult: 'Résultats du calcul'
+
 
 materials:
   pageTitle: "Vos matériaux"
